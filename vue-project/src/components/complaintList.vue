@@ -288,18 +288,17 @@ export default {
             }
             
         },
-        filtersArrayUnique: function(arr){
+        filtersArrayUnique: function(filters){
             let that = this
-            var hash = []
-            for(var i=0;i<arr.length;i++){
-                for(var j=i+1;j<arr.length;j++){
-                    if(arr[i].text == arr[j].text){
-                        ++i;
+            for(var i=0;i<filters.length;i++){
+                for(var j=i+1;j<filters.length;j++){
+                    if(filters[i].text == filters[j].text){ // 第一个等于第二个，splice方法删除第二个
+                        filters.splice(j, 1)
+                        j--
                     }
                 }
-                hash.push(arr[i])
             }
-            return hash
+            return filters
         }
     }
 }
