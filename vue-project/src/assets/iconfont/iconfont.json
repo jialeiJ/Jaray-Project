@@ -1,0 +1,23 @@
+{
+  "id": "1539001",
+  "name": "demo",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "8843484",
+      "name": "折叠",
+      "font_class": "collapse-black",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "12069615",
+      "name": "折叠",
+      "font_class": "collapse-white",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vienna.jaray.mapper.ComplaintMapper">
+
+    <resultMap id="CommonResultMap" type="complaintEntity">
+		<id property="cid" column="cid"/>
+		<result property="title" column="title"/>
+		<result property="desc" column="desc"/>
+		<result property="cFileIds" column="cFileIds"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+        c.cid, c.title, c.desc, c.cFileIds
+    </sql>
+	
+	<!-- 查询投诉列表 -->
+    <select id="findComplaintList" resultMap="CommonResultMap">
+       select 
+       	   <include refid="Base_Column_List" />
+       from complaint c 
+    </select>
+    
+    <select id="findComplaintByCid" resultMap="CommonResultMap">
+       select 
+       	   <include refid="Base_Column_List" />
+       from complaint c 
+       where c.cid = #{cid}
+    </select>
+    
+    <insert id="addComplaint">
+    	insert into complaint (`cid`, `title`, `desc`, `cFileIds`) 
+    	values (findNextFormatSeqVal('C','s_complaint_id'), #{entity.title}, #{entity.desc}, #{entity.cFileIds})
+    </insert>
+
+    <delete id="delComplaint">
+        delete from complaint c where c.cid in
+        <foreach item="cid" collection="cids" open="(" separator="," close=")">
+            #{cid}
+        </foreach>
+    </delete>
+
+    <update id="updateComplaint">
+        update complaint
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.title != null">title = #{entity.title},</if>
+            <if test="entity.desc != null">`desc` = #{entity.desc},</if>
+        </trim>
+        where cid = #{entity.cid}
+    </update>
+    
+</mapper>
