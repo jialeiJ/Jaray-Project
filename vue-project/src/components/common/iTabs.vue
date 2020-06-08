@@ -97,12 +97,15 @@ export default {
   },
   mounted: function(){
     let tempRoutes = this.$router.options.routes;
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < tempRoutes.length; i++) {
             let temp = tempRoutes[i];
-            let menu = {};
-            menu.name = temp.title;
-            menu.component = temp.component;
-            this.addOneTab(menu);
+            console.log(temp.name, 'introduction')
+            if(temp.name == 'introduction'){
+                let menu = {};
+                menu.name = temp.title;
+                menu.component = temp.component;
+                this.addOneTab(menu);
+            }
         }
     }
 }
