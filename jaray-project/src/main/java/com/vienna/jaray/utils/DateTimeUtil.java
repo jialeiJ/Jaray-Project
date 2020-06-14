@@ -203,6 +203,18 @@ public class DateTimeUtil {
         }
         return null;
     }
+
+    /**
+     * 得到时间的N分钟后的时间
+     * @param theDate
+     * @param nMinNum
+     * @param format
+     * @return
+     */
+    public static String beforeNMinsDate(String theDate, Integer nMinNum, String format) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
+        return LocalDateTime.parse(theDate,dateTimeFormatter).minusMinutes(nMinNum).format(dateTimeFormatter);
+    }
     
     /**
      * 获得N个月后的日期

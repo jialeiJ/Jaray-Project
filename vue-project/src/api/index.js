@@ -1,25 +1,22 @@
 import Env from './env';
 import axios from 'axios'
 import Qs from 'qs'
-import routerIndex from '../router/index'
+import router from '../router/index'
+import API from '../api/api_system'
 
 let token = '';
-
 axios.defaults.withCredentials = false;
 axios.defaults.headers.common['token'] = token;
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';//配置请求头
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';// 配置请求头，发送一次预请求和一次正式请求两次请求
 
 //添加一个请求拦截器
 axios.interceptors.request.use(function (config) {
-//   let user = JSON.parse(window.sessionStorage.getItem('access-user'));
-//   if (user) {
-//     token = user.token;
-//   }
-//   config.headers.common['token'] = token;
-  //console.dir(config);
+    token = localStorage.getItem('access-token')
+    if(token){
+        config.headers.common['token'] = token;
+    }
     return config;
 }, function (error) {
-    console.error(error);
     return Promise.reject(error);
 });
 
@@ -29,20 +26,33 @@ axios.interceptors.response.use(function (response) {
         if (parseInt(response.data.code) === 108 || parseInt(response.data.code) === 109 || response.data.msg === 'TOKEN失效，请重新登录' || response.data.msg === 'TOKEN不存在') {
             //未登录
             response.data.msg = "登录信息已失效，请重新登录";
-            console.log(response.data.msg)
-            routerIndex.push('/login');
+            router.push({path : '/'});
         }
-        if (parseInt(response.data.code) === -1) {
+        if (parseInt(response.data.code) === 100) {
             console.error("请求失败")
         }
     }
     return response;
 }, function (error) {
-    // Do something with response error
-    console.dir(error);
+    if (error.response.status == 403) {
+        router.push({path : '/'});
+    }
+    //console.dir(error);
     console.error("服务器连接失败")
     return Promise.reject(error);
 })
+
+function getrefreshToken(expiredToken) {
+    let params = {
+        token: expiredToken
+    }
+    // 调用接口
+    API.refreshToken(params).then(function (result) {
+        if (result.code === 200 && result.map.refreshToken) {
+            localStorage.setItem('access-token', result.map.refreshToken)
+        }
+    });
+}
 
 //基地址
 let base = Env.baseURL;

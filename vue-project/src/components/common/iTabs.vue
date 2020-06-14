@@ -99,7 +99,6 @@ export default {
     let tempRoutes = this.$router.options.routes;
         for (let i = 0; i < tempRoutes.length; i++) {
             let temp = tempRoutes[i];
-            console.log(temp.name, 'introduction')
             if(temp.name == 'introduction'){
                 let menu = {};
                 menu.name = temp.title;

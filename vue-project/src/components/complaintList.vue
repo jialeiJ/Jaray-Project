@@ -125,38 +125,38 @@ export default {
     },
     methods: {
         initTable: function(){
-        let that = this
-        // 定义请求参数
-        let params = { 
-            pageNum: that.pageNum,
-            pageSize: that.pageSize
-        }
-        // 调用接口
-        API.findComplaintList(params).then(function (result) {
-            if (result.code === 200) {
-            console.log(result.map.complaintEntities)
-            that.total = result.map.complaintEntities.total
-            that.currentPage = result.map.complaintEntities.pageNum
-            that.pageSize = result.map.complaintEntities.pageSize
-            that.tableData = result.map.complaintEntities.list
-
-            that.filtersHandler(that.tableData)
-            // let userInfo = {
-            //   id: result.data.user.id,
-            //   mobilePhone: result.data.user.mobilePhone,
-            //   nickname: result.data.user.userName,
-            //   gender: result.data.user.gender,
-            //   photo: result.data.user.photo,
-            //   token: result.data.token,
-            //   timestamp: new Date().getTime()
-            // };
-            // localStorage.setItem('access-user', JSON.stringify(userInfo)); // 将用户信息存到localStorage中
-            // that.$router.replace({path: '/'}); // 登录成功跳转
-            } else {
-                that.loading = false;
-                that.$message.error(result.msg);// elementUI消息提示
+            let that = this
+            // 定义请求参数
+            let params = { 
+                pageNum: that.pageNum,
+                pageSize: that.pageSize
             }
-        });
+            // 调用接口
+            API.findComplaintList(params).then(function (result) {
+                if (result.code === 200) {
+                console.log(result.map.complaintEntities)
+                that.total = result.map.complaintEntities.total
+                that.currentPage = result.map.complaintEntities.pageNum
+                that.pageSize = result.map.complaintEntities.pageSize
+                that.tableData = result.map.complaintEntities.list
+
+                that.filtersHandler(that.tableData)
+                // let userInfo = {
+                //   id: result.data.user.id,
+                //   mobilePhone: result.data.user.mobilePhone,
+                //   nickname: result.data.user.userName,
+                //   gender: result.data.user.gender,
+                //   photo: result.data.user.photo,
+                //   token: result.data.token,
+                //   timestamp: new Date().getTime()
+                // };
+                // localStorage.setItem('access-user', JSON.stringify(userInfo)); // 将用户信息存到localStorage中
+                // that.$router.replace({path: '/'}); // 登录成功跳转
+                } else {
+                    that.loading = false;
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            });
         },
         receiveChild: function(data){
             let that = this

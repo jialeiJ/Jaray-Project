@@ -4,15 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
-import com.vienna.jaray.common.ResponseResultMsg;
+import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.ComplaintEntity;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.ComplaintService;
 
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @CrossOrigin
@@ -25,8 +22,8 @@ public class ComplaintController {
 	
 	@ILogAnnotation(value = "查询投诉信息")
 	@GetMapping("/findComplaintList")
-	public ResponseResultMsg findComplaintList(CommonParamsModel commonParamsModel) {
-		ResponseResultMsg resultMsg = null;
+	public ResponseResult findComplaintList(CommonParamsModel commonParamsModel) {
+		ResponseResult resultMsg = null;
 		try {
 			log.info("------------查询投诉信息列表开始------------");
 			resultMsg = complaintService.findComplaintList(commonParamsModel);
@@ -39,8 +36,8 @@ public class ComplaintController {
 	
 	@ILogAnnotation(value = "新增或编辑投诉信息")
 	@PostMapping("/addOrUpdateComplaint")
-	public ResponseResultMsg addOrUpdateComplaint(ComplaintEntity complaintEntity) {
-		ResponseResultMsg resultMsg = null;
+	public ResponseResult addOrUpdateComplaint(ComplaintEntity complaintEntity) {
+		ResponseResult resultMsg = null;
 
 		complaintEntity.setCFileIds("11,22");
 		try {
@@ -55,8 +52,8 @@ public class ComplaintController {
 
 	@ILogAnnotation(value = "删除投诉信息")
 	@PostMapping("/delComplaint")
-	public ResponseResultMsg delComplaint(String cids) {
-		ResponseResultMsg resultMsg = null;
+	public ResponseResult delComplaint(String cids) {
+		ResponseResult resultMsg = null;
 		try {
 			log.info("------------删除投诉信息开始------------");
 			resultMsg = complaintService.delComplaint(cids.split(","));
@@ -70,8 +67,8 @@ public class ComplaintController {
 
 	@ILogAnnotation(value = "查询投诉信息")
 	@PostMapping("/findComplaint")
-	public ResponseResultMsg findComplaint(String cid) {
-		ResponseResultMsg resultMsg = null;
+	public ResponseResult findComplaint(String cid) {
+		ResponseResult resultMsg = null;
 		try {
 			log.info("------------查询投诉信息开始------------");
 			resultMsg = complaintService.findComplaintByCid(cid);

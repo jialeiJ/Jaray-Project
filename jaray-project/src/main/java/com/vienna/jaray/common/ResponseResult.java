@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Administrator
  *
  */
-public class ResponseResultMsg {
+public class ResponseResult {
 	
 	public static final int SUCCESS_CODE = 200;
     public static final int FAIL_CODE = 100;
@@ -21,21 +21,21 @@ public class ResponseResultMsg {
 	//返回给浏览器的数据
 	private Map<String, Object> map = new HashMap<String, Object>();
 	
-	public static ResponseResultMsg success() {
-		ResponseResultMsg resultMsg = new ResponseResultMsg();
+	public static ResponseResult success() {
+		ResponseResult resultMsg = new ResponseResult();
 		resultMsg.setCode(SUCCESS_CODE);
 		resultMsg.setMsg("处理成功！");
 		return resultMsg;
 	}
 	
-	public static ResponseResultMsg fail() {
-		ResponseResultMsg resultMsg = new ResponseResultMsg();
+	public static ResponseResult fail() {
+		ResponseResult resultMsg = new ResponseResult();
 		resultMsg.setCode(FAIL_CODE);
 		resultMsg.setMsg("处理失败！");
 		return resultMsg;
 	}
 	
-	public ResponseResultMsg add(String key, Object value) {
+	public ResponseResult add(String key, Object value) {
 		this.getMap().put(key, value);
 		return this;
 	}
@@ -44,13 +44,14 @@ public class ResponseResultMsg {
 	public Integer getCode() {
 		return code;
 	}
-	public void setCode(Integer code) {
+	public ResponseResult setCode(Integer code) {
 		this.code = code;
+		return this;
 	}
 	public String getMsg() {
 		return msg;
 	}
-	public ResponseResultMsg setMsg(String msg) {
+	public ResponseResult setMsg(String msg) {
 		this.msg = msg;
 		return this;
 	}
@@ -58,7 +59,7 @@ public class ResponseResultMsg {
 		return map;
 	}
 
-	public ResponseResultMsg setMap(Map<String, Object> map) {
+	public ResponseResult setMap(Map<String, Object> map) {
 		this.map = map;
 		return this;
 	}
