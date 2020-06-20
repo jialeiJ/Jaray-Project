@@ -3,18 +3,22 @@ import * as API from './'
 export default {
     //查询投诉信息列表
     findComplaintList: params => {
-        return API.GET('/complaint/findComplaintList', params);
+        return API.GET('/complaint/find/all', params);
     },
-    //删除投诉信息列表
-    delComplaint: params => {
-        return API.POST('/complaint/delComplaint', params);
+    //添加投诉信息
+    addComplaint: params => {
+        return API.POST('/complaint/add', params);
     },
-    //添加投诉信息列表
-    addOrUpdateComplaint: params => {
-        return API.POST('/complaint/addOrUpdateComplaint', params);
+    //删除投诉信息
+    deleteComplaint: params => {
+        return API.POST('/complaint/delete', params);
     },
-    //添加投诉信息列表
+    //更新投诉信息
+    updateComplaint: params => {
+        return API.POST('/complaint/update', params);
+    },
+    //查询投诉信息
     viewComplaint: params => {
-        return API.POST('/complaint/findComplaint', params);
+        return API.POST('/complaint/find', params);
     },
 }

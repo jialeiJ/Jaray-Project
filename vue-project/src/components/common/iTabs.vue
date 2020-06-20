@@ -35,68 +35,65 @@ export default {
             var exist = false;
             for (var i = 0; i < this.tabs.length; i++) {
                 if (menu.name === this.tabs[i].name) {
-                exist = true;
-                break
-            }
-        }
-        if (exist === true) {
-            this.tabsValue = menu.name;
-            return
-        }
-        this.tabs.push({
-            title: menu.name,
-            name: menu.name,
-            content: menu.component
-        });
-        var _this = this;
-        this.tabComponent = Vue.component('tab-component', {
-            render: function (h) {
-                var comp = _this.tabs[this.index].content;
-                return h(comp)
-            },
-            props: {
-                index: {
-                    type: Number,
-                    required: true
+                    exist = true;
+                    break
                 }
             }
-        });
-        this.tabsValue = menu.name
-    },
-    addTab(params) {
-        let tempRoutes = this.$router.options.routes;
-        for (let i = 0; i < tempRoutes.length; i++) {
-            let temp = tempRoutes[i];
-            if(temp.path == params){
-                let menu = {};
-                menu.name = temp.title;
-                menu.component = temp.component;
-                this.addOneTab(menu);
+            if (exist === true) {
+                this.tabsValue = menu.name;
+                return
             }
-        }
-    },
-    removeTab(targetName) {
-        let tabs = this.tabs;
-        let activeName = this.tabsValue;
-        if (activeName === targetName) {
-            tabs.forEach((tab, index) => {
-                if (tab.name === targetName) {
-                    let nextTab = tabs[index + 1] || tabs[index - 1];
-                    if (nextTab) {
-                        activeName = nextTab.name;
+            this.tabs.push({
+                title: menu.name,
+                name: menu.name,
+                content: menu.component
+            });
+            var _this = this;
+            this.tabComponent = Vue.component('tab-component', {
+                render: function (h) {
+                    var comp = _this.tabs[this.index].content;
+                    return h(comp)
+                },
+                props: {
+                    index: {
+                        type: Number,
+                        required: true
                     }
                 }
             });
-        }
-        this.tabsValue = activeName;
-        this.tabs = tabs.filter(tab => tab.name !== targetName);
-    }
-  },
-  created: function(){
-    
-  },
-  mounted: function(){
-    let tempRoutes = this.$router.options.routes;
+            this.tabsValue = menu.name
+        },
+        addTab(params) {
+            let tempRoutes = this.$router.options.routes;
+            for (let i = 0; i < tempRoutes.length; i++) {
+                let temp = tempRoutes[i];
+                if(temp.path == params){
+                    let menu = {};
+                    menu.name = temp.title;
+                    menu.component = temp.component;
+                    this.addOneTab(menu);
+                }
+            }
+        },
+        removeTab(targetName) {
+            let tabs = this.tabs;
+            let activeName = this.tabsValue;
+            if (activeName === targetName) {
+                tabs.forEach((tab, index) => {
+                    if (tab.name === targetName) {
+                        let nextTab = tabs[index + 1] || tabs[index - 1];
+                        if (nextTab) {
+                            activeName = nextTab.name;
+                        }
+                    }
+                });
+            }
+            this.tabsValue = activeName;
+            this.tabs = tabs.filter(tab => tab.name !== targetName);
+            }
+        },
+    created: function(){
+        let tempRoutes = this.$router.options.routes;
         for (let i = 0; i < tempRoutes.length; i++) {
             let temp = tempRoutes[i];
             if(temp.name == 'introduction'){
@@ -106,6 +103,18 @@ export default {
                 this.addOneTab(menu);
             }
         }
+    },
+    mounted: function(){
+        // let tempRoutes = this.$router.options.routes;
+        // for (let i = 0; i < tempRoutes.length; i++) {
+        //     let temp = tempRoutes[i];
+        //     if(temp.name == 'introduction'){
+        //         let menu = {};
+        //         menu.name = temp.title;
+        //         menu.component = temp.component;
+        //         this.addOneTab(menu);
+        //     }
+        // }
     }
 }
 </script>

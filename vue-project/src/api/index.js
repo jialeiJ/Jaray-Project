@@ -1,16 +1,49 @@
+
 import Env from './env';
 import axios from 'axios'
 import Qs from 'qs'
 import router from '../router/index'
 import API from '../api/api_system'
+// 注意：在js文件中使用element组件 按照下面更优雅哦~~
+import {
+    Message,
+    MessageBox
+} from 'element-ui'
 
 let token = '';
-axios.defaults.withCredentials = false;
+let refreshTokenFalg = true
+axios.defaults.withCredentials = true;
 axios.defaults.headers.common['token'] = token;
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';// 配置请求头，发送一次预请求和一次正式请求两次请求
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 //添加一个请求拦截器
 axios.interceptors.request.use(function (config) {
+    // 如果有token 说明该用户已登陆
+    let accessUser = ""
+    if (accessUser = localStorage.getItem('access-user')) {
+        let sysUserToken = JSON.parse(accessUser)
+        // 若token在15分钟内过期并且用户期间操作则刷新token
+        if(refreshTokenFalg && (Date.parse(sysUserToken.expire_time) < (new Date(new Date().getTime() + 15 * 60 * 1000)) ) && (Date.parse(sysUserToken.expire_time) > new Date())){
+            //localStorage.clear() // 清除用户信息
+            // 定义请求参数
+            let params = sysUserToken
+            // 调用接口
+            API.refreshToken(params).then(function (result) {
+                if (result.code === 200) {
+                    localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
+                    localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中  
+                } else {
+                    router.push({path : '/'});
+                }
+            });
+            refreshTokenFalg = false
+        }
+    }else {
+        // 没有登陆则访问任何页面都重定向到登陆页
+        router.push({path : '/'});
+    }
+
     token = localStorage.getItem('access-token')
     if(token){
         config.headers.common['token'] = token;
@@ -23,9 +56,14 @@ axios.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 axios.interceptors.response.use(function (response) {
     if (response.data && response.data.code) {
-        if (parseInt(response.data.code) === 108 || parseInt(response.data.code) === 109 || response.data.msg === 'TOKEN失效，请重新登录' || response.data.msg === 'TOKEN不存在') {
+        if (parseInt(response.data.code) === 403) {
+            localStorage.clear()
             //未登录
-            response.data.msg = "登录信息已失效，请重新登录";
+            Message({
+                message: 'TOKEN不存在或TOKEN失效，请重新登录',
+                type: 'error',
+                duration: 5 * 1000
+            })
             router.push({path : '/'});
         }
         if (parseInt(response.data.code) === 100) {
@@ -34,10 +72,7 @@ axios.interceptors.response.use(function (response) {
     }
     return response;
 }, function (error) {
-    if (error.response.status == 403) {
-        router.push({path : '/'});
-    }
-    //console.dir(error);
+    console.dir(error);
     console.error("服务器连接失败")
     return Promise.reject(error);
 })
@@ -64,7 +99,7 @@ export const ISDEV = Env.isDev;
 export const POST = (url, params) => {
     const getTimestamp = new Date().getTime();
     let data = Qs.stringify(params)
-    let config = {headers:{'Content-Type':'application/x-www-form-urlencoded'}}
+    let config = {headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}}
     return axios.post(`${base}${url}?timer=${getTimestamp}`, data, config).then(result => result.data)
 }
 

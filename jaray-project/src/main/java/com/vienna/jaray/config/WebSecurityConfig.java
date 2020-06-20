@@ -1,5 +1,7 @@
 package com.vienna.jaray.config;
 
+import com.vienna.jaray.security.JwtAuthenticationAccessDeniedHandler;
+import com.vienna.jaray.security.JwtAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -32,31 +35,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 禁用 csrf, 由于使用的是JWT，我们这里不需要csrf
         http.cors().and().csrf().disable()
             .authorizeRequests()
-            // 跨域预检请求
-            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            // web jars
-            .antMatchers("/webjars/**").permitAll()
-            // 查看SQL监控（druid）
-            .antMatchers("/druid/**").permitAll()
-            // 首页和登录页面
-            .antMatchers("/").permitAll()
-            .antMatchers("/system/login").permitAll()
-				.antMatchers("/system/refreshToken").permitAll()
-            // swagger
-            .antMatchers("/swagger-ui.html").permitAll()
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 跨域预检请求
+            .antMatchers("/webjars/**").permitAll() // web jars
+            .antMatchers("/druid/**").permitAll() // SQL监控（druid）
+            .antMatchers("/").permitAll() // 登录页面
+            .antMatchers("/system/login").permitAll() // 登录请求
+			.antMatchers("/system/refreshToken").permitAll() // 刷新token
+			.antMatchers("/system/captcha.jpg**").permitAll() // 验证码
+            .antMatchers("/swagger-ui.html").permitAll() // swagger
             .antMatchers("/swagger-resources").permitAll()
             .antMatchers("/v2/api-docs").permitAll()
             .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
-            // 验证码
-            .antMatchers("/system/captcha.jpg**").permitAll()
-            // 服务监控
-            .antMatchers("/actuator/**").permitAll()
-            // 其他所有请求需要身份认证
-            .anyRequest().authenticated();
+            .antMatchers("/actuator/**").permitAll() // 服务监控
+            .anyRequest().authenticated()
+			// 不需要session
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 其他所有请求需要身份认证
         // 退出登录处理器
         //http.logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler());
-        // 登录认证过滤器
+		// 禁用缓存
+		http.headers().cacheControl();
+        // 登录及认证过滤器
         http.addFilterBefore(new JwtAuthenticationFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+
+		//添加自定义未授权和未登录结果返回
+		http.exceptionHandling()
+			.accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler())
+			.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
 	}
 	
 	/**
@@ -76,20 +82,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(getUserDetailsService())
 			//BCryptPasswordEncoder加密方式，无需传入盐值
 			.passwordEncoder(new BCryptPasswordEncoder());
-		
-//		auth.inMemoryAuthentication().passwordEncoder(new IPasswordEncoder())
-//            .withUser("admin").password("123456").roles("admin");
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		super.configure(web);
+		web.ignoring().antMatchers("/system/captcha.jpg**",
+				"/system/login",
+				"/system/refreshToken",
+				"/v2/api-docs",
+				"/swagger-resources/configuration/ui",
+				"/swagger-resources",
+				"/swagger-resources/configuration/security",
+				"/swagger-ui.html"
+		);
 	}
 	
 	@Bean
     @Override
     public AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
+		return super.authenticationManager();
+	}
 
 }

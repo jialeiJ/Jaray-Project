@@ -32,16 +32,15 @@ export default {
     },
     methods: {
         addTab: function(params){
-            console.log(params)
             this.$refs['iTabs'].addTab(params)
         },
     },
-  created: function(){
-    
-  },
-  mounted: function(){
-    
-  }
+    created: function(){
+        
+    },
+    mounted: function(){
+        
+    }
 }
 </script>
 

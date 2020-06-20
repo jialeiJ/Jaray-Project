@@ -6,6 +6,8 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.SysUserEntity;
 import com.vienna.jaray.entity.SysUserTokenEntity;
 import com.vienna.jaray.security.JwtAuthenticatioToken;
+import com.vienna.jaray.service.KaptchaService;
+import com.vienna.jaray.service.LoginService;
 import com.vienna.jaray.service.SysMenuService;
 import com.vienna.jaray.service.SysUserService;
 import com.vienna.jaray.utils.JwtTokenUtil;
@@ -30,50 +32,20 @@ import java.util.Date;
 @RequestMapping("/system")
 public class SystemController {
     @Autowired
-    private Producer captchaProducer = null;
+    private KaptchaService kaptchaService;
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private LoginService loginService;
     @Autowired
     private SysMenuService sysMenuService;
-    @Autowired
-    private SysUserService sysUserService;
 
     @GetMapping("/captcha.jpg")
-    public void getKaptchaImage(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
-        response.setDateHeader("Expires", 0);
-        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
-        response.addHeader("Cache-Control", "post-check=0, pre-check=0");
-        response.setHeader("Pragma", "no-cache");
-        response.setContentType("image/jpeg");
-        //生成验证码
-        String capText = captchaProducer.createText();
-        session.setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
-        //向客户端写出
-        BufferedImage bi = captchaProducer.createImage(capText);
-        ServletOutputStream out = response.getOutputStream();
-        ImageIO.write(bi, "jpg", out);
-        try {
-            out.flush();
-        } finally {
-            out.close();
-        }
+    public void kaptchaImage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+        kaptchaService.kaptchaImage(request, response, session);
     }
 
     @PostMapping("/login")
-    public ResponseResult login(HttpServletRequest request, String username, String password, String captcha) {
-        log.info("{},{},{}",username, password, captcha);
-        // 系统登录认证
-        JwtAuthenticatioToken token = SecurityUtil.login(request, username, password, authenticationManager);
-
-        SysUserEntity sysUserEntity = sysUserService.findSysUser(username);
-        SysUserTokenEntity sysUserTokenEntity = new SysUserTokenEntity();
-        sysUserTokenEntity.setUser_id(sysUserEntity.getId());
-        sysUserTokenEntity.setToken(token.getToken());
-        sysUserTokenEntity.setCreate_by(username);
-        sysUserTokenEntity.setCreate_time(new Date());
-
-        return ResponseResult.success().add("sysUserEntity",sysUserEntity).add("token",token.getToken());
+    public ResponseResult login(HttpServletRequest request, String username, String password, String captcha, HttpSession session) {
+        return loginService.login(request, username, password, captcha, session);
     }
 
     @PostMapping("/findLeftNav")
@@ -83,10 +55,8 @@ public class SystemController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseResult validateAndrefreshToken(String token){
-        String refreshToken = JwtTokenUtil.validateAndrefreshToken(token);
-        log.info(refreshToken);
-        return ResponseResult.success().add("refreshToken", refreshToken);
+    public ResponseResult refreshToken(HttpServletRequest request, SysUserTokenEntity sysUserToken){
+        return loginService.reLogin(request, sysUserToken);
     }
 
 }

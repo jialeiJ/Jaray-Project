@@ -3,15 +3,15 @@
         <el-form ref="loginForm" :model="loginForm" :rules="rules" label-width="80px" class="login-box">
             <h2 class="login-title">系统登录</h2>
             <el-form-item label="" prop="username">
-                <el-input type="text" placeholder="请输入账号" v-model="loginForm.username"/>
+                <el-input type="text" placeholder="账号" v-model="loginForm.username"/>
             </el-form-item>
             <el-form-item label="" prop="password">
-                <el-input type="password" placeholder="请输入密码" v-model="loginForm.password"/>
+                <el-input type="password" placeholder="密码" v-model="loginForm.password"/>
             </el-form-item>
             <el-form-item label="" prop="captcha">
                 <el-row :gutter="20">
                     <el-col :span="14">
-                        <el-input id="captcha" type="text" placeholder="请输入验证码" v-model="loginForm.captcha"/>
+                        <el-input id="captcha" type="text" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
                     </el-col>
                     <el-col :span="10">
                         <el-image id="imagecode" :src="checkCodeSrc" v-on:click="reloadCode()"></el-image>
@@ -74,11 +74,13 @@ export default {
                     // 调用接口
                     API.login(params).then(function (result) {
                         if (result.code === 200) {
+                            console.log(result)
                             // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-                            localStorage.setItem('access-user', JSON.stringify(result.map.sysUserEntity)); // 将用户信息存到localStorage中
-                            localStorage.setItem('access-token', result.map.token); // 将token信息存到localStorage中
+                            localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
+                            localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中
                             that.$router.push({path: "main"});
                         } else {
+                            console.log(result)
                             that.loading = false;
                             that.$message.error(result.msg);// elementUI消息提示
                         }

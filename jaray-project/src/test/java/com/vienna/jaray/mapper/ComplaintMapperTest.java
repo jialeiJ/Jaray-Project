@@ -16,8 +16,7 @@ public class ComplaintMapperTest {
 	
 	@Test
 	public void testFindComplaintList() throws Exception {
-		complaintMapper.findComplaintList();
-        log.info("{}",complaintMapper.findComplaintList().size());
+        log.info("{}",complaintMapper.findAll().size());
     }
 
 }

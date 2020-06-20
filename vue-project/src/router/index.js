@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Login from '@/components/common/Login'
 import Introduction from '@/components/common/Introduction'
 import MainPage from '@/components/common/MainPage'
-import complaintList from '@/components/complaintList'
+import ComplaintList from '@/components/complaintList'
+import SysUserList from '@/components/sysUserList'
 
 Vue.use(Router)
 
@@ -31,7 +32,13 @@ export default new Router({
             path: '/complaint',
             name: 'complaintList',
             title: '投诉',
-            component: complaintList
+            component: ComplaintList
+        },
+        {
+            path: '/sys/user',
+            name: 'sysUserList',
+            title: '用户',
+            component: SysUserList
         }
     ]
 })

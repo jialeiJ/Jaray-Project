@@ -6,10 +6,9 @@ import java.util.Date;
 
 @Data
 public class SysUserEntity {
-    private int id;
+    private String id;
     private String name;
     private String password;
-    private String salt;
     private String email;
     private String mobile;
     private int status;

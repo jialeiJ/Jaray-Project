@@ -22,6 +22,7 @@ public class SecurityUtil {
      */
     public static JwtAuthenticatioToken login(HttpServletRequest request, String username, String password, AuthenticationManager authenticationManager) {
         JwtAuthenticatioToken token = new JwtAuthenticatioToken(username, password);
+
         token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         // 执行登录认证过程
         Authentication authentication = authenticationManager.authenticate(token);
@@ -29,6 +30,7 @@ public class SecurityUtil {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         // 生成令牌并返回给客户端
         token.setToken(JwtTokenUtil.generateToken(authentication));
+		token.setExpireTime(JwtTokenUtil.tokenExpireTime(token.getToken()));
         return token;
     }
     

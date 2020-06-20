@@ -15,35 +15,39 @@
     </sql>
 	
 	<!-- 查询投诉列表 -->
-    <select id="findComplaintList" resultMap="CommonResultMap">
+    <select id="findAll" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
        from complaint c 
     </select>
-    
-    <select id="findComplaintByCid" resultMap="CommonResultMap">
+
+    <!-- 查询投诉 -->
+    <select id="findByCid" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
        from complaint c 
        where c.cid = #{cid}
     </select>
-    
-    <insert id="addComplaint">
+
+    <!-- 添加投诉 -->
+    <insert id="add">
     	insert into complaint (`cid`, `title`, `desc`, `cFileIds`) 
     	values (findNextFormatSeqVal('C','s_complaint_id'), #{entity.title}, #{entity.desc}, #{entity.cFileIds})
     </insert>
 
-    <delete id="delComplaint">
+    <!-- 删除投诉 -->
+    <delete id="deleteByCids">
         delete from complaint c where c.cid in
         <foreach item="cid" collection="cids" open="(" separator="," close=")">
             #{cid}
         </foreach>
     </delete>
 
-    <update id="updateComplaint">
+    <!-- 更新投诉 -->
+    <update id="updateByCid">
         update complaint
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.title != null">title = #{entity.title},</if>
+            <if test="entity.title != null">`title` = #{entity.title},</if>
             <if test="entity.desc != null">`desc` = #{entity.desc},</if>
         </trim>
         where cid = #{entity.cid}

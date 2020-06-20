@@ -15,10 +15,13 @@ import com.vienna.jaray.utils.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import com.vienna.jaray.utils.SecurityUtil;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
@@ -33,5 +36,17 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         // 获取token, 并检查登录状态
         SecurityUtil.checkAuthentication(request);
         chain.doFilter(request, response);
+    }
+
+    @Override
+    protected void onSuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException {
+	    log.info("认证成功：{}",authResult.getDetails());
+        super.onSuccessfulAuthentication(request, response, authResult);
+    }
+
+    @Override
+    protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
+        log.info("认证失败：{}",failed);
+        super.onUnsuccessfulAuthentication(request, response, failed);
     }
 }

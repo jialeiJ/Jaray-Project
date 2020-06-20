@@ -12,14 +12,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ComplaintMapper {
 	
-	public List<ComplaintEntity> findComplaintList();
+	public List<ComplaintEntity> findAll();
 	
-	public int addComplaint(@Param("entity")ComplaintEntity complaintEntity);
+	public int add(@Param("entity")ComplaintEntity complaintEntity);
 	
-	public ComplaintEntity findComplaintByCid(@Param("cid")String cid);
+	public ComplaintEntity findByCid(@Param("cid")String cid);
 
-	public int delComplaint(@Param("cids") String[] cids);
+	public int deleteByCids(@Param("cids") String[] cids);
 
-	public int updateComplaint(@Param("entity")ComplaintEntity complaintEntity);
+	public int updateByCid(@Param("entity")ComplaintEntity complaintEntity);
 	
 }

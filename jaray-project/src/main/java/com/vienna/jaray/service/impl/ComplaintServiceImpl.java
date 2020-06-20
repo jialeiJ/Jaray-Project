@@ -25,38 +25,50 @@ public class ComplaintServiceImpl implements ComplaintService {
 	 *	查询投诉信息列表
 	 */
 	@Override
-	public ResponseResult findComplaintList(CommonParamsModel commonParamsModel) {
+	public ResponseResult findAll(CommonParamsModel commonParamsModel) {
 		
 		//设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-		List<ComplaintEntity> complaintEntities = complaintMapper.findComplaintList();
+		List<ComplaintEntity> complaintEntities = complaintMapper.findAll();
 		//取记录总条数
         PageInfo<?> pageInfo = new PageInfo<>(complaintEntities);
-		return ResponseResult.success().add("complaintEntities", pageInfo);
+		return ResponseResult.success().add("complaints", pageInfo);
 	}
 
 	@Override
 	@Transactional(timeout = 30)
-	public ResponseResult addOrUpdateComplaint(ComplaintEntity complaintEntity) {
-		ComplaintEntity findResult = complaintMapper.findComplaintByCid(complaintEntity.getCid());
-		if(findResult != null){
-			complaintMapper.updateComplaint(complaintEntity);
-		}else {
-			complaintMapper.addComplaint(complaintEntity);
+	public ResponseResult add(ComplaintEntity complaintEntity) {
+		ResponseResult responseResult = ResponseResult.fail();
+		ComplaintEntity findResult = complaintMapper.findByCid(complaintEntity.getCid());
+		int result = complaintMapper.add(complaintEntity);
+		if(result > 0){
+			responseResult = ResponseResult.success().add("complaint", complaintEntity);
 		}
-		return ResponseResult.success();
+		return responseResult;
+	}
+
+	@Override
+	@Transactional(timeout = 30)
+	public ResponseResult updateByCid(ComplaintEntity complaintEntity) {
+		ResponseResult responseResult = ResponseResult.fail();
+		ComplaintEntity findResult = complaintMapper.findByCid(complaintEntity.getCid());
+		int result = complaintMapper.updateByCid(complaintEntity);
+		if(result > 0){
+			responseResult = ResponseResult.success().add("complaint", complaintEntity);
+		}
+		return responseResult;
 	}
 
 	@Override
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
-	public ResponseResult findComplaintByCid(String cid) {
-        ComplaintEntity complaintEntitiy = complaintMapper.findComplaintByCid(cid);
-		return ResponseResult.success().add("complaintEntity", complaintEntitiy);
+	public ResponseResult findByCid(String cid) {
+        ComplaintEntity complaintEntitiy = complaintMapper.findByCid(cid);
+		return ResponseResult.success().add("complaint", complaintEntitiy);
 	}
 
 	@Override
-	public ResponseResult delComplaint(String[] cids) {
-		int result = complaintMapper.delComplaint(cids);
+	public ResponseResult deleteByCids(String[] cids) {
+		int result = complaintMapper.deleteByCids(cids);
 		return ResponseResult.success().add("result", result);
 	}
 

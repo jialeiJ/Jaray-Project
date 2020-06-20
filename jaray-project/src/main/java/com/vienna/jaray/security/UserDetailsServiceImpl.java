@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
-	private SysUserService sysUserService;
+	private SysUserMapper sysUserMapper;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (StringUtils.isEmpty(username)) {
 			return null;
 		}else if("admin".equalsIgnoreCase(username) ){
-			SysUserEntity sysUserEntity = sysUserService.findSysUser(username);
+			SysUserEntity sysUserEntity = sysUserMapper.findByName(username);
 			//这里使用自定义权限列表的方式初始化权限
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority> ();
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
