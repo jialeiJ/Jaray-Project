@@ -25,7 +25,7 @@ axios.interceptors.request.use(function (config) {
         let sysUserToken = JSON.parse(accessUser)
         // 若token在15分钟内过期并且用户期间操作则刷新token
         if(refreshTokenFalg && (Date.parse(sysUserToken.expire_time) < (new Date(new Date().getTime() + 15 * 60 * 1000)) ) && (Date.parse(sysUserToken.expire_time) > new Date())){
-            //localStorage.clear() // 清除用户信息
+            localStorage.clear() // 清除用户信息
             // 定义请求参数
             let params = sysUserToken
             // 调用接口
