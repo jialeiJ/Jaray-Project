@@ -1,16 +1,12 @@
 package com.vienna.jaray.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class SysUserTokenEntity {
-    private int id;
+public class SysUserRoleEntity {
+    private String id;
     private String user_id;
-    private String token;
-    private String expire_time;
+    private String role_id;
     private String create_by;
     private String create_time;
     private String last_update_by;

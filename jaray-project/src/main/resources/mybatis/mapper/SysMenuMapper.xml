@@ -4,7 +4,7 @@
 <mapper namespace="com.vienna.jaray.mapper.SysMenuMapper">
 	
 	<sql id="Base_Column_List" >
-        m.id,m.name,m.parent_id,m.url,m.perms,m.type,m.icon,m.order_num,m.create_by,
+        m.id,m.name,m.parent_id,m.url,m.type,m.icon,m.order_num,m.create_by,
 		m.create_time,m.last_update_by,m.last_update_time,m.del_flag
     </sql>
 	
@@ -21,5 +21,49 @@
        	   <include refid="Base_Column_List" />
        from sys_menu m where m.parent_id = #{parentId} and m.type != 2
     </select>
-    
+
+    <!-- 查询菜单列表 -->
+    <select id="findAll" resultType="sysMenuEntity">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m
+    </select>
+
+    <insert id="add">
+        insert into sys_menu (`id`, `name`, `parent_id`, `url`, `type`, `icon`, `order_num`, `create_by`, `create_time`, `last_update_by`, `last_update_time`, `del_flag`)
+    	values (findNextFormatSeqVal('M','s_menu_id'), #{entity.name}, #{entity.parent_id}, #{entity.url}, #{entity.type}, #{entity.icon}, #{entity.order_num},
+    	#{entity.create_by}, #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time}, #{entity.del_flag})
+    </insert>
+
+    <delete id="deleteByIds">
+        delete from sys_menu m where m.id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateById">
+        update sys_menu
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.name != null">`name` = #{entity.name},</if>
+            <if test="entity.parent_id != null">`parent_id` = #{entity.parent_id},</if>
+            <if test="entity.url != null">`url` = #{entity.url},</if>
+            <if test="entity.type != null">`type` = #{entity.type},</if>
+            <if test="entity.icon != null">`icon` = #{entity.icon},</if>
+            <if test="entity.order_num != null">`order_num` = #{entity.order_num},</if>
+            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
+            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
+            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
+            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+        </trim>
+        where `id` = #{entity.id}
+    </update>
+
+    <select id="findById" resultType="sysMenuEntity">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where m.id = #{id}
+    </select>
+
 </mapper>

@@ -48,7 +48,7 @@ public class LoginServiceImpl implements LoginService {
         sysUserTokenEntity.setToken(token.getToken());
         sysUserTokenEntity.setExpire_time(token.getExpireTime());
         sysUserTokenEntity.setCreate_by(sysUserEntity.getCreate_by());
-        sysUserTokenEntity.setCreate_time(DateTimeUtil.parseDateToString(sysUserEntity.getCreate_time(), DateTimeUtil.DATE_FORMAT_FULL));
+        sysUserTokenEntity.setCreate_time(sysUserEntity.getCreate_time());
 
         return ResponseResult.success().add("sysUserToken",sysUserTokenEntity);
     }

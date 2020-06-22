@@ -32,7 +32,7 @@ export default {
             // 调用接口
             API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {
-                that.leftMenus =result.map.menuEntities
+                that.leftMenus =result.map.menuEntitys
                 } else {
                 that.loading = false;
                 that.$message.error(result.msg);// elementUI消息提示
@@ -47,25 +47,8 @@ export default {
         },
         addTab: function(key, keyPath){
             let that = this
-            that.findLeftMenu(that.leftMenus, keyPath)
             //通过 emit 触发
-            this.$emit('addTab',that.url)
-        },
-        findLeftMenu: function(leftMenus=[], keyPath=[]){
-            let that = this
-            for(var i=0;i<keyPath.length;i++){
-                let tempLeftMenus = leftMenus.filter(function(data){
-                    return data.id==keyPath[i]?data.childMenus:null;
-                });
-                for(var j=0;j<tempLeftMenus.length;j++){
-                    if(tempLeftMenus[j] != null && tempLeftMenus[j].childMenus.length > 0){
-                        keyPath.splice(0,1)
-                        that.findLeftMenu(tempLeftMenus[j].childMenus, keyPath);
-                    }else if(tempLeftMenus[j].childMenus.length == 0){
-                        that.url = tempLeftMenus[j].url
-                    }
-                }
-            }
+            this.$emit('addTab',key)
         },
         ...mapActions( // 语法糖
             ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed'),提交这个方法

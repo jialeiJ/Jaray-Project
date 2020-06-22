@@ -55,4 +55,39 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
     1、安装 element-resize-detector 
         npm install element-resize-detector
 
-三、安装vue-fragment解决菜单折叠文字不隐藏问题
+三、解决菜单折叠文字不隐藏问题
+    1、安装vue-fragment
+        cnpm install vue-fragment --save
+    2、使用
+        <fragment></fragment>标签包裹即可
+
+
+四、格式化时间
+    1、安装moment
+        npm install moment --save
+    2、配置
+        第一种
+
+            // 引入JavaScript 日期处理类库（格式化）
+            import moment from "moment";
+            // moment.locale('zh-cn') // 汉化
+            
+            /**
+            * 全局挂载（适用于script标签中的js代码格式化时间）
+            * 使用方式：this.$moment(时间).format('时间格式')
+            */
+            Vue.prototype.$moment = moment;
+        第二种
+
+            /**
+            * 注册为全局过滤器（适用于template标签中的html代码 => 插值表达式和v-bind属性绑定）
+            * 使用方式：<span>{{ 时间 | formatDate('时间格式') }}</span>
+            * @parms { String } formatStr  时间格式："Y-M-D h:m:s"
+            * @parms { any } data 时间：可以是时间戳，也可以是其他形式的时间，比如2019/8/14
+            * 时间戳要求是毫秒值，如果是秒值，需要在过滤前 * 1000变为毫秒值
+            *  <span> {{ 1111111111 * 1000 | formatDate('Y-M-D h:m:s') }} </span> 
+            * 'hh:mm:ss'是十二小时制时间，'HH:mm:ss'是二十四小时制时间
+            */
+            Vue.filter('formatDate', function (date: any, formatStr: string) {
+                return moment(date).format(formatStr)
+            })

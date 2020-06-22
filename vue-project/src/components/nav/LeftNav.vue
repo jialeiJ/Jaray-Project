@@ -1,14 +1,14 @@
 <template>
     <fragment>
         <fragment v-for="(navMenu, index) in leftMenus" :key="index">
-            <el-submenu v-if="navMenu.childMenus.length >= 1" :key="index" :data="navMenu" :index="String(navMenu.id)">
+            <el-submenu v-if="navMenu.childMenus.length >= 1" :key="index" :data="navMenu" :index="String(navMenu.url)">
                 <template slot="title">
                 <i :class="navMenu.icon"></i>
                 <span slot="title"> {{navMenu.name}}</span>
                 </template>
                 <LeftNav :leftMenus="navMenu.childMenus"></LeftNav>
             </el-submenu>
-            <el-menu-item v-else :key="index" :data="navMenu" :index="String(navMenu.id)" :route="navMenu.url">
+            <el-menu-item v-else :key="index" :data="navMenu" :index="String(navMenu.url)" :route="navMenu.url">
                 <i :class="navMenu.icon"></i>
                 <span slot="title">{{navMenu.name}}</span>
             </el-menu-item>

@@ -4,12 +4,12 @@
             <div id="table">
                 <div style="margin-bottom: 10px">
                     <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteSysUser">删除</el-button>
+                    <el-button size="mini" :loading="loading" @click="deleteComplaints">删除</el-button>
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
-                    @handleView="viewSysUser"
-                    @handleEdit="editViewSysUser"
+                    @handleView="viewComplaint"
+                    @handleEdit="editViewComplaint"
                     :tableTitle="tableTitle" 
                     :tableData="tableData">
                 </i-table>
@@ -40,7 +40,7 @@
                     </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="addDialogFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addSysUser">确 定</el-button>
+                        <el-button type="primary" @click="addComplaint">确 定</el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -79,7 +79,7 @@
                     </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="editDialogFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="editSysUser">确 定</el-button>
+                        <el-button type="primary" @click="editComplaint">确 定</el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -88,12 +88,12 @@
 </template>
 
 <script>
-import API from '../api/api_user'
+import API from '../api/api_complaint'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
 
 export default {
-    name: 'userList',
+    name: 'complaint',
     components: { iTable, iPagination },
     data () {
         return {
@@ -104,9 +104,9 @@ export default {
             editDialogFormVisible: false,
             search: '',
             tableTitle: [
-                {prop: 'id', label: 'ID', fixed: true, sort: true},
-                {prop: 'name', label: '姓名', sort: true, filters: []},
-                {prop: 'email', label: '邮箱'}
+                {prop: 'cid', label: 'ID', fixed: true, sort: true},
+                {prop: 'title', label: '标题', sort: true, filters: [{text: '投诉',value: '投诉'}], formatter: this.titleFormatter},
+                {prop: 'desc', label: '描述'}
             ],
             tableData: [],
             multipleSelection: [],
@@ -114,8 +114,7 @@ export default {
             pageNum: 1,
             pageSize: 10,
             form: {
-                name: '',
-                email: ''
+                
             }
         }
     },
@@ -132,13 +131,13 @@ export default {
                 pageSize: that.pageSize
             }
             // 调用接口
-            API.findSysUserList(params).then(function (result) {
+            API.findComplaintList(params).then(function (result) {
                 if (result.code === 200) {
-                console.log(result.map.sysUsers)
-                that.total = result.map.sysUsers.total
-                that.currentPage = result.map.sysUsers.pageNum
-                that.pageSize = result.map.sysUsers.pageSize
-                that.tableData = result.map.sysUsers.list
+                console.log(result.map.complaints)
+                that.total = result.map.complaints.total
+                that.currentPage = result.map.complaints.pageNum
+                that.pageSize = result.map.complaints.pageSize
+                that.tableData = result.map.complaints.list
 
                 that.filtersHandler(that.tableData)
                 } else {
@@ -152,12 +151,12 @@ export default {
             that.multipleSelection = data
             console.log("父组件接收的数据", that.multipleSelection)
         },
-        addSysUser: function(){
+        addComplaint: function(){
             let that = this
             // 定义请求参数
             let params = that.form
             // 调用接口
-            API.addSysUser(params).then(function (result) {
+            API.addComplaint(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -171,31 +170,39 @@ export default {
                 }
             });
         },
-        viewSysUser: function(row){
+        deleteComplaints: function(){
             let that = this
+            let cids = new Array()
+            for(var i=0;i<that.multipleSelection.length;i++){
+                cids.push(that.multipleSelection[i].cid)
+            }
             // 定义请求参数
-            let params = row
+            let params = { 
+                cids: cids.join(',')
+            }
             // 调用接口
-            API.viewSysUser(params).then(function (result) {
+            API.deleteComplaint(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(result)
-                    that.form = result.map.sysUser
-                    that.viewDialogFormVisible = true
+                    that.initTable()
+                    that.$message({
+                        message: '恭喜你，删除成功',
+                        type: 'success'
+                    });
                 } else {
                     that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
-        editViewSysUser: function(row){
+        editViewComplaint: function(row){
             let that = this
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysUser(params).then(function (result) {
+            API.viewComplaint(params).then(function (result) {
                 if (result.code === 200) {
                     console.log(result)
-                    that.form = result.map.sysUser
+                    that.form = result.map.complaint
                     that.editDialogFormVisible = true
                 } else {
                     that.loading = false;
@@ -203,12 +210,12 @@ export default {
                 }
             });
         },
-        editSysUser: function(){
+        editComplaint: function(){
             let that = this
             // 定义请求参数
             let params = that.form
             // 调用接口
-            API.updateSysUser(params).then(function (result) {
+            API.updateComplaint(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -222,24 +229,16 @@ export default {
                 }
             });
         },
-        deleteSysUser: function(){
+        viewComplaint: function(row){
             let that = this
-            let cids = new Array()
-            for(var i=0;i<that.multipleSelection.length;i++){
-                cids.push(that.multipleSelection[i].cid)
-            }
             // 定义请求参数
-            let params = { 
-                cids: cids.join(',')
-            }
+            let params = row
             // 调用接口
-            API.deleteSysUser(params).then(function (result) {
+            API.viewComplaint(params).then(function (result) {
                 if (result.code === 200) {
-                    that.initTable()
-                    that.$message({
-                        message: '恭喜你，删除成功',
-                        type: 'success'
-                    });
+                    console.log(result)
+                    that.form = result.map.complaint
+                    that.viewDialogFormVisible = true
                 } else {
                     that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示

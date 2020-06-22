@@ -1,20 +1,22 @@
 <template>
-    <div>
-        <el-tabs 
-            v-model="tabsValue" 
-            type="border-card" 
-            closable 
-            @tab-remove="removeTab"
-            style="height: 100%;">
-            <el-tab-pane v-for="(item, index) in tabs" 
-                :key="item.name" 
-                :label="item.title" 
-                :name="item.name">
-                <span slot="label"><i class="el-icon-date"></i> {{item.title}}</span>
-                <tab-component :index="index" :name="index" style="padding-top: 0px;"></tab-component>
-            </el-tab-pane>
-        </el-tabs>
-    </div>
+    <el-row>
+        <el-col :span="24">
+            <el-tabs 
+                v-model="tabsValue" 
+                type="border-card" 
+                closable 
+                @tab-remove="removeTab"
+                style="height: 100%;">
+                <el-tab-pane v-for="(item, index) in tabs" 
+                    :key="item.name" 
+                    :label="item.title" 
+                    :name="item.name">
+                    <span slot="label"><i class="el-icon-date"></i> {{item.title}}</span>
+                    <tab-component :index="index" :name="index" style="padding-top: 0px;"></tab-component>
+                </el-tab-pane>
+            </el-tabs>
+        </el-col>
+    </el-row>
 </template>
 
 <script>
@@ -105,16 +107,7 @@ export default {
         }
     },
     mounted: function(){
-        // let tempRoutes = this.$router.options.routes;
-        // for (let i = 0; i < tempRoutes.length; i++) {
-        //     let temp = tempRoutes[i];
-        //     if(temp.name == 'introduction'){
-        //         let menu = {};
-        //         menu.name = temp.title;
-        //         menu.component = temp.component;
-        //         this.addOneTab(menu);
-        //     }
-        // }
+        
     }
 }
 </script>

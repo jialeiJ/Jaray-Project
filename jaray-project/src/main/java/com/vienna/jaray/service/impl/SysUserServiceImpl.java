@@ -3,13 +3,10 @@ package com.vienna.jaray.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.ComplaintEntity;
-import com.vienna.jaray.entity.SysMenuEntity;
 import com.vienna.jaray.entity.SysUserEntity;
-import com.vienna.jaray.mapper.SysMenuMapper;
 import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.model.CommonParamsModel;
-import com.vienna.jaray.service.SysMenuService;
+import com.vienna.jaray.security.PasswordEncoderImpl;
 import com.vienna.jaray.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +43,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public ResponseResult add(SysUserEntity sysUserEntity) {
         ResponseResult responseResult = ResponseResult.fail();
+        PasswordEncoderImpl passwordEncoder = new PasswordEncoderImpl();
+        sysUserEntity.setPassword(passwordEncoder.encode("000000"));
         int result = sysUserMapper.add(sysUserEntity);
         if(result > 0){
             responseResult = ResponseResult.success().add("sysUser", sysUserEntity);

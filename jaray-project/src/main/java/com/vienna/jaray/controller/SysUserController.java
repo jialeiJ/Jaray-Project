@@ -35,7 +35,6 @@ public class SysUserController {
     @PostMapping("/add")
     public ResponseResult add(SysUserEntity sysUserEntity) {
         ResponseResult resultMsg = null;
-
         try {
             resultMsg = sysUserService.add(sysUserEntity);
         } catch (Exception e) {
