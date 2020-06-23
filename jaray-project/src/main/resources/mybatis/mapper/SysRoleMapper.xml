@@ -1,60 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vienna.jaray.mapper.SysUserRoleMapper">
+<mapper namespace="com.vienna.jaray.mapper.SysRoleMapper">
 
-    <resultMap id="CommonResultMap" type="sysUserRoleEntity">
+    <resultMap id="CommonResultMap" type="sysRoleEntity">
         <id property="id" column="id"/>
-        <result property="user_id" column="user_id"/>
-        <result property="role_id" column="role_id"/>
+        <result property="name" column="name"/>
+        <result property="remark" column="remark"/>
         <result property="create_by" column="create_by"/>
         <result property="create_time" column="create_time"/>
         <result property="last_update_by" column="last_update_by"/>
         <result property="last_update_time" column="last_update_time"/>
+        <result property="del_flag" column="del_flag"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
-		d.id,d.user_id,d.role_id,d.create_by,d.create_time,d.last_update_by,d.last_update_time
+		r.id,r.name,r.remark,r.create_by,r.create_time,r.last_update_by,r.last_update_time,r.del_flag
     </sql>
 
-    <!-- 查询用户角色列表 -->
+    <!-- 查询角色列表 -->
     <select id="findAll" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_user_role r
+        from sys_role r
     </select>
 
-    <!-- 添加用户角色 -->
+    <!-- 添加角色 -->
     <insert id="add">
-    	insert into sys_user_role (`id`, `user_id`, `role_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
-    	values (findNextFormatSeqVal('R','s_sys_user_role_id'), #{entity.user_id}, #{entity.role_id}, #{entity.create_by},
-    	 #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time})
+    	insert into sys_role (`id`, `name`, `remark`, `create_by`, `create_time`, `last_update_by`, `last_update_time`, `del_flag`)
+    	values (findNextFormatSeqVal('U','s_sys_role_id'), #{entity.name}, #{entity.remark}, #{entity.create_by},
+    	#{entity.create_time}, #{entity.create_by}, #{entity.create_time}, 0)
     </insert>
 
-    <!-- 查询用户角色 -->
-    <select id="findByUserId" resultMap="CommonResultMap">
+    <!-- 查询角色 -->
+    <select id="findById" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_user_role r where d.user_id = #{user_id}
+        from sys_role r where d.id = #{id}
     </select>
 
-    <!-- 删除用户角色 -->
+    <!-- 查询角色 -->
+    <select id="findByName" resultMap="CommonResultMap">
+       select 
+       	   <include refid="Base_Column_List" />
+       from sys_role r where d.name = #{name}
+    </select>
+
+    <!-- 删除角色 -->
     <delete id="deleteByIds">
-        delete from sys_user_role r where d.id in
+        delete from sys_role r where d.id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
-    <!-- 更新用户角色 -->
+    <!-- 更新角色 -->
     <update id="updateById">
-        update sys_user_role
+        update sys_role
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.role_id != null">`role_id` = #{entity.role_id},</if>
+            <if test="entity.name != null">`name` = #{entity.name},</if>
+            <if test="entity.remark != null">`remark` = #{entity.remark},</if>
             <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
             <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
             <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
             <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>

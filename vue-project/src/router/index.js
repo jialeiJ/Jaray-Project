@@ -6,6 +6,8 @@ import MainPage from '@/components/common/MainPage'
 import Complaint from '@/components/complaint'
 import SysUser from '@/components/sysUser'
 import SysMenu from '@/components/sysMenu'
+import SysRole from '@/components/sysRole'
+import SysDept from '@/components/sysDept'
 
 Vue.use(Router)
 
@@ -40,6 +42,18 @@ export default new Router({
             name: 'sysUser',
             title: '用户',
             component: SysUser
+        },
+        {
+            path: '/sys/dept',
+            name: 'sysDept',
+            title: '部门',
+            component: SysDept
+        },
+        {
+            path: '/sys/role',
+            name: 'sysRole',
+            title: '角色',
+            component: SysRole
         },
         {
             path: '/sys/menu',

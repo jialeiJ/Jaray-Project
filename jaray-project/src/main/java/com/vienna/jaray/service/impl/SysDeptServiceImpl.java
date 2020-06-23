@@ -3,51 +3,48 @@ package com.vienna.jaray.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUserEntity;
-import com.vienna.jaray.mapper.SysUserMapper;
+import com.vienna.jaray.entity.SysDeptEntity;
+import com.vienna.jaray.mapper.SysDeptMapper;
 import com.vienna.jaray.model.CommonParamsModel;
-import com.vienna.jaray.security.PasswordEncoderImpl;
-import com.vienna.jaray.service.SysUserService;
+import com.vienna.jaray.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SysUserServiceImpl implements SysUserService {
+public class SysDeptServiceImpl implements SysDeptService {
     @Autowired
-    private SysUserMapper sysUserMapper;
+    private SysDeptMapper sysDeptMapper;
 
     @Override
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysUserEntity> sysUserEntityList = sysUserMapper.findAll();
+        List<SysDeptEntity> sysDeptEntityList = sysDeptMapper.findAll();
         //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(sysUserEntityList);
-        return ResponseResult.success().add("sysUsers", pageInfo);
+        PageInfo<?> pageInfo = new PageInfo<>(sysDeptEntityList);
+        return ResponseResult.success().add("sysDepts", pageInfo);
     }
 
     @Override
     public ResponseResult findById(String id) {
-        SysUserEntity sysUserEntity = sysUserMapper.findById(id);
-        return ResponseResult.success().add("sysUser", sysUserEntity);
+        SysDeptEntity sysDeptEntity = sysDeptMapper.findById(id);
+        return ResponseResult.success().add("sysDept", sysDeptEntity);
     }
 
     @Override
     public ResponseResult findByName(String name) {
-        SysUserEntity sysUserEntity = sysUserMapper.findByName(name);
-        return ResponseResult.success().add("sysUser", sysUserEntity);
+        SysDeptEntity sysDeptEntity = sysDeptMapper.findByName(name);
+        return ResponseResult.success().add("sysDept", sysDeptEntity);
     }
 
     @Override
-    public ResponseResult add(SysUserEntity sysUserEntity) {
+    public ResponseResult add(SysDeptEntity sysDeptEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        PasswordEncoderImpl passwordEncoder = new PasswordEncoderImpl();
-        sysUserEntity.setPassword(passwordEncoder.encode("000000"));
-        int result = sysUserMapper.add(sysUserEntity);
+        int result = sysDeptMapper.add(sysDeptEntity);
         if(result > 0){
-            responseResult = ResponseResult.success().add("sysUser", sysUserEntity);
+            responseResult = ResponseResult.success().add("sysDept", sysDeptEntity);
         }
         return responseResult;
     }
@@ -55,7 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public ResponseResult deleteByIds(String[] ids) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysUserMapper.deleteByIds(ids);
+        int result = sysDeptMapper.deleteByIds(ids);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }
@@ -63,9 +60,9 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public ResponseResult updateById(SysUserEntity sysUserEntity) {
+    public ResponseResult updateById(SysDeptEntity sysDeptEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysUserMapper.updateById(sysUserEntity);
+        int result = sysDeptMapper.updateById(sysDeptEntity);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }

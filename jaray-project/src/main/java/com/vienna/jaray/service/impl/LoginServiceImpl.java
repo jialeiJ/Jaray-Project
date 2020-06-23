@@ -8,9 +8,6 @@ import com.vienna.jaray.entity.SysUserTokenEntity;
 import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.security.JwtAuthenticatioToken;
 import com.vienna.jaray.service.LoginService;
-import com.vienna.jaray.service.SysMenuService;
-import com.vienna.jaray.service.SysUserService;
-import com.vienna.jaray.utils.DateTimeUtil;
 import com.vienna.jaray.utils.JwtTokenUtil;
 import com.vienna.jaray.utils.SecurityUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 @Slf4j
 @Service
@@ -37,7 +33,7 @@ public class LoginServiceImpl implements LoginService {
         log.info("{},{},{},{}",username, password, captcha, sessionCaptcha);
 
         if(!sessionCaptcha.equalsIgnoreCase(captcha)){
-            return ResponseResult.fail().setCode(HttpStatus.Captcha_Error.getStatusCode()).setMsg(HttpStatus.Captcha_Error.getStatusDesc());
+            return ResponseResult.fail().setCode(HttpStatus.CAPTCHA_ERROR.getStatusCode()).setMsg(HttpStatus.CAPTCHA_ERROR.getStatusDesc());
         }
         // 系统登录认证
         JwtAuthenticatioToken token = SecurityUtil.login(request, username, password, authenticationManager);

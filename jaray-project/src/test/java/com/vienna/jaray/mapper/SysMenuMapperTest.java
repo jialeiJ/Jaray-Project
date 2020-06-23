@@ -37,7 +37,7 @@ public class SysMenuMapperTest {
      * @param pid
      * @return
      */
-    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntities,int pid) {
+    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntities,String pid) {
     	for (SysMenuEntity sysMenuEntity : nextSubSetMenuEntities) {
 			List<SysMenuEntity> nextSubSetMenu = sysMenuMapper.findNextSubSetMenu(sysMenuEntity.getId());
 			sysMenuEntity.setChildMenus(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));

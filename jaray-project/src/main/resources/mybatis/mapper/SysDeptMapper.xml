@@ -1,65 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vienna.jaray.mapper.SysRolePermMapper">
+<mapper namespace="com.vienna.jaray.mapper.SysDeptMapper">
 
-    <resultMap id="CommonResultMap" type="sysRolePermEntity">
+    <resultMap id="CommonResultMap" type="sysDeptEntity">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="perm" column="perm"/>
-        <result property="type" column="type"/>
-        <result property="icon" column="icon"/>
+        <result property="parent_id" column="parent_id"/>
+        <result property="order_num" column="order_num"/>
         <result property="create_by" column="create_by"/>
         <result property="create_time" column="create_time"/>
         <result property="last_update_by" column="last_update_by"/>
         <result property="last_update_time" column="last_update_time"/>
+        <result property="del_flag" column="del_flag"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
-		p.id,p.name,p.perm,p.type,p.icon,p.create_by,p.create_time,p.last_update_by,p.last_update_time
+		d.id,d.name,d.parent_id,d.order_num,d.create_by,d.create_time,d.last_update_by,d.last_update_time,d.del_flag
     </sql>
 
-    <!-- 查询角色权限列表 -->
+    <!-- 查询部门列表 -->
     <select id="findAll" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_role_perm p
+        from sys_dept d
     </select>
 
-    <!-- 添加角色权限角色 -->
+    <!-- 添加部门 -->
     <insert id="add">
-    	insert into sys_role_perm (`id`, `name`, `perm`, `type`, `icon`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
-    	values (findNextFormatSeqVal('R','s_sys_role_perm_id'), #{entity.name}, #{entity.perm}, #{entity.type}, #{entity.icon},, #{entity.create_by},
-    	 #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time})
+    	insert into sys_dept (`id`, `name`, `parent_id`, `order_num`, `create_by`, `create_time`, `last_update_by`, `last_update_time`, `del_flag`)
+    	values (findNextFormatSeqVal('U','s_sys_dept_id'), #{entity.name}, #{entity.parent_id}, #{entity.order_num}, #{entity.create_by},
+    	#{entity.create_time}, #{entity.create_by}, #{entity.create_time}, 0)
     </insert>
 
-    <!-- 查询角色权限 -->
+    <!-- 查询部门 -->
     <select id="findById" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_role_perm p where p.id = #{id}
+        from sys_dept d where d.id = #{id}
     </select>
 
-    <!-- 删除角色权限 -->
+    <!-- 查询部门 -->
+    <select id="findByName" resultMap="CommonResultMap">
+       select
+       	   <include refid="Base_Column_List" />
+       from sys_dept d where d.name = #{name}
+    </select>
+
+    <!-- 删除部门 -->
     <delete id="deleteByIds">
-        delete from sys_role_perm p where p.id in
+        delete from sys_dept d where d.id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
-    <!-- 更新角色权限 -->
+    <!-- 更新部门 -->
     <update id="updateById">
-        update sys_role_perm
+        update sys_dept
         <trim prefix="set" suffixOverrides=",">
             <if test="entity.name != null">`name` = #{entity.name},</if>
-            <if test="entity.perm != null">`perm` = #{entity.perm},</if>
-            <if test="entity.type != null">`type` = #{entity.type},</if>
-            <if test="entity.icon != null">`icon` = #{entity.icon},</if>
+            <if test="entity.parent_id != null">`parent_id` = #{entity.parent_id},</if>
+            <if test="entity.order_num != null">`order_num` = #{entity.order_num},</if>
             <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
             <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
             <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
             <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>

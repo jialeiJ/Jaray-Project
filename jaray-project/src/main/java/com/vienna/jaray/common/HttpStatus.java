@@ -5,7 +5,7 @@ import org.omg.CORBA.DynAnyPackage.Invalid;
 
 public enum HttpStatus {
 
-    Captcha_Error(999, "验证码错误"),
+    CAPTCHA_ERROR(999, "验证码错误"),
 
     // 1XX：信息状态码
     /**

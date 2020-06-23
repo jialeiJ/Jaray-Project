@@ -23,7 +23,7 @@ public interface SysMenuMapper {
 	 * @param id 父菜单id
 	 * @return
 	 */
-	public List<SysMenuEntity> findNextSubSetMenu(@Param("parentId") int id);
+	public List<SysMenuEntity> findNextSubSetMenu(@Param("parentId")String id);
 
 	/**
 	 * 查询菜单列表

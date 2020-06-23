@@ -47,6 +47,7 @@ export default {
         },
         addTab: function(key, keyPath){
             let that = this
+            //that.findLeftMenu(that.leftMenus, keyPath)
             //通过 emit 触发
             this.$emit('addTab',key)
         },

@@ -41,25 +41,25 @@
     <select id="findById" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_user u where u.id = #{id}
+        from sys_user u where d.id = #{id}
     </select>
 
     <!-- 查询用户 -->
     <select id="findByName" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
-       from sys_user u where u.name = #{name}
+       from sys_user u where d.name = #{name}
     </select>
 
-    <!--删除用户-->
+    <!-- 删除用户 -->
     <delete id="deleteByIds">
-        delete from sys_user u where u.id in
+        delete from sys_user u where d.id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
-    <!--更新用户-->
+    <!-- 更新用户 -->
     <update id="updateById">
         update sys_user
         <trim prefix="set" suffixOverrides=",">

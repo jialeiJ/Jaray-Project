@@ -4,12 +4,12 @@
             <div id="table">
                 <div style="margin-bottom: 10px">
                     <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteSysUser">删除</el-button>
+                    <el-button size="mini" :loading="loading" @click="deleteSysRole">删除</el-button>
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
-                    @handleView="viewSysUser"
-                    @handleEdit="editViewSysUser"
+                    @handleView="viewSysRole"
+                    @handleEdit="editViewSysRole"
                     :tableTitle="tableTitle" 
                     :tableData="tableData">
                 </i-table>
@@ -31,14 +31,8 @@
                         <el-form-item label="姓名" :label-width="formLabelWidth">
                             <el-input v-model="addForm.name" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.email" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.mobile" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.status" autocomplete="off"></el-input>
+                        <el-form-item label="备注" :label-width="formLabelWidth">
+                            <el-input v-model="addForm.remark" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
                             <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
@@ -71,7 +65,7 @@
                     </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="addDialogFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="addSysUser">确 定</el-button>
+                        <el-button type="primary" @click="addSysRole">确 定</el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -85,14 +79,8 @@
                         <el-form-item label="姓名" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.name" readonly="readonly"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.email" readonly="readonly"></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.mobile" readonly="readonly"></el-input>
-                        </el-form-item>
-                        <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.status" readonly="readonly"></el-input>
+                        <el-form-item label="备注" :label-width="formLabelWidth">
+                            <el-input v-model="viewForm.remark" readonly="readonly"></el-input>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.create_by" readonly="readonly"></el-input>
@@ -138,14 +126,8 @@
                         <el-form-item label="姓名" :label-width="formLabelWidth">
                             <el-input v-model="editForm.name" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" :label-width="formLabelWidth">
-                            <el-input v-model="editForm.email" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号" :label-width="formLabelWidth">
-                            <el-input v-model="editForm.mobile" autocomplete="off"></el-input>
-                        </el-form-item>
-                        <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="editForm.status" autocomplete="off"></el-input>
+                        <el-form-item label="备注" :label-width="formLabelWidth">
+                            <el-input v-model="editForm.remark" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
                             <el-input v-model="editForm.create_by" autocomplete="off"></el-input>
@@ -178,7 +160,7 @@
                     </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="editDialogFormVisible = false">取 消</el-button>
-                        <el-button type="primary" @click="editSysUser">确 定</el-button>
+                        <el-button type="primary" @click="editSysRole">确 定</el-button>
                     </div>
                 </el-dialog>
             </div>
@@ -187,12 +169,12 @@
 </template>
 
 <script>
-import API from '../api/api_sys_user'
+import API from '../api/api_sys_role'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
 
 export default {
-    name: 'sysUser',
+    name: 'sysRole',
     components: { iTable, iPagination },
     data () {
         return {
@@ -205,9 +187,7 @@ export default {
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
                 {prop: 'name', label: '姓名', sort: true, filters: []},
-                {prop: 'email', label: '邮箱'},
-                {prop: 'mobile', label: '手机号'},
-                {prop: 'status', label: '状态'},
+                {prop: 'remark', label: '备注'},
                 {prop: 'create_by', label: '创建人'},
                 {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
                 {prop: 'last_update_by', label: '更新人'},
@@ -258,12 +238,12 @@ export default {
                 pageSize: that.pageSize
             }
             // 调用接口
-            API.findSysUserList(params).then(function (result) {
+            API.findSysRoleList(params).then(function (result) {
                 if (result.code === 200) {
-                    that.total = result.map.sysUsers.total
-                    that.currentPage = result.map.sysUsers.pageNum
-                    that.pageSize = result.map.sysUsers.pageSize
-                    that.tableData = result.map.sysUsers.list
+                    that.total = result.map.sysRoles.total
+                    that.currentPage = result.map.sysRoles.pageNum
+                    that.pageSize = result.map.sysRoles.pageSize
+                    that.tableData = result.map.sysRoles.list
 
                     that.filtersHandler(that.tableData)
                 } else {
@@ -277,12 +257,12 @@ export default {
             that.multipleSelection = data
             console.log("父组件接收的数据", that.multipleSelection)
         },
-        addSysUser: function(){
+        addSysRole: function(){
             let that = this
             // 定义请求参数
             let params = that.addForm
             // 调用接口
-            API.addSysUser(params).then(function (result) {
+            API.addSysRole(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -297,15 +277,15 @@ export default {
                 }
             });
         },
-        viewSysUser: function(row){
+        viewSysRole: function(row){
             let that = this
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysUser(params).then(function (result) {
+            API.viewSysRole(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(typeof result.map.sysUser.create_time)
-                    that.viewForm = result.map.sysUser
+                    console.log(typeof result.map.sysRole.create_time)
+                    that.viewForm = result.map.sysRole
                     that.viewDialogFormVisible = true
                 } else {
                     that.loading = false;
@@ -313,14 +293,14 @@ export default {
                 }
             });
         },
-        editViewSysUser: function(row){
+        editViewSysRole: function(row){
             let that = this
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysUser(params).then(function (result) {
+            API.viewSysRole(params).then(function (result) {
                 if (result.code === 200) {
-                    that.editForm = result.map.sysUser
+                    that.editForm = result.map.sysRole
                     that.editDialogFormVisible = true
                 } else {
                     that.loading = false;
@@ -328,12 +308,12 @@ export default {
                 }
             });
         },
-        editSysUser: function(){
+        editSysRole: function(){
             let that = this
             // 定义请求参数
             let params = that.editForm
             // 调用接口
-            API.updateSysUser(params).then(function (result) {
+            API.updateSysRole(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -347,7 +327,7 @@ export default {
                 }
             });
         },
-        deleteSysUser: function(){
+        deleteSysRole: function(){
             let that = this
             let ids = new Array()
             for(var i=0;i<that.multipleSelection.length;i++){
@@ -358,7 +338,7 @@ export default {
                 ids: ids.join(',')
             }
             // 调用接口
-            API.deleteSysUser(params).then(function (result) {
+            API.deleteSysRole(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({

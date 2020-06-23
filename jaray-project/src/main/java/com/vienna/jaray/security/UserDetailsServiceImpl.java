@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 			grantedAuthorities.add(new SimpleGrantedAuthority("delete"));
 			
-	        //Set<String> permissions = sysUserService.findPermissions(user.getName());
+	        //Set<String> permissions = sysUserService.findPermissions(used.getName());
 			//List<GrantedAuthority> grantedAuthorities = permissions.stream().map(GrantedAuthorityImpl::new).collect(Collectors.toList());
 //			// 用户权限列表，根据用户拥有的权限标识与如 @PreAuthorize("hasAuthority('sys:menu:view')") 标注的接口对比，决定是否可以调用接口
 			

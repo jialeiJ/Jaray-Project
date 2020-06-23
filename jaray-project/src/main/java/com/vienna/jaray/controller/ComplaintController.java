@@ -11,8 +11,6 @@ import com.vienna.jaray.service.ComplaintService;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.websocket.server.PathParam;
-
 @Slf4j
 @CrossOrigin
 @RestController

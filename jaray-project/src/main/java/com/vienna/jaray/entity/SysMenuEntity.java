@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class SysMenuEntity {
-	private int id;
+	private String id;
 	private String name;
 	private int parent_id;
 	private String url;
@@ -19,7 +19,7 @@ public class SysMenuEntity {
 	private String create_time;
 	private String last_update_by;
 	private String last_update_time;
-	private int delFlag;
+	private int del_flag;
 	
 	private List<SysMenuEntity> childMenus;
 

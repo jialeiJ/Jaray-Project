@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
  * Spring Security 升级到5版本后密码支持多种加密格式
  *
  */
+@Component
 public class PasswordEncoderImpl implements PasswordEncoder {
 
 	@Override

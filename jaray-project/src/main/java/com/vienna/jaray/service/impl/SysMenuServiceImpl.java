@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.SysMenuEntity;
-import com.vienna.jaray.entity.SysUserEntity;
 import com.vienna.jaray.mapper.SysMenuMapper;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysMenuService;
@@ -81,7 +80,7 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @param pid
      * @return
      */
-    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntities,int pid) {
+    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntities,String pid) {
         for (SysMenuEntity sysMenuEntity : nextSubSetMenuEntities) {
             List<SysMenuEntity> nextSubSetMenu = sysMenuMapper.findNextSubSetMenu(sysMenuEntity.getId());
             sysMenuEntity.setChildMenus(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));

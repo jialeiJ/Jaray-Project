@@ -104,7 +104,7 @@ CREATE TABLE `oauth_client_details`  (
 -- ----------------------------
 INSERT INTO `oauth_client_details` VALUES ('client_1', '', '$2a$10$HrSIBBuk6RB64JqgRIH8feqYT3R4UbKFP4N4YYw64z50Xt9KbmB3G', 'all', 'password', NULL, NULL, 1800, NULL, NULL, NULL);
 INSERT INTO `oauth_client_details` VALUES ('client_2', '', '$2a$10$HrSIBBuk6RB64JqgRIH8feqYT3R4UbKFP4N4YYw64z50Xt9KbmB3G', 'all', 'client_credentials', NULL, NULL, 1800, NULL, NULL, NULL);
-INSERT INTO `oauth_client_details` VALUES ('client_3', NULL, '$2a$10$HrSIBBuk6RB64JqgRIH8feqYT3R4UbKFP4N4YYw64z50Xt9KbmB3G', 'all', 'authorization_code', 'https://www.baidu.com', NULL, 1800, 1800, NULL, 'true');
+INSERT INTO `oauth_client_details` VALUES ('client_3', NULL, '$2a$10$HrSIBBuk6RB64JqgRIH8feqYT3R4UbKFP4N4YYw64z50Xt9KbmB3G', 'all', 'authorization_code', 'https://www.baidd.com', NULL, 1800, 1800, NULL, 'true');
 
 -- ----------------------------
 -- Table structure for sequence

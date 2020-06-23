@@ -3,10 +3,13 @@ package com.vienna.jaray.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
+import com.vienna.jaray.entity.SysRoleEntity;
 import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.mapper.SysRoleMapper;
 import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.security.PasswordEncoderImpl;
+import com.vienna.jaray.service.SysRoleService;
 import com.vienna.jaray.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,40 +17,38 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysUserServiceImpl implements SysUserService {
+public class SysRoleServiceImpl implements SysRoleService {
     @Autowired
-    private SysUserMapper sysUserMapper;
+    private SysRoleMapper sysRoleMapper;
 
     @Override
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysUserEntity> sysUserEntityList = sysUserMapper.findAll();
+        List<SysRoleEntity> SysRoleEntityList = sysRoleMapper.findAll();
         //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(sysUserEntityList);
-        return ResponseResult.success().add("sysUsers", pageInfo);
+        PageInfo<?> pageInfo = new PageInfo<>(SysRoleEntityList);
+        return ResponseResult.success().add("sysRoles", pageInfo);
     }
 
     @Override
     public ResponseResult findById(String id) {
-        SysUserEntity sysUserEntity = sysUserMapper.findById(id);
-        return ResponseResult.success().add("sysUser", sysUserEntity);
+        SysRoleEntity sysRoleEntity = sysRoleMapper.findById(id);
+        return ResponseResult.success().add("sysRole", sysRoleEntity);
     }
 
     @Override
     public ResponseResult findByName(String name) {
-        SysUserEntity sysUserEntity = sysUserMapper.findByName(name);
-        return ResponseResult.success().add("sysUser", sysUserEntity);
+        SysRoleEntity sysRoleEntity = sysRoleMapper.findByName(name);
+        return ResponseResult.success().add("sysRole", sysRoleEntity);
     }
 
     @Override
-    public ResponseResult add(SysUserEntity sysUserEntity) {
+    public ResponseResult add(SysRoleEntity sysRoleEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        PasswordEncoderImpl passwordEncoder = new PasswordEncoderImpl();
-        sysUserEntity.setPassword(passwordEncoder.encode("000000"));
-        int result = sysUserMapper.add(sysUserEntity);
+        int result = sysRoleMapper.add(sysRoleEntity);
         if(result > 0){
-            responseResult = ResponseResult.success().add("sysUser", sysUserEntity);
+            responseResult = ResponseResult.success().add("sysRole", sysRoleEntity);
         }
         return responseResult;
     }
@@ -55,7 +56,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public ResponseResult deleteByIds(String[] ids) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysUserMapper.deleteByIds(ids);
+        int result = sysRoleMapper.deleteByIds(ids);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }
@@ -63,9 +64,9 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public ResponseResult updateById(SysUserEntity sysUserEntity) {
+    public ResponseResult updateById(SysRoleEntity sysRoleEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysUserMapper.updateById(sysUserEntity);
+        int result = sysRoleMapper.updateById(sysRoleEntity);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }
