@@ -12,6 +12,8 @@ import store from './store'
 import moment from "moment";
 // moment.locale('zh-cn') // 汉化
 
+import 'default-passive-events'
+
 import '@/assets/iconfont/iconfont.css'
 
 Vue.config.productionTip = false

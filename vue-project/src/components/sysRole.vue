@@ -284,7 +284,6 @@ export default {
             // 调用接口
             API.viewSysRole(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(typeof result.map.sysRole.create_time)
                     that.viewForm = result.map.sysRole
                     that.viewDialogFormVisible = true
                 } else {

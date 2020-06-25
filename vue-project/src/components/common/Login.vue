@@ -74,13 +74,11 @@ export default {
                     // 调用接口
                     API.login(params).then(function (result) {
                         if (result.code === 200) {
-                            console.log(result)
                             // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
                             localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
                             localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中
                             that.$router.push({path: "main"});
                         } else {
-                            console.log(result)
                             that.loading = false;
                             that.$message.error(result.msg);// elementUI消息提示
                         }

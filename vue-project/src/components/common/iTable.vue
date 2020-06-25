@@ -81,15 +81,15 @@ export default {
     },
     methods: {
         handleClick: function(row) {
-            console.log(row);
+            // console.log(row);
         },
         handleView: function(index, row){
-            console.log(index, row)
+            // console.log(index, row)
             let that = this
             that.$emit('handleView', row)
         },
         handleEdit: function(index, row){
-            console.log(index, row)
+            // console.log(index, row)
             let that = this
             that.$emit('handleEdit', row)
         },
@@ -99,7 +99,7 @@ export default {
             that.transmitParent()
         },
         handlerFilterChange: function(val){
-            console.log(val)
+            // console.log(val)
         },
         transmitParent(){
             let that = this

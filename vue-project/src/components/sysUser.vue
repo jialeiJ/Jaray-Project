@@ -304,7 +304,6 @@ export default {
             // 调用接口
             API.viewSysUser(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(typeof result.map.sysUser.create_time)
                     that.viewForm = result.map.sysUser
                     that.viewDialogFormVisible = true
                 } else {

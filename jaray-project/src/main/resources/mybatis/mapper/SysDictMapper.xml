@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vienna.jaray.mapper.SysDictMapper">
+
+    <resultMap id="CommonResultMap" type="sysDictEntity">
+        <id property="id" column="id"/>
+        <result property="value" column="value"/>
+        <result property="label" column="label"/>
+        <result property="type" column="type"/>
+        <result property="description" column="description"/>
+        <result property="sort" column="sort"/>
+        <result property="remarks" column="remarks"/>
+        <result property="create_by" column="create_by"/>
+        <result property="create_time" column="create_time"/>
+        <result property="last_update_by" column="last_update_by"/>
+        <result property="last_update_time" column="last_update_time"/>
+        <result property="del_flag" column="del_flag"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		d.id,d.value,d.label,d.type,d.description,d.sort,d.remarks,
+        d.create_by,d.create_time,d.last_update_by,d.last_update_time,d.del_flag
+    </sql>
+
+    <!-- 查询字典列表 -->
+    <select id="findAll" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict d
+    </select>
+
+    <!-- 添加字典 -->
+    <insert id="add">
+    	insert into sys_dict (`id`, `value`, `label`, `type`, `description`, `sort`, `remarks`, `create_by`, `create_time`, `del_flag`)
+    	values (findNextFormatSeqVal('U','s_sys_dict_id'), #{entity.value}, #{entity.label}, #{entity.type},
+    	 #{entity.description}, #{entity.sort}, #{entity.remarks}, #{entity.create_by}, #{entity.create_time}, 0)
+    </insert>
+
+    <!-- 查询字典 -->
+    <select id="findById" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict d where d.id = #{id}
+    </select>
+
+    <!-- 查询字典 -->
+    <select id="findByName" resultMap="CommonResultMap">
+       select 
+       	   <include refid="Base_Column_List" />
+       from sys_dict d where d.name = #{name}
+    </select>
+
+    <!-- 删除字典 -->
+    <delete id="deleteByIds">
+        delete from sys_dict d where d.id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 更新字典 -->
+    <update id="updateById">
+        update sys_dict
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.value != null">`value` = #{entity.value},</if>
+            <if test="entity.label != null">`label` = #{entity.label},</if>
+            <if test="entity.type != null">`type` = #{entity.type},</if>
+            <if test="entity.description != null">`description` = #{entity.description},</if>
+            <if test="entity.sort != null">`sort` = #{entity.sort},</if>
+            <if test="entity.remarks != null">`remarks` = #{entity.remarks},</if>
+            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
+            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
+            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
+            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+        </trim>
+        where `id` = #{entity.id}
+    </update>
+
+</mapper>

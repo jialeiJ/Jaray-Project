@@ -8,6 +8,8 @@ import SysUser from '@/components/sysUser'
 import SysMenu from '@/components/sysMenu'
 import SysRole from '@/components/sysRole'
 import SysDept from '@/components/sysDept'
+import SysDict from '@/components/sysDict'
+import SysLog from '@/components/sysLog'
 
 Vue.use(Router)
 
@@ -60,6 +62,18 @@ export default new Router({
             name: 'sysMenu',
             title: '菜单',
             component: SysMenu
+        },
+        {
+            path: '/sys/dict',
+            name: 'sysDict',
+            title: '字典',
+            component: SysDict
+        },
+        {
+            path: '/sys/log',
+            name: 'sysLog',
+            title: '日志',
+            component: SysLog
         }
     ]
 })

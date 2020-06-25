@@ -25,7 +25,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             List<SysMenuEntity> nextSubSetMenu = sysMenuMapper.findNextSubSetMenu(sysMenuEntity.getId());
             sysMenuEntity.setChildMenus(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));
         }
-        return ResponseResult.success().add("menuEntitys", menuEntityList);
+        return ResponseResult.success().add("leftMenu", menuEntityList);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         ResponseResult responseResult = ResponseResult.fail();
         int result = sysMenuMapper.add(sysMenuEntity);
         if(result > 0){
-            responseResult = ResponseResult.success().add("menuEntity", sysMenuEntity);
+            responseResult = ResponseResult.success().add("sysMenu", sysMenuEntity);
         }
         return responseResult;
     }
@@ -63,7 +63,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         ResponseResult responseResult = ResponseResult.fail();
         int result = sysMenuMapper.updateById(sysMenuEntity);
         if(result > 0){
-            responseResult = ResponseResult.success().add("menuEntity", sysMenuEntity);
+            responseResult = ResponseResult.success().add("sysMenu", sysMenuEntity);
         }
         return responseResult;
     }

@@ -133,13 +133,12 @@ export default {
             // 调用接口
             API.findComplaintList(params).then(function (result) {
                 if (result.code === 200) {
-                console.log(result.map.complaints)
-                that.total = result.map.complaints.total
-                that.currentPage = result.map.complaints.pageNum
-                that.pageSize = result.map.complaints.pageSize
-                that.tableData = result.map.complaints.list
+                    that.total = result.map.complaints.total
+                    that.currentPage = result.map.complaints.pageNum
+                    that.pageSize = result.map.complaints.pageSize
+                    that.tableData = result.map.complaints.list
 
-                that.filtersHandler(that.tableData)
+                    that.filtersHandler(that.tableData)
                 } else {
                     that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
@@ -201,7 +200,6 @@ export default {
             // 调用接口
             API.viewComplaint(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(result)
                     that.form = result.map.complaint
                     that.editDialogFormVisible = true
                 } else {
@@ -236,7 +234,6 @@ export default {
             // 调用接口
             API.viewComplaint(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(result)
                     that.form = result.map.complaint
                     that.viewDialogFormVisible = true
                 } else {

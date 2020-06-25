@@ -14,7 +14,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-		d.id,d.user_id,d.role_id,d.create_by,d.create_time,d.last_update_by,d.last_update_time
+		r.id,r.user_id,r.role_id,r.create_by,r.create_time,r.last_update_by,r.last_update_time
     </sql>
 
     <!-- 查询用户角色列表 -->
@@ -35,12 +35,12 @@
     <select id="findByUserId" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_user_role r where d.user_id = #{user_id}
+        from sys_user_role r where r.user_id = #{user_id}
     </select>
 
     <!-- 删除用户角色 -->
     <delete id="deleteByIds">
-        delete from sys_user_role r where d.id in
+        delete from sys_user_role r where r.id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>

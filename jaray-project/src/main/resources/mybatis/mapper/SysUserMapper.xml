@@ -30,7 +30,7 @@
         from sys_user u
     </select>
 
-    <!--添加用户-->
+    <!-- 添加用户 -->
     <insert id="add">
     	insert into sys_user (`id`, `name`, `password`, `email`, `mobile`, `status`, `dept_id`, `create_by`, `create_time`, `del_flag`)
     	values (findNextFormatSeqVal('U','s_sys_user_id'), #{entity.name}, #{entity.password}, #{entity.email},
@@ -41,19 +41,19 @@
     <select id="findById" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_user u where d.id = #{id}
+        from sys_user u where u.id = #{id}
     </select>
 
     <!-- 查询用户 -->
     <select id="findByName" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
-       from sys_user u where d.name = #{name}
+       from sys_user u where u.name = #{name}
     </select>
 
     <!-- 删除用户 -->
     <delete id="deleteByIds">
-        delete from sys_user u where d.id in
+        delete from sys_user u where u.id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>

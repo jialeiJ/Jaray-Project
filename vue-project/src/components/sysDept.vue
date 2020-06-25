@@ -284,7 +284,6 @@ export default {
             // 调用接口
             API.viewSysDept(params).then(function (result) {
                 if (result.code === 200) {
-                    console.log(typeof result.map.sysDept.create_time)
                     that.viewForm = result.map.sysDept
                     that.viewDialogFormVisible = true
                 } else {

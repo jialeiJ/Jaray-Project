@@ -32,24 +32,23 @@ export default {
             // 调用接口
             API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {
-                that.leftMenus =result.map.menuEntitys
+                    that.leftMenus =result.map.leftMenu
                 } else {
-                that.loading = false;
-                that.$message.error(result.msg);// elementUI消息提示
+                    that.loading = false;
+                    that.$message.error(result.msg);// elementUI消息提示
                 }
             })
         },
         handleOpen: function(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
         },
         handleClose: function(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
         },
         addTab: function(key, keyPath){
             let that = this
-            //that.findLeftMenu(that.leftMenus, keyPath)
             //通过 emit 触发
-            this.$emit('addTab',key)
+            this.$emit('addTab', key)
         },
         ...mapActions( // 语法糖
             ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed'),提交这个方法

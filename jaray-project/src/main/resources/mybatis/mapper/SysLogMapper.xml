@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vienna.jaray.mapper.SysLogMapper">
+
+    <resultMap id="CommonResultMap" type="sysLogEntity">
+        <id property="id" column="id"/>
+        <result property="user_name" column="user_name"/>
+        <result property="operation" column="operation"/>
+        <result property="method" column="method"/>
+        <result property="params" column="params"/>
+        <result property="time" column="time"/>
+        <result property="ip" column="ip"/>
+        <result property="create_by" column="create_by"/>
+        <result property="create_time" column="create_time"/>
+        <result property="last_update_by" column="last_update_by"/>
+        <result property="last_update_time" column="last_update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		l.id,l.user_name,l.operation,l.method,l.params,l.time,l.ip,
+        l.create_by,l.create_time,l.last_update_by,l.last_update_time
+    </sql>
+
+    <!-- 查询字典列表 -->
+    <select id="findAll" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_log l
+    </select>
+
+    <!-- 添加字典 -->
+    <insert id="add">
+    	insert into sys_dict (`id`, `user_name`, `operation`, `method`, `params`, `time`, `ip`, `create_by`, `create_time`)
+    	values (findNextFormatSeqVal('U','s_sys_log_id'), #{entity.user_name}, #{entity.operation}, #{entity.method},
+    	 #{entity.params}, #{entity.time}, #{entity.ip}, #{entity.create_by}, #{entity.create_time})
+    </insert>
+
+    <!-- 查询字典 -->
+    <select id="findById" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_log l where l.id = #{id}
+    </select>
+
+    <!-- 查询字典 -->
+    <select id="findByName" resultMap="CommonResultMap">
+       select 
+       	   <include refid="Base_Column_List" />
+       from sys_log l where l.user_name = #{user_name}
+    </select>
+
+    <!-- 删除字典 -->
+    <delete id="deleteByIds">
+        delete from sys_log l where l.id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 更新字典 -->
+    <update id="updateById">
+        update sys_log
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.user_name != null">`user_name` = #{entity.user_name},</if>
+            <if test="entity.operation != null">`operation` = #{entity.operation},</if>
+            <if test="entity.method != null">`method` = #{entity.method},</if>
+            <if test="entity.params != null">`params` = #{entity.params},</if>
+            <if test="entity.time != null">`time` = #{entity.time},</if>
+            <if test="entity.ip != null">`ip` = #{entity.ip},</if>
+            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
+            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
+            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
+            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+        </trim>
+        where `id` = #{entity.id}
+    </update>
+
+</mapper>

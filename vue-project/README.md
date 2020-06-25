@@ -91,3 +91,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
             Vue.filter('formatDate', function (date: any, formatStr: string) {
                 return moment(date).format(formatStr)
             })
+
+五、浏览器控制台警告
+    1、安装default-passive-events
+        npm install default-passive-events --save
