@@ -14,13 +14,13 @@
                         <el-input id="captcha" type="text" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
                     </el-col>
                     <el-col :span="10">
-                        <el-image id="imagecode" :src="checkCodeSrc" v-on:click="reloadCode()"></el-image>
+                        <el-image id="imagecode" :src="checkCodeSrc" @click="reloadCode()"></el-image>
                     </el-col>
                 </el-row>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" v-on:click="resetForm('loginForm')">重置</el-button>
-                <el-button type="primary" v-on:click="submitForm('loginForm')">登录</el-button>
+                <el-button type="primary" @click="resetForm('loginForm')">重置</el-button>
+                <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -75,8 +75,10 @@ export default {
                     API.login(params).then(function (result) {
                         if (result.code === 200) {
                             // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-                            localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
-                            localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中
+                            sessionStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到sessionStorage中
+                            sessionStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到sessionStorage中
+                            //localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
+                            //localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中
                             that.$router.push({path: "main"});
                         } else {
                             that.loading = false;
@@ -91,13 +93,22 @@ export default {
         resetForm: function(formName){
             this.$refs[formName].resetFields();
         },
+        keyupEnter: function() {
+            var that = this;
+            document.onkeydown = function(e) {
+                var key = window.event.keyCode;
+                if (key == 13) {
+                    that.submitForm('loginForm');
+                }
+            }
+        },
     },
-  created: function(){
-    
-  },
-  mounted: function(){
-    
-  }
+    created: function() {
+        this.keyupEnter()
+    },
+    mounted: function() {
+        
+    }
 }
 </script>
 

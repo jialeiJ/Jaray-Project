@@ -2,6 +2,7 @@ package com.vienna.jaray.mapper;
 
 import java.util.List;
 
+import com.vienna.jaray.model.TreeModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

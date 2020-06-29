@@ -4,7 +4,7 @@
 <mapper namespace="com.vienna.jaray.mapper.SysMenuMapper">
 	
 	<sql id="Base_Column_List" >
-        m.id,m.name,m.parent_id,m.url,m.type,m.icon,m.order_num,m.create_by,
+        m.id,m.name,m.name as label,m.parent_id,m.url,m.type,m.icon,m.order_num,m.create_by,
 		m.create_time,m.last_update_by,m.last_update_time,m.del_flag
     </sql>
 	

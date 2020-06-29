@@ -41,6 +41,7 @@ public class LoginServiceImpl implements LoginService {
         SysUserEntity sysUserEntity = sysUserMapper.findByName(username);
         SysUserTokenEntity sysUserTokenEntity = new SysUserTokenEntity();
         sysUserTokenEntity.setUser_id(sysUserEntity.getId());
+        sysUserTokenEntity.setName(sysUserEntity.getName());
         sysUserTokenEntity.setToken(token.getToken());
         sysUserTokenEntity.setExpire_time(token.getExpireTime());
         sysUserTokenEntity.setCreate_by(sysUserEntity.getCreate_by());

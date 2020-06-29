@@ -20,19 +20,23 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 //添加一个请求拦截器
 axios.interceptors.request.use(function (config) {
     // 如果有token 说明该用户已登陆
-    let accessUser = ""
-    if (accessUser = localStorage.getItem('access-user')) {
+    // let accessUser = localStorage.getItem('access-user')
+    let accessUser = sessionStorage.getItem('access-user')
+    if (accessUser) {
         let sysUserToken = JSON.parse(accessUser)
         // 若token在15分钟内过期并且用户期间操作则刷新token
         if(refreshTokenFalg && (Date.parse(sysUserToken.expire_time) < (new Date(new Date().getTime() + 15 * 60 * 1000)) ) && (Date.parse(sysUserToken.expire_time) > new Date())){
-            localStorage.clear() // 清除用户信息
+            //localStorage.clear() // 清除用户信息
+            sessionStorage.clear()
             // 定义请求参数
             let params = sysUserToken
             // 调用接口
             API.refreshToken(params).then(function (result) {
                 if (result.code === 200) {
-                    localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
-                    localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中  
+                    sessionStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到sessionStorage中
+                    sessionStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到sessionStorage中  
+                    // localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
+                    // localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中  
                 } else {
                     router.push({path : '/'});
                 }
@@ -44,7 +48,8 @@ axios.interceptors.request.use(function (config) {
         router.push({path : '/'});
     }
 
-    token = localStorage.getItem('access-token')
+    // token = localStorage.getItem('access-token')
+    token = sessionStorage.getItem('access-token')
     if(token){
         config.headers.common['token'] = token;
     }
@@ -57,7 +62,8 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     if (response.data && response.data.code) {
         if (parseInt(response.data.code) === 403) {
-            localStorage.clear()
+            // localStorage.clear()
+            sessionStorage.clear()
             //未登录
             Message({
                 message: 'TOKEN不存在或TOKEN失效，请重新登录',
@@ -84,7 +90,8 @@ function getrefreshToken(expiredToken) {
     // 调用接口
     API.refreshToken(params).then(function (result) {
         if (result.code === 200 && result.map.refreshToken) {
-            localStorage.setItem('access-token', result.map.refreshToken)
+            // localStorage.setItem('access-token', result.map.refreshToken)
+            sessionStorage.setItem('access-token', result.map.refreshToken)
         }
     });
 }

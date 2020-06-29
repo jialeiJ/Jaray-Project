@@ -9,6 +9,7 @@ import java.util.Date;
 public class SysUserTokenEntity {
     private int id;
     private String user_id;
+    private String name;
     private String token;
     private String expire_time;
     private String create_by;

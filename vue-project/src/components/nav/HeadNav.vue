@@ -28,6 +28,28 @@
         </el-submenu>
         <el-menu-item index="2">消息中心</el-menu-item>
         <el-menu-item index="3"><a href="#" target="_blank">订单管理</a></el-menu-item>
+
+        <el-submenu index="user" style="float: right;">
+            <template slot="title">用户：{{userInfo.name}}</template>
+            <el-menu-item index="user-1">选项1</el-menu-item>
+            <el-menu-item index="user-2">修改密码</el-menu-item>
+            <el-menu-item index="user-3" @click="signOut">退出系统</el-menu-item>
+        </el-submenu>
+        <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+                点我查看<i class="el-icon-caret-bottom el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item class="clearfix">
+                评论
+                <el-badge class="mark" :value="12" />
+                </el-dropdown-item>
+                <el-dropdown-item class="clearfix">
+                回复
+                <el-badge class="mark" :value="3" />
+                </el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
     </el-menu>
 </template>
 
@@ -38,7 +60,9 @@ export default {
     name: 'HeadNav',
     data () {
         return {
-      
+            userInfo: {
+                name: ''
+            }
         }
     },
     methods: {
@@ -61,7 +85,20 @@ export default {
         //折叠导航栏
         changeCollapse: function() {
             this.collapsed = !this.collapsed
+        },
+        setUserInfo: function() {
+            let that = this
+            let accessUser = sessionStorage.getItem('access-user')
+            that.userInfo = JSON.parse(accessUser)
+        },
+        signOut: function() {
+            let that = this
+            sessionStorage.clear()
+            that.$router.push({path: "/"});
         }
+    },
+    mounted: function() {
+        this.setUserInfo();
     },
     computed: {
         ...mapGetters(['collapsed']),// 动态计算属性，相当于this.$store.getters.collapsed

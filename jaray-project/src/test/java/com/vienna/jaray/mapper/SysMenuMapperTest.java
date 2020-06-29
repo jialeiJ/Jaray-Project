@@ -26,7 +26,7 @@ public class SysMenuMapperTest {
 		
 		for (SysMenuEntity sysMenuEntity : menuEntities) {
 			List<SysMenuEntity> nextSubSetMenu = sysMenuMapper.findNextSubSetMenu(sysMenuEntity.getId());
-			sysMenuEntity.setChildMenus(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));
+			sysMenuEntity.setChildren(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));
 		}
 		log.info("{}", new Gson().toJson(menuEntities));
     }
@@ -40,7 +40,7 @@ public class SysMenuMapperTest {
     private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntities,String pid) {
     	for (SysMenuEntity sysMenuEntity : nextSubSetMenuEntities) {
 			List<SysMenuEntity> nextSubSetMenu = sysMenuMapper.findNextSubSetMenu(sysMenuEntity.getId());
-			sysMenuEntity.setChildMenus(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));
+			sysMenuEntity.setChildren(getMenuTree(nextSubSetMenu, sysMenuEntity.getId()));
 		}
         return nextSubSetMenuEntities;
     }

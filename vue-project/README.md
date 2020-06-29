@@ -25,14 +25,14 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
     1、vue init webpack 项目名称
     2、cd 项目目录下
     3、npm run dev   (运行项目)
-    4、npm i element-ui –S   （安装elementui）
+    4、npm install element-ui –g   （全局安装elementui）
         在package.json可以看到elementui已经安装好了
         在main.js中引入elementui  （main.js是入口文件，所以在这里引入就行，页面就不用引入了）
         import ElementUI from 'element-ui'
         import 'element-ui/lib/theme-chalk/index.css'
 
         Vue.use(ElementUI)
-    5、npm install axios      （前后端交互，要安装axios）
+    5、npm install axios -g                 （前后端交互，要全局安装axios）
         在main.js引入axios（安装跟引入  跟elementui一样）
         import axios from 'axios'
 
@@ -45,26 +45,27 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         })
 
     6、使用lang="scss"
-        npm install sass-loader --save
-        npm install sass-loader@7.3.1 --save-dev
-        npm install node-sass --save
-        npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+        npm install node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+        npm install sass-loader --g
+        npm install sass-loader@7.3.1 --g -dev
+        npm install node-sass --g
+        
     
 
 二、监听某个div宽度的变化
     1、安装 element-resize-detector 
-        npm install element-resize-detector
+        npm install element-resize-detector -g
 
 三、解决菜单折叠文字不隐藏问题
     1、安装vue-fragment
-        cnpm install vue-fragment --save
+        npm install vue-fragment --g
     2、使用
         <fragment></fragment>标签包裹即可
 
 
 四、格式化时间
     1、安装moment
-        npm install moment --save
+        npm install moment --g
     2、配置
         第一种
 
@@ -94,4 +95,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 五、浏览器控制台警告
     1、安装default-passive-events
-        npm install default-passive-events --save
+        npm install default-passive-events --g

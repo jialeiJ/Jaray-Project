@@ -21,6 +21,6 @@ public class SysMenuEntity {
 	private String last_update_time;
 	private int del_flag;
 	
-	private List<SysMenuEntity> childMenus;
+	private List<SysMenuEntity> children;
 
 }

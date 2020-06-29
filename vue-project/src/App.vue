@@ -29,7 +29,8 @@ export default {
         window.onunload = function(){
             differTime = new Date().getTime() - beginTime
             if(differTime <= 5){
-                localStorage.clear()
+                sessionStorage.clear()
+                //localStorage.clear()
             }
         };
         window.onbeforeunload = function(){

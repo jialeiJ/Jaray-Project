@@ -183,6 +183,8 @@
                 </el-dialog>
             </div>
         </div>
+
+        <i-tree></i-tree>
     </div>
 </template>
 
@@ -190,10 +192,11 @@
 import API from '../api/api_sys_user'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
+import iTree from '../components/common/iTree'
 
 export default {
     name: 'sysUser',
-    components: { iTable, iPagination },
+    components: { iTable, iPagination, iTree },
     data () {
         return {
             formLabelWidth: '120px',
