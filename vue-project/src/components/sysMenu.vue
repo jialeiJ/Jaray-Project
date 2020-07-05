@@ -25,20 +25,34 @@
             <div id="add">
                 <el-dialog title="新增" :visible.sync="addDialogFormVisible">
                     <el-form :model="addForm">
+                        <el-form-item label="类型" :label-width="formLabelWidth">
+                            <el-radio-group v-model="addForm.type">
+                                <el-radio :label="0">目录</el-radio>
+                                <el-radio :label="1">菜单</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
                         </el-form-item>
-                        <el-form-item label="姓名" :label-width="formLabelWidth">
+                        <el-form-item label="名称" :label-width="formLabelWidth">
                             <el-input v-model="addForm.name" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.email" autocomplete="off"></el-input>
+                        <el-form-item label="上级菜单" :label-width="formLabelWidth">
+                            <!-- <el-input v-model="addForm.parent_id" autocomplete="off"></el-input> -->
+                            <el-select v-model="addForm.parent_id" placeholder="请选择">
+                                <el-option
+                                v-for="item in menuOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
-                        <el-form-item label="手机号" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.mobile" autocomplete="off"></el-input>
+                        <el-form-item label="菜单路径" :label-width="formLabelWidth">
+                            <el-input v-model="addForm.url" :disabled="addForm.type == 0?true:false" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.status" autocomplete="off"></el-input>
+                        <el-form-item label="图标" :label-width="formLabelWidth">
+                            <el-input v-model="addForm.icon" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
                             <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
@@ -79,14 +93,17 @@
             <div id="view">
                 <el-dialog title="详情" :visible.sync="viewDialogFormVisible">
                     <el-form :model="viewForm">
+                        <el-form-item label="类型" :label-width="formLabelWidth">
+                            <el-radio-group v-model="viewForm.type" disabled>
+                                <el-radio :label="0">目录</el-radio>
+                                <el-radio :label="1">菜单</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.id" readonly="readonly"></el-input>
                         </el-form-item>
                         <el-form-item label="名称" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.name" readonly="readonly"></el-input>
-                        </el-form-item>
-                        <el-form-item label="类型" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.type" readonly="readonly"></el-input>
                         </el-form-item>
                         <el-form-item label="链接" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.url" readonly="readonly"></el-input>
@@ -193,7 +210,8 @@
 </template>
 
 <script>
-import API from '../api/api_sys_menu'
+import MENU_API from '../api/api_sys_menu'
+import DICT_API from '../api/api_sys_dict'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
 
@@ -211,7 +229,7 @@ export default {
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
                 {prop: 'name', label: '名称', sort: true, filters: []},
-                {prop: 'type', label: '类型'},
+                {prop: 'type', label: '类型', formatter: this.typeFormatter},
                 {prop: 'url', label: '链接'},
                 {prop: 'icon', label: '图标'},
                 {prop: 'order_num', label: '排序'},
@@ -249,12 +267,16 @@ export default {
                         picker.$emit('pick', date);
                     }
                 }]
-            }
+            },
+            menuOptions: [],
+            typeOptions: [],
         }
     },
     created: function(){
         let that = this
         that.initTable()
+        that.findAllDir()
+        that.findSysDictByDesc()
     },
     methods: {
         initTable: function(){
@@ -265,7 +287,7 @@ export default {
                 pageSize: that.pageSize
             }
             // 调用接口
-            API.findSysMenuList(params).then(function (result) {
+            MENU_API.findSysMenuList(params).then(function (result) {
                 if (result.code === 200) {
                     that.total = result.map.sysMenus.total
                     that.currentPage = result.map.sysMenus.pageNum
@@ -289,7 +311,7 @@ export default {
             // 定义请求参数
             let params = that.addForm
             // 调用接口
-            API.addSysMenu(params).then(function (result) {
+            MENU_API.addSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -309,7 +331,7 @@ export default {
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysMenu(params).then(function (result) {
+            MENU_API.viewSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysMenu
                     that.viewDialogFormVisible = true
@@ -324,7 +346,7 @@ export default {
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysMenu(params).then(function (result) {
+            MENU_API.viewSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.editForm = result.map.sysMenu
                     that.editDialogFormVisible = true
@@ -341,7 +363,7 @@ export default {
             // 定义请求参数
             let params = that.editForm
             // 调用接口
-            API.updateSysMenu(params).then(function (result) {
+            MENU_API.updateSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -366,7 +388,7 @@ export default {
                 ids: ids.join(',')
             }
             // 调用接口
-            API.deleteSysMenu(params).then(function (result) {
+            MENU_API.deleteSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -379,12 +401,25 @@ export default {
                 }
             });
         },
+        typeFormatter: function(row, column, cellValue, index){
+            if(cellValue == undefined){
+                return ''
+            }
+            let result = ''
+            for(var i=0;i<this.typeOptions.length;i++){
+                if(cellValue == this.typeOptions[i].value){
+                    result = this.typeOptions[i].label
+                }
+            }
+
+            return result;
+        },
         dateTimeFormatter: function(row, column, cellValue, index){
             if(cellValue == undefined){
                 return ''
             }
 
-            return this.$moment(cellValue).format('YYYY-MM-DD HH:mm:ss')
+            return this.$moment(cellValue).format('YYYY-MM-DD HH:mm:ss');
         },
         handleSizeChange: function(pageSize){
             let that = this
@@ -424,7 +459,36 @@ export default {
                 }
             }
             return filters
+        },
+        findAllDir: function(){
+            let that = this
+            // 定义请求参数
+            let params = {}
+            // 调用接口
+            MENU_API.findAllDir(params).then(function (result) {
+                if (result.code === 200) {
+                    that.menuOptions = result.map.selectOptions
+                } else {
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            });
+        },
+        findSysDictByDesc: function(){
+            let that = this
+            // 定义请求参数
+            let params = {description: '菜单类型'}
+            // 调用接口
+            DICT_API.findSysDictByDesc(params).then(function (result) {
+                if (result.code === 200) {
+                    that.typeOptions = result.map.selectOptions
+                } else {
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            });
         }
+    },
+    mounted: function(){
+        
     }
 }
 </script>
@@ -434,14 +498,14 @@ export default {
 h1, h2 {
   font-weight: normal;
 }
-ul {
+/* ul {
   list-style-type: none;
   padding: 0;
 }
 li {
   display: inline-block;
   margin: 0 10px;
-}
+} */
 a {
   color: #42b983;
 }

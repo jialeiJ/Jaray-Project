@@ -3,9 +3,13 @@ package com.vienna.jaray.common;
 import lombok.Data;
 import org.omg.CORBA.DynAnyPackage.Invalid;
 
+/**
+ * 请求状态
+ */
 public enum HttpStatus {
 
     CAPTCHA_ERROR(999, "验证码错误"),
+    NAME_OR_PASSWORD_ERROR(401, "用户名或密码错误"),
 
     // 1XX：信息状态码
     /**

@@ -79,4 +79,10 @@ public class SysDictController {
         }
         return resultMsg;
     }
+
+    @ILogAnnotation(value = "查询字典")
+    @PostMapping("/find/desc")
+    public ResponseResult findByDesc(String description){
+        return sysDictService.findByDesc(description);
+    }
 }

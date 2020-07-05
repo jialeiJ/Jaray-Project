@@ -24,13 +24,19 @@ public class SecurityUtil {
         JwtAuthenticatioToken token = new JwtAuthenticatioToken(username, password);
 
         token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        // 执行登录认证过程
-        Authentication authentication = authenticationManager.authenticate(token);
-        // 认证成功存储认证信息到上下文
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-        // 生成令牌并返回给客户端
-        token.setToken(JwtTokenUtil.generateToken(authentication));
-		token.setExpireTime(JwtTokenUtil.tokenExpireTime(token.getToken()));
+
+        try{
+			// 执行登录认证过程
+			Authentication authentication = authenticationManager.authenticate(token);
+			// 认证成功存储认证信息到上下文
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			// 生成令牌并返回给客户端
+			token.setToken(JwtTokenUtil.generateToken(authentication));
+			token.setExpireTime(JwtTokenUtil.tokenExpireTime(token.getToken()));
+		}catch (Exception e){
+        	
+		}
+
         return token;
     }
     

@@ -10,9 +10,10 @@ import java.util.List;
 public interface SysMenuService {
     /**
      * 查询左侧菜单信息
+     * @param user_id 用户id
      * @return
      */
-    public ResponseResult findLeftNav();
+    public ResponseResult findLeftNav(String user_id);
 
     /**
      * 查询菜单列表
@@ -47,4 +48,10 @@ public interface SysMenuService {
      * @return
      */
     public ResponseResult findById(@Param("id")String id);
+
+    /**
+     * 查询所有目录菜单
+     * @return
+     */
+    public ResponseResult findAllDir();
 }

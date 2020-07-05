@@ -9,6 +9,7 @@
         :highlight-current-row="true"
         @selection-change="handleSelectionChange"
         @filter-change="handlerFilterChange"
+        @row-click="rowClick"
         style="width: 100%;box-shadow: 3px 6px 5px #888888;">
         <el-table-column
             type="selection"
@@ -100,6 +101,10 @@ export default {
         },
         handlerFilterChange: function(val){
             // console.log(val)
+        },
+        rowClick: function(row) {
+            let that = this
+            that.$emit('rowClick', row)
         },
         transmitParent(){
             let that = this

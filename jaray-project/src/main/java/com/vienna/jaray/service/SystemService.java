@@ -6,7 +6,7 @@ import com.vienna.jaray.entity.SysUserTokenEntity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public interface LoginService {
+public interface SystemService {
     /**
      * 登录接口
      * @param request request对象
@@ -25,4 +25,12 @@ public interface LoginService {
      * @return
      */
     public ResponseResult reLogin(HttpServletRequest request, SysUserTokenEntity sysUserToken);
+
+    /**
+     * 更新密码
+     * @param id 用户id
+     * @param password 密码
+     * @return
+     */
+    public ResponseResult updatePassword(String id, String password);
 }

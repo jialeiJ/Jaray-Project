@@ -21,4 +21,8 @@ export default {
     viewSysDict: params => {
         return API.POST('/sys/dict/find', params);
     },
+    //查询字典信息
+    findSysDictByDesc: params => {
+        return API.POST('/sys/dict/find/desc', params);
+    },
 }

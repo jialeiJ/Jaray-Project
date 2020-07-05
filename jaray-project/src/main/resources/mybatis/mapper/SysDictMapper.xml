@@ -78,4 +78,11 @@
         where `id` = #{entity.id}
     </update>
 
+    <!-- 查询字典 -->
+    <select id="findByDesc" resultType="selectOptionsModel">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dict d where d.description = #{description}
+    </select>
+
 </mapper>

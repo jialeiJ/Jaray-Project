@@ -3,20 +3,11 @@ package com.vienna.jaray.controller;
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.SysMenuEntity;
-import com.vienna.jaray.entity.SysUserTokenEntity;
 import com.vienna.jaray.model.CommonParamsModel;
-import com.vienna.jaray.service.KaptchaService;
-import com.vienna.jaray.service.LoginService;
 import com.vienna.jaray.service.SysMenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Slf4j
 @CrossOrigin
@@ -54,6 +45,12 @@ public class SysMenuController {
     @PostMapping("/find")
     public ResponseResult findById(String id) {
         return sysMenuService.findById(id);
+    }
+
+    @ILogAnnotation(value = "查询所有目录菜单")
+    @PostMapping("/dir/find/all")
+    public ResponseResult findAllDir(){
+        return sysMenuService.findAllDir();
     }
 
 }

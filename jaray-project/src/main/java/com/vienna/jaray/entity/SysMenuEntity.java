@@ -9,8 +9,10 @@ import lombok.Data;
 @Data
 public class SysMenuEntity {
 	private String id;
+	private String value;
 	private String name;
-	private int parent_id;
+	private String label;
+	private String parent_id;
 	private String url;
 	private int type;
 	private String icon;

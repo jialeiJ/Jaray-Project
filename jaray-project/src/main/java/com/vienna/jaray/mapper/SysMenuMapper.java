@@ -2,6 +2,7 @@ package com.vienna.jaray.mapper;
 
 import java.util.List;
 
+import com.vienna.jaray.model.SelectOptionsModel;
 import com.vienna.jaray.model.TreeModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,19 +13,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface SysMenuMapper {
-
-	/**
-	 * 查询一级菜单
-	 * @return
-	 */
-	public List<SysMenuEntity> findFirstLevelMenu();
-
-	/**
-	 * 查询子菜单
-	 * @param id 父菜单id
-	 * @return
-	 */
-	public List<SysMenuEntity> findNextSubSetMenu(@Param("parentId")String id);
 
 	/**
 	 * 查询菜单列表
@@ -59,5 +47,18 @@ public interface SysMenuMapper {
 	 * @return
 	 */
 	public SysMenuEntity findById(@Param("id")String id);
+
+	/**
+	 * 查询所有目录菜单
+	 * @return
+	 */
+	public List<SelectOptionsModel> findAllDir();
+
+	/**
+	 * 查询菜单
+	 * @param menu_perms 用户菜单权限
+	 * @return
+	 */
+	public List<SysMenuEntity> findByPerm(@Param("menu_perms")String[] menu_perms);
 	
 }

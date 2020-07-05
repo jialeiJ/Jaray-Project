@@ -28,6 +28,41 @@ Vue.prototype.axios = axios
  */
 Vue.prototype.$moment = moment;
 
+// 全局前置守卫
+// 在Router实例上进行守卫
+router.beforeEach((to, from, next) => {
+    // to和from都是路由实例
+    // to：即将跳转到的路由
+    // from：现在的要离开的路由
+    // next：函数
+    // 如果用户信息不存在，跳到登录页，如果存在，选择哪个页面跳到哪个页面；如果存在还去login页面，就跳到首页。
+    let accessUser = sessionStorage.getItem('access-user')
+
+    if (to.path == '/') {
+        if (accessUser) {
+            next({ path: '/main' })
+        } else {
+            return next()
+        }   
+    } else {
+        if (accessUser) {
+            next()
+        } else {
+            next({ path: '/' })
+        }     
+    }
+})
+  
+// 全局解析守卫 定义解析方法为空时路由不跳转
+// router.beforeResolve((to, from, next) => {
+
+// })
+  
+// 全局后置钩子
+router.afterEach((to, form) => {
+    
+})
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

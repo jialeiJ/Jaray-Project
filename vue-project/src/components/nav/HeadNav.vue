@@ -1,4 +1,5 @@
 <template>
+<div>
     <el-menu
         class="el-menu-demo"
         mode="horizontal"
@@ -32,36 +33,77 @@
         <el-submenu index="user" style="float: right;">
             <template slot="title">用户：{{userInfo.name}}</template>
             <el-menu-item index="user-1">选项1</el-menu-item>
-            <el-menu-item index="user-2">修改密码</el-menu-item>
+            <el-menu-item index="user-2" @click="editDialogFormVisible = true">修改密码</el-menu-item>
             <el-menu-item index="user-3" @click="signOut">退出系统</el-menu-item>
         </el-submenu>
-        <el-dropdown trigger="click">
-            <span class="el-dropdown-link">
-                点我查看<i class="el-icon-caret-bottom el-icon--right"></i>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item class="clearfix">
-                评论
-                <el-badge class="mark" :value="12" />
-                </el-dropdown-item>
-                <el-dropdown-item class="clearfix">
-                回复
-                <el-badge class="mark" :value="3" />
-                </el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
     </el-menu>
+    <div id="edit">
+        <el-dialog title="修改密码" :visible.sync="editDialogFormVisible">
+            <el-form :model="editForm" :rules="rules" ref="editForm">
+                <el-form-item label="原始密码" prop="srcPassword" :label-width="formLabelWidth">
+                    <el-input type="password" v-model="editForm.srcPassword" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
+                    <el-input type="password" v-model="editForm.password" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" prop="password2" :label-width="formLabelWidth">
+                    <el-input type="password" v-model="editForm.password2" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="editDialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="editPassword('editForm')">确 定</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</div>
 </template>
 
 <script>
+import API from '../../api/api_system'
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: 'HeadNav',
     data () {
+        var validatePass = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入密码'));
+            } else {
+                if (this.editForm.password !== '') {
+                    this.$refs.editForm.validateField('password');
+                }
+                callback();
+            }
+        };
+        var validatePass2 = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请再次输入密码'));
+            } else if (value !== this.editForm.password) {
+                callback(new Error('两次输入密码不一致!'));
+            } else {
+                callback();
+            }
+        };
         return {
+            formLabelWidth: '120px',
+            editDialogFormVisible: false,
             userInfo: {
                 name: ''
+            },
+            editForm: {
+                id: '',
+                srcPassword: '',
+                password: '',
+                password2: ''
+            },
+            rules: {
+                password: [
+                    { validator: validatePass, trigger: 'blur' }
+                ],
+                password2: [
+                    { validator: validatePass2, trigger: 'blur' }
+                ]
             }
         }
     },
@@ -90,6 +132,38 @@ export default {
             let that = this
             let accessUser = sessionStorage.getItem('access-user')
             that.userInfo = JSON.parse(accessUser)
+            that.editForm.id = that.userInfo.user_id
+        },
+        editPassword: function(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    return false;
+                    let that = this
+                    let accessUser = sessionStorage.getItem('access-user')
+                    // 定义请求参数
+                    let params = that.editForm;
+                    // 调用接口
+                    API.updatePassword(params).then(function (result) {
+                        if (result.code === 200) {
+                            that.$message({
+                                message: '恭喜你，密码修改成功,请重新登陆',
+                                type: 'success'
+                            });
+                            that.editDialogFormVisible = false
+                            sessionStorage.clear()
+                            that.$router.push({path: "/"});
+                        } else {
+                            that.$message({
+                                message: '抱歉，密码修改失败',
+                                type: 'error'
+                            });
+                        }
+                    });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         },
         signOut: function() {
             let that = this

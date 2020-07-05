@@ -4,23 +4,9 @@
 <mapper namespace="com.vienna.jaray.mapper.SysMenuMapper">
 	
 	<sql id="Base_Column_List" >
-        m.id,m.name,m.name as label,m.parent_id,m.url,m.type,m.icon,m.order_num,m.create_by,
+        m.id,m.id as value,m.name,m.name as label,m.parent_id,m.url,m.type,m.icon,m.order_num,m.create_by,
 		m.create_time,m.last_update_by,m.last_update_time,m.del_flag
     </sql>
-	
-	<!-- 菜单列表初始化查询 -->
-    <select id="findFirstLevelMenu" resultType="sysMenuEntity">
-       select 
-       	   <include refid="Base_Column_List" />
-       from sys_menu m where m.parent_id = '0'
-    </select>
-    
-    <!-- 菜单列表初始化查询 -->
-    <select id="findNextSubSetMenu" resultType="sysMenuEntity">
-       select 
-       	   <include refid="Base_Column_List" />
-       from sys_menu m where m.parent_id = #{parentId} and m.type != 2
-    </select>
 
     <!-- 查询菜单列表 -->
     <select id="findAll" resultType="sysMenuEntity">
@@ -69,4 +55,20 @@
         from sys_menu m where m.id = #{id}
     </select>
 
+    <!-- 查询所有目录菜单 -->
+    <select id="findAllDir" resultType="selectOptionsModel">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where m.type = 0 and (m.url is null or m.url ='')
+    </select>
+
+    <!-- 查询菜单列表 -->
+    <select id="findByPerm" resultType="sysMenuEntity">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where m.id not in
+        <foreach collection="menu_perms" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

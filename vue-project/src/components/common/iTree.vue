@@ -2,10 +2,10 @@
     <el-tree
         :data="treeData"
         show-checkbox
-        default-expand-all
         node-key="id"
         ref="tree"
         highlight-current
+        @check-change="handleCheckChange"
         :props="defaultProps">
     </el-tree>
 </template>
@@ -15,13 +15,7 @@
 export default {
     name: 'iTree',
     props: {
-        tableTitle: {
-            type: Array,
-            default: function(){
-                return []
-            }
-        },
-        tableData: {
+        treeData: {
             type: Array,
             default: function(){
                 return []
@@ -30,68 +24,76 @@ export default {
     },
     data () {
         return {
-            treeData: [{
-                id: 1,
-                label: '一级 1',
-                children: [{
-                    id: 4,
-                    label: '二级 1-1',
-                    children: [{
-                        id: 9,
-                        label: '三级 1-1-1'
-                    }, {
-                        id: 10,
-                        label: '三级 1-1-2'
-                    }]
-                }]
-            }, {
-                id: 2,
-                label: '一级 2',
-                children: [{
-                    id: 5,
-                    label: '二级 2-1'
-                }, {
-                    id: 6,
-                    label: '二级 2-2'
-                }]
-            }, {
-                id: 3,
-                label: '一级 3',
-                children: [{
-                    id: 7,
-                    label: '二级 3-1'
-                }, {
-                    id: 8,
-                    label: '二级 3-2'
-                }]
-            }],
             defaultProps: {
                 children: 'children',
                 label: 'label'
-            }
+            },
+            tileTreeData: []
         }
     },
     methods: {
-        getCheckedNodes() {
-            console.log(this.$refs.tree.getCheckedNodes());
+        handleCheckChange(data, checked, indeterminate) {
+            let that = this
+            let keys = []
+            let checkedKeys = that.$refs.tree.getCheckedKeys()
+            that.tileTreeData.forEach(function(item, index){
+                if(checkedKeys.indexOf(item.id) > -1){
+                    if(keys.indexOf(item.parent_id) == -1){
+                        keys.push(item.parent_id);
+                    }
+                    keys.push(item.id);
+                }
+            })
+
+            console.log(keys)
+
+            //this.$refs.tree.setCheckedKeys(keys);
         },
-        getCheckedKeys() {
-            console.log(this.$refs.tree.getCheckedKeys());
-        },
-        setCheckedNodes() {
-            this.$refs.tree.setCheckedNodes([{
-            id: 5,
-            label: '二级 2-1'
-            }, {
-            id: 9,
-            label: '三级 1-1-1'
-            }]);
-        },
-        setCheckedKeys() {
-            this.$refs.tree.setCheckedKeys([3]);
-        },
+
+        // 重置
         resetChecked() {
+            let that = this
+            let keys = ["M1","M2","M3","M29","M30"]
+            // 移除父id
+            that.tileTreeData.forEach(function(item, index){
+                let i = keys.indexOf(item.parent_id);
+                if(i > -1){
+                    keys.splice(i,1)
+                }
+            })
+            this.$refs.tree.setCheckedKeys(keys);
+        },
+        // 清空
+        clearChecked() {
             this.$refs.tree.setCheckedKeys([]);
+        },
+        // 平铺数据
+        tileTree(treeData){
+            let that = this
+            treeData.forEach(function(item, index){
+                that.tileTreeData.push(item)
+                if(item.children.length){
+                    that.tileTree(item.children)
+                }
+            })
+        }
+    },
+    created: function(){
+        // 渲染前执行,无法获取到父组件的传值
+    },
+    mounted: function(){
+        // 渲染后执行,无法获取到父组件的传值 
+    },
+    watch: {
+        // 使用监听
+        treeData: {
+            handler(newVal, oldVal){
+                if(newVal){
+                    this.tileTree(newVal) 
+                }
+            },
+            immediate: true, // 立即执行
+            deep: true //深度监听
         }
     }
 }

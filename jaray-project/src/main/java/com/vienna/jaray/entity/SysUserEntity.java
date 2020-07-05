@@ -10,6 +10,7 @@ public class SysUserEntity {
     private String id;
     private String name;
     private String password;
+    private String menu_perm;
     private String email;
     private String mobile;
     private int status;

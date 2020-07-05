@@ -76,12 +76,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new UserDetailsServiceImpl();
 	}
 
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder()	{
+		return new BCryptPasswordEncoder();
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// 使用自定义身份验证组件
 		auth.userDetailsService(getUserDetailsService())
 			//BCryptPasswordEncoder加密方式，无需传入盐值
-			.passwordEncoder(new BCryptPasswordEncoder());
+			.passwordEncoder(passwordEncoder());
 	}
 
 	@Override

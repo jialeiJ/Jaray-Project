@@ -8,6 +8,7 @@ import com.vienna.jaray.entity.SysUserEntity;
 import com.vienna.jaray.mapper.SysDictMapper;
 import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.model.SelectOptionsModel;
 import com.vienna.jaray.security.PasswordEncoderImpl;
 import com.vienna.jaray.service.SysDictService;
 import com.vienna.jaray.service.SysUserService;
@@ -71,5 +72,11 @@ public class SysDictServiceImpl implements SysDictService {
             responseResult = ResponseResult.success().add("result", result);
         }
         return responseResult;
+    }
+
+    @Override
+    public ResponseResult findByDesc(String description) {
+        List<SelectOptionsModel> selectOptionsModelList = sysDictMapper.findByDesc(description);
+        return ResponseResult.success().add("selectOptions", selectOptionsModelList);
     }
 }

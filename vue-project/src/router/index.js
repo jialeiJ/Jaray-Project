@@ -48,7 +48,7 @@ export default new Router({
         {
             path: '/sys/dept',
             name: 'sysDept',
-            title: '部门',
+            title: '机构',
             component: SysDept
         },
         {

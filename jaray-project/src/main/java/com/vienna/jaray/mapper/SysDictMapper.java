@@ -2,6 +2,7 @@ package com.vienna.jaray.mapper;
 
 import com.vienna.jaray.entity.SysDictEntity;
 import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.model.SelectOptionsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -51,4 +52,11 @@ public interface SysDictMapper {
      * @return
      */
     public int updateById(@Param("entity")SysDictEntity sysDictEntity);
+
+    /**
+     * 查询字典
+     * @param description 描述
+     * @return
+     */
+    public List<SelectOptionsModel> findByDesc(@Param("description")String description);
 }

@@ -4,7 +4,7 @@ spring:
 
 #mybatis配置
 mybatis:
-  type-aliases-package: com.vienna.jaray.entity
+  type-aliases-package: com.vienna.jaray.entity,com.vienna.jaray.model
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
 

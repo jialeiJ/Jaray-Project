@@ -9,6 +9,7 @@ import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.security.PasswordEncoderImpl;
 import com.vienna.jaray.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
@@ -43,7 +46,6 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public ResponseResult add(SysUserEntity sysUserEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        PasswordEncoderImpl passwordEncoder = new PasswordEncoderImpl();
         sysUserEntity.setPassword(passwordEncoder.encode("000000"));
         int result = sysUserMapper.add(sysUserEntity);
         if(result > 0){

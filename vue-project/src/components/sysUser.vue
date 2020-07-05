@@ -8,6 +8,7 @@
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
+                    @rowClick="rowClick"
                     @handleView="viewSysUser"
                     @handleEdit="editViewSysUser"
                     :tableTitle="tableTitle" 
@@ -184,12 +185,24 @@
             </div>
         </div>
 
-        <i-tree></i-tree>
+        <div id="menu">
+            <i-tree
+                ref="iTree"
+                :treeData="treeData"
+            ></i-tree>
+            <div slot="footer" class="dialog-footer">
+                <el-button size="mini" @click="clearTreeChecked">清空</el-button>
+                <el-button size="mini" @click="resetTreeChecked">重置</el-button>
+                <el-button size="mini" type="primary" @click="editSysUser">确 定</el-button>
+            </div>
+        </div>
+        
     </div>
 </template>
 
 <script>
 import API from '../api/api_sys_user'
+import SYS_API from '../api/api_system'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
 import iTree from '../components/common/iTree'
@@ -245,12 +258,14 @@ export default {
                         picker.$emit('pick', date);
                     }
                 }]
-            }
+            },
+            treeData: []
         }
     },
     created: function(){
         let that = this
         that.initTable()
+        that.findLeftNav()
     },
     methods: {
         initTable: function(){
@@ -377,7 +392,6 @@ export default {
             if(cellValue == undefined){
                 return ''
             }
-
             return this.$moment(cellValue).format('YYYY-MM-DD HH:mm:ss')
         },
         handleSizeChange: function(pageSize){
@@ -418,6 +432,30 @@ export default {
                 }
             }
             return filters
+        },
+        rowClick: function(row) {
+            console.log(row);
+        },
+        findLeftNav: function(){
+            let that = this;
+            // 定义请求参数
+            let params = {}
+            // 调用接口
+            SYS_API.findLeftNav(params).then(function (result) {
+                if (result.code === 200) {
+                    that.treeData =result.map.leftMenu
+                } else {
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            })
+        },
+        resetTreeChecked: function(){
+            let that = this
+            that.$refs.iTree.resetChecked()
+        },
+        clearTreeChecked: function(){
+            let that = this
+            that.$refs.iTree.clearChecked()
         }
     }
 }

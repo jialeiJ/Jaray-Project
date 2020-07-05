@@ -28,7 +28,9 @@ export default {
         findLeftNav: function(){
             let that = this;
             // 定义请求参数
-            let params = {}
+            let accessUser = JSON.parse(sessionStorage.getItem('access-user'))
+
+            let params = {user_id: accessUser.user_id}
             // 调用接口
             API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {

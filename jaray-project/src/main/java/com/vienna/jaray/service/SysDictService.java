@@ -47,4 +47,11 @@ public interface SysDictService {
      * @return
      */
     public ResponseResult updateById(SysDictEntity sysDictEntity);
+
+    /**
+     * 查询字典
+     * @param description 描述
+     * @return
+     */
+    public ResponseResult findByDesc(String description);
 }

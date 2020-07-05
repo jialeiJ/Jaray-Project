@@ -7,6 +7,7 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="password" column="password"/>
+        <result property="menu_perm" column="menu_perm"/>
         <result property="email" column="email"/>
         <result property="mobile" column="mobile"/>
         <result property="status" column="status"/>
@@ -19,7 +20,7 @@
     </resultMap>
 	
 	<sql id="Base_Column_List" >
-		u.id,u.name,u.password,u.email,u.mobile,u.status,u.dept_id,
+		u.id,u.name,u.password,u.menu_perm,u.email,u.mobile,u.status,u.dept_id,
         u.create_by,u.create_time,u.last_update_by,u.last_update_time,u.del_flag
     </sql>
 
@@ -65,6 +66,7 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="entity.name != null">`name` = #{entity.name},</if>
             <if test="entity.password != null">`password` = #{entity.password},</if>
+            <if test="entity.menu_perm != null">`menu_perm` = #{entity.menu_perm},</if>
             <if test="entity.email != null">`email` = #{entity.email},</if>
             <if test="entity.mobile != null">`mobile` = #{entity.mobile},</if>
             <if test="entity.status != null">`status` = #{entity.status},</if>
