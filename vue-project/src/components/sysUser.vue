@@ -188,12 +188,13 @@
         <div id="menu">
             <i-tree
                 ref="iTree"
+                @transmitParentKeys="receiveKeys"
                 :treeData="treeData"
             ></i-tree>
             <div slot="footer" class="dialog-footer">
                 <el-button size="mini" @click="clearTreeChecked">清空</el-button>
                 <el-button size="mini" @click="resetTreeChecked">重置</el-button>
-                <el-button size="mini" type="primary" @click="editSysUser">确 定</el-button>
+                <el-button size="mini" type="primary" @click="editSysUserMenuPerm">保存</el-button>
             </div>
         </div>
         
@@ -201,7 +202,7 @@
 </template>
 
 <script>
-import API from '../api/api_sys_user'
+import USER_API from '../api/api_sys_user'
 import SYS_API from '../api/api_system'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
@@ -259,6 +260,11 @@ export default {
                     }
                 }]
             },
+            menu_perm : {
+                id: '',
+                perm: '',
+                keys: []
+            },
             treeData: []
         }
     },
@@ -276,7 +282,7 @@ export default {
                 pageSize: that.pageSize
             }
             // 调用接口
-            API.findSysUserList(params).then(function (result) {
+            USER_API.findSysUserList(params).then(function (result) {
                 if (result.code === 200) {
                     that.total = result.map.sysUsers.total
                     that.currentPage = result.map.sysUsers.pageNum
@@ -293,14 +299,19 @@ export default {
         receiveChild: function(data){
             let that = this
             that.multipleSelection = data
-            console.log("父组件接收的数据", that.multipleSelection)
+            console.log("表格组件接收子组件的数据", that.multipleSelection)
+        },
+        receiveKeys: function(keys){
+            let that = this
+            that.menu_perm.keys = keys
+            console.log("树形组件接收子组件的数据", that.menu_perm.keys)
         },
         addSysUser: function(){
             let that = this
             // 定义请求参数
             let params = that.addForm
             // 调用接口
-            API.addSysUser(params).then(function (result) {
+            USER_API.addSysUser(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -320,7 +331,7 @@ export default {
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysUser(params).then(function (result) {
+            USER_API.viewSysUser(params).then(function (result) {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysUser
                     that.viewDialogFormVisible = true
@@ -335,7 +346,7 @@ export default {
             // 定义请求参数
             let params = row
             // 调用接口
-            API.viewSysUser(params).then(function (result) {
+            USER_API.viewSysUser(params).then(function (result) {
                 if (result.code === 200) {
                     that.editForm = result.map.sysUser
                     that.editDialogFormVisible = true
@@ -350,7 +361,7 @@ export default {
             // 定义请求参数
             let params = that.editForm
             // 调用接口
-            API.updateSysUser(params).then(function (result) {
+            USER_API.updateSysUser(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -375,13 +386,35 @@ export default {
                 ids: ids.join(',')
             }
             // 调用接口
-            API.deleteSysUser(params).then(function (result) {
+            USER_API.deleteSysUser(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
+                } else {
+                    that.loading = false;
+                    that.$message.error('失败：'+result.msg);// elementUI消息提示
+                }
+            });
+        },
+        editSysUserMenuPerm :function(){
+            let that = this
+            // 定义请求参数
+            let params = {
+                id: that.menu_perm.id,
+                menu_perm: that.menu_perm.keys.join(',')
+            }
+            // 调用接口
+            USER_API.updateSysUser(params).then(function (result) {
+                if (result.code === 200) {
+                    that.initTable()
+                    that.$message({
+                        message: '恭喜你，编辑成功',
+                        type: 'success'
+                    });
+                    that.editDialogFormVisible = false
                 } else {
                     that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
@@ -434,7 +467,14 @@ export default {
             return filters
         },
         rowClick: function(row) {
-            console.log(row);
+            let that = this
+            that.menu_perm.id = row.id
+            if(row.menu_perm){
+                that.menu_perm.perm = row.menu_perm
+            }else{
+                that.menu_perm.perm = ''
+            }
+            that.resetTreeChecked()
         },
         findLeftNav: function(){
             let that = this;
@@ -449,9 +489,10 @@ export default {
                 }
             })
         },
-        resetTreeChecked: function(){
+        resetTreeChecked: function(row){
             let that = this
-            that.$refs.iTree.resetChecked()
+            let keys = that.menu_perm.perm.split(",")
+            that.$refs.iTree.resetChecked(keys)
         },
         clearTreeChecked: function(){
             let that = this

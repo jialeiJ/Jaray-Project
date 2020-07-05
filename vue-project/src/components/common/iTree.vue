@@ -5,7 +5,7 @@
         node-key="id"
         ref="tree"
         highlight-current
-        @check-change="handleCheckChange"
+        @check="handleCheck"
         :props="defaultProps">
     </el-tree>
 </template>
@@ -32,7 +32,7 @@ export default {
         }
     },
     methods: {
-        handleCheckChange(data, checked, indeterminate) {
+        handleCheck(data, checked, indeterminate) {
             let that = this
             let keys = []
             let checkedKeys = that.$refs.tree.getCheckedKeys()
@@ -45,15 +45,12 @@ export default {
                 }
             })
 
-            console.log(keys)
-
-            //this.$refs.tree.setCheckedKeys(keys);
+            that.$emit('transmitParentKeys', keys)
         },
 
         // 重置
-        resetChecked() {
+        resetChecked(keys) {
             let that = this
-            let keys = ["M1","M2","M3","M29","M30"]
             // 移除父id
             that.tileTreeData.forEach(function(item, index){
                 let i = keys.indexOf(item.parent_id);
@@ -61,11 +58,14 @@ export default {
                     keys.splice(i,1)
                 }
             })
-            this.$refs.tree.setCheckedKeys(keys);
+            that.$refs.tree.setCheckedKeys(keys);
+            that.handleCheck()
         },
         // 清空
         clearChecked() {
-            this.$refs.tree.setCheckedKeys([]);
+            let that = this
+            that.$refs.tree.setCheckedKeys([]);
+            that.handleCheck()
         },
         // 平铺数据
         tileTree(treeData){

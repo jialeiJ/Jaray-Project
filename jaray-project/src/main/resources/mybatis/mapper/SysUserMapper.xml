@@ -77,7 +77,7 @@
             <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
             <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
         </trim>
-        where `id` = #{entity.id}
+        where `id` = #{entity.id} and `name` != 'admin'
     </update>
     
 </mapper>
