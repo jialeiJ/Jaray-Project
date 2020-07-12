@@ -9,11 +9,11 @@ export default {
     deleteSysRole: params => {
         return API.POST('/sys/role/delete', params);
     },
-    //添加/更新角色信息
+    //添加角色信息
     addSysRole: params => {
         return API.POST('/sys/role/add', params);
     },
-    //添加/更新角色信息
+    //更新角色信息
     updateSysRole: params => {
         return API.POST('/sys/role/update', params);
     },

@@ -31,19 +31,27 @@ spring:
       #connect-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       # 配置监控服务器
       stat-view-servlet:
+        enabled: true
         login-username: admin
         login-password: admin_pwd
         reset-enable: false
         url-pattern: /druid/*
         # 添加IP白名单
-        #allow:
+        #allow: 127.0.0.1
         # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
         #deny:
       web-stat-filter:
+        enabled: true
         # 添加过滤规则
         url-pattern: /*
         # 忽略过滤格式
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-max-count: 1000
+        session-stat-enable: true
+        profile-enable: true
+
+swagger:
+  enabled: true
 
 
 

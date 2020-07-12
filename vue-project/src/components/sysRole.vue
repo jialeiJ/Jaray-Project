@@ -8,6 +8,7 @@
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
+                    @rowClick="rowClick"
                     @handleView="viewSysRole"
                     @handleEdit="editViewSysRole"
                     :tableTitle="tableTitle" 
@@ -20,6 +21,21 @@
                     @handleSizeChange="handleSizeChange"
                     @handleCurrentChange="handleCurrentChange">
                 </i-pagination>
+            </div>
+
+            <div id="menu">
+                <i-tree
+                    ref="iTree"
+                    @transmitParentKeys="receiveKeys"
+                    :treeData="treeData"
+                    style="max-height: 300px;overflow-y: auto;"
+                ></i-tree>
+                <div slot="footer" class="dialog-footer">
+                    <el-button size="mini" @click="allChecked">全选</el-button>
+                    <el-button size="mini" @click="clearTreeChecked">清空</el-button>
+                    <el-button size="mini" @click="resetTreeChecked">重置</el-button>
+                    <el-button size="mini" type="primary" @click="editSysRoleMenuPerm">保存</el-button>
+                </div>
             </div>
 
             <div id="add">
@@ -170,12 +186,16 @@
 
 <script>
 import API from '../api/api_sys_role'
+import SYS_API from '../api/api_system'
+import ROLE_MENU_PERM_API from '../api/api_sys_role_menu_perm'
+import ROLE_PERM_API from '../api/api_sys_role_perm'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
+import iTree from '../components/common/iTree'
 
 export default {
     name: 'sysRole',
-    components: { iTable, iPagination },
+    components: { iTable, iPagination, iTree },
     data () {
         return {
             formLabelWidth: '120px',
@@ -186,7 +206,7 @@ export default {
             search: '',
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
-                {prop: 'name', label: '姓名', sort: true, filters: []},
+                {prop: 'name', label: '名称', sort: true, filters: []},
                 {prop: 'remark', label: '备注'},
                 {prop: 'create_by', label: '创建人'},
                 {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
@@ -222,12 +242,21 @@ export default {
                         picker.$emit('pick', date);
                     }
                 }]
-            }
+            },
+            treeData: [],
+            menu_perm : {
+                role_id: '',
+                menu_perm_id: '',
+                menu_id: '',
+                perm_id: '',
+                keys: []
+            },
         }
     },
     created: function(){
         let that = this
         that.initTable()
+        that.findLeftNav()
     },
     methods: {
         initTable: function(){
@@ -252,10 +281,92 @@ export default {
                 }
             });
         },
+        rowClick: function(row) {
+            console.log(row)
+            let that = this
+            that.menu_perm.role_id = row.id
+
+            // 定义请求参数
+            let params = {
+                role_id: that.menu_perm.role_id
+            }
+            // 调用接口
+            ROLE_MENU_PERM_API.viewSysRoleMenuPermByRid(params).then(function (result) {
+                if (result.code === 200) {
+                    console.log(result)
+                    that.menu_perm.menu_id = result.map.sysRoleMenu.menu_id
+                    that.menu_perm.perm_id = result.map.sysRolePerm.perm_id
+                    let menuPermId = []
+                    menuPermId.push(result.map.sysRoleMenu.menu_id)
+                    menuPermId.push(result.map.sysRolePerm.perm_id)
+                    that.menu_perm.menu_perm_id = menuPermId.join(',')
+                } else {
+                    that.menu_perm.menu_perm_id = ''
+                }
+                that.resetTreeChecked()
+            });
+        },
         receiveChild: function(data){
             let that = this
             that.multipleSelection = data
             console.log("父组件接收的数据", that.multipleSelection)
+        },
+        receiveKeys: function(keys){
+            let that = this
+            that.menu_perm.keys = keys
+            console.log("树形组件接收子组件的数据", that.menu_perm.keys)
+        },
+        allChecked: function(){
+            let that = this
+            that.$refs.iTree.allChecked() 
+        },
+        resetTreeChecked: function(row){
+            let that = this
+            let permKeys = that.menu_perm.perm_id.split(",")
+            let menuKeys = that.menu_perm.menu_id.split(",")
+            
+            for(var i=0;i<menuKeys.length;i++){
+                for(var j=0;j<permKeys.length;j++){
+                    if(menuKeys[i]==permKeys[j]){
+                        menuKeys.splice(i,1)
+                    }
+                }
+            }
+
+            let keys = menuKeys.concat(permKeys)
+            that.$refs.iTree.resetChecked(keys)
+        },
+        clearTreeChecked: function(){
+            let that = this
+            that.$refs.iTree.clearChecked()
+        },
+        editSysRoleMenuPerm :function(){
+            let that = this
+            if(that.menu_perm.role_id == '1'){
+                that.$message({
+                        message: '管理员不允许编辑',
+                        type: 'warning'
+                    });
+                return false
+            }
+
+            // 定义请求参数
+            let params = {
+                role_id: that.menu_perm.role_id,
+                menu_perm_id: that.menu_perm.keys.join(',')
+            }
+            // 调用接口
+            ROLE_MENU_PERM_API.updateSysRoleMenuPerm(params).then(function (result) {
+                if (result.code === 200) {
+                    that.initTable()
+                    that.$message({
+                        message: '恭喜你，编辑成功',
+                        type: 'success'
+                    });
+                } else {
+                    that.$message.error('失败：'+result.msg);// elementUI消息提示
+                }
+            });
         },
         addSysRole: function(){
             let that = this
@@ -395,7 +506,20 @@ export default {
                 }
             }
             return filters
-        }
+        },
+        findLeftNav: function(){
+            let that = this;
+            // 定义请求参数
+            let params = {}
+            // 调用接口
+            SYS_API.findLeftNav(params).then(function (result) {
+                if (result.code === 200) {
+                    that.treeData =result.map.leftMenu
+                } else {
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            })
+        },
     }
 }
 </script>

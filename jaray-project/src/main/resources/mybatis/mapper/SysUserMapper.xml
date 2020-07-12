@@ -12,6 +12,7 @@
         <result property="mobile" column="mobile"/>
         <result property="status" column="status"/>
         <result property="dept_id" column="dept_id"/>
+        <result property="role_id" column="role_id"/>
         <result property="create_by" column="create_by"/>
         <result property="create_time" column="create_time"/>
         <result property="last_update_by" column="last_update_by"/>
@@ -20,7 +21,7 @@
     </resultMap>
 	
 	<sql id="Base_Column_List" >
-		u.id,u.name,u.password,u.menu_perm,u.email,u.mobile,u.status,u.dept_id,
+		u.id,u.name,u.password,u.menu_perm,u.email,u.mobile,u.status,u.dept_id,u.role_id,
         u.create_by,u.create_time,u.last_update_by,u.last_update_time,u.del_flag
     </sql>
 

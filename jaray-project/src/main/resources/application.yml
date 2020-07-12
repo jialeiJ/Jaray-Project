@@ -9,6 +9,6 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
 
 # 配置sql打印日志
-#logging:
-#  level:
-#    com.vienna.jaray.mapper: debug
+logging:
+  level:
+    com.vienna.jaray.mapper: debug

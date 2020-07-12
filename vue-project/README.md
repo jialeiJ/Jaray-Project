@@ -68,7 +68,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         npm install moment --g
     2、配置
         第一种
-
             // 引入JavaScript 日期处理类库（格式化）
             import moment from "moment";
             // moment.locale('zh-cn') // 汉化
@@ -96,3 +95,20 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 五、浏览器控制台警告
     1、安装default-passive-events
         npm install default-passive-events --g
+
+六、jquery
+    1、安装jquery
+        npm install jquery --save
+    2、webpack.base.conf.js
+        var webpack = require('webpack')
+
+        plugins: [
+            new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            jquery: 'jquery',
+            "window.jQuery": 'jquery'
+            })
+        ],
+    2、在main.js引入jquery
+        import $ from jquery

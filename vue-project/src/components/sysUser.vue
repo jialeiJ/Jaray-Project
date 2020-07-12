@@ -7,6 +7,7 @@
                     <el-button size="mini" :loading="loading" @click="deleteSysUser">删除</el-button>
                 </div>
                 <i-table ref="iTable" 
+                    :tableHeight="tableHeight"
                     @transmitParent="receiveChild"
                     @rowClick="rowClick"
                     @handleView="viewSysUser"
@@ -184,36 +185,22 @@
                 </el-dialog>
             </div>
         </div>
-
-        <div id="menu">
-            <i-tree
-                ref="iTree"
-                @transmitParentKeys="receiveKeys"
-                :treeData="treeData"
-            ></i-tree>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="mini" @click="clearTreeChecked">清空</el-button>
-                <el-button size="mini" @click="resetTreeChecked">重置</el-button>
-                <el-button size="mini" type="primary" @click="editSysUserMenuPerm">保存</el-button>
-            </div>
-        </div>
-        
     </div>
 </template>
 
 <script>
 import USER_API from '../api/api_sys_user'
-import SYS_API from '../api/api_system'
+import DICT_API from '../api/api_sys_dict'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
-import iTree from '../components/common/iTree'
 
 export default {
     name: 'sysUser',
-    components: { iTable, iPagination, iTree },
+    components: { iTable, iPagination },
     data () {
         return {
             formLabelWidth: '120px',
+            tableHeight: 800,
             loading: false,
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
@@ -224,11 +211,20 @@ export default {
                 {prop: 'name', label: '姓名', sort: true, filters: []},
                 {prop: 'email', label: '邮箱'},
                 {prop: 'mobile', label: '手机号'},
-                {prop: 'status', label: '状态'},
+                {prop: 'status', label: '状态', formatter: this.statusFormatter},
+                {prop: 'dept_id', label: '部门', formatter: this.deptFormatter},
+                {prop: 'role_id', label: '角色', formatter: this.roleFormatter},
                 {prop: 'create_by', label: '创建人'},
                 {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
+                {prop: 'operation', label: '操作', fixed: 'right',
+                    operation: [
+                        {name: '查看', style: 'primary', clickFun: this.viewSysUser},
+                        {name: '修改', style: 'danger', clickFun: this.editViewSysUser},
+                    ]
+                }
             ],
             tableData: [],
             multipleSelection: [],
@@ -260,18 +256,15 @@ export default {
                     }
                 }]
             },
-            menu_perm : {
-                id: '',
-                perm: '',
-                keys: []
-            },
-            treeData: []
+            statusOptions: [],
+            sysDeptList: [],
+            sysRoleList: []
         }
     },
     created: function(){
         let that = this
         that.initTable()
-        that.findLeftNav()
+        that.findSysDictByDesc()
     },
     methods: {
         initTable: function(){
@@ -284,6 +277,9 @@ export default {
             // 调用接口
             USER_API.findSysUserList(params).then(function (result) {
                 if (result.code === 200) {
+                    that.sysDeptList = result.map.sysDeptList
+                    that.sysRoleList = result.map.sysRoleList
+
                     that.total = result.map.sysUsers.total
                     that.currentPage = result.map.sysUsers.pageNum
                     that.pageSize = result.map.sysUsers.pageSize
@@ -300,11 +296,6 @@ export default {
             let that = this
             that.multipleSelection = data
             console.log("表格组件接收子组件的数据", that.multipleSelection)
-        },
-        receiveKeys: function(keys){
-            let that = this
-            that.menu_perm.keys = keys
-            console.log("树形组件接收子组件的数据", that.menu_perm.keys)
         },
         addSysUser: function(){
             let that = this
@@ -399,33 +390,12 @@ export default {
                 }
             });
         },
-        editSysUserMenuPerm :function(){
-            let that = this
-            // 定义请求参数
-            let params = {
-                id: that.menu_perm.id,
-                menu_perm: that.menu_perm.keys.join(',')
-            }
-            // 调用接口
-            USER_API.updateSysUser(params).then(function (result) {
-                if (result.code === 200) {
-                    that.initTable()
-                    that.$message({
-                        message: '恭喜你，编辑成功',
-                        type: 'success'
-                    });
-                    that.editDialogFormVisible = false
-                } else {
-                    that.loading = false;
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
-                }
-            });
-        },
         dateTimeFormatter: function(row, column, cellValue, index){
+            let that = this
             if(cellValue == undefined){
                 return ''
             }
-            return this.$moment(cellValue).format('YYYY-MM-DD HH:mm:ss')
+            return that.$moment(cellValue).format('YYYY-MM-DD HH:mm:ss')
         },
         handleSizeChange: function(pageSize){
             let that = this
@@ -467,37 +437,73 @@ export default {
             return filters
         },
         rowClick: function(row) {
-            let that = this
-            that.menu_perm.id = row.id
-            if(row.menu_perm){
-                that.menu_perm.perm = row.menu_perm
-            }else{
-                that.menu_perm.perm = ''
-            }
-            that.resetTreeChecked()
+            console.log(row)
         },
-        findLeftNav: function(){
-            let that = this;
+        findSysDictByDesc: function(){
+            let that = this
             // 定义请求参数
-            let params = {}
+            let params = {description: '用户状态'}
             // 调用接口
-            SYS_API.findLeftNav(params).then(function (result) {
+            DICT_API.findSysDictByDesc(params).then(function (result) {
                 if (result.code === 200) {
-                    that.treeData =result.map.leftMenu
+                    that.statusOptions = result.map.selectOptions
                 } else {
                     that.$message.error(result.msg);// elementUI消息提示
                 }
-            })
+            });
         },
-        resetTreeChecked: function(row){
-            let that = this
-            let keys = that.menu_perm.perm.split(",")
-            that.$refs.iTree.resetChecked(keys)
+        statusFormatter: function(row, column, cellValue, index){
+            if(cellValue == undefined){
+                return ''
+            }
+            let result = ''
+            for(var i=0;i<this.statusOptions.length;i++){
+                if(cellValue == this.statusOptions[i].value){
+                    result = this.statusOptions[i].label
+                }
+            }
+
+            return result;
         },
-        clearTreeChecked: function(){
-            let that = this
-            that.$refs.iTree.clearChecked()
-        }
+        deptFormatter: function(row, column, cellValue, index){
+            if(cellValue == undefined){
+                return ''
+            }
+            let result = ''
+            for(var i=0;i<this.sysDeptList.length;i++){
+                if(cellValue == this.sysDeptList[i].value){
+                    result = this.sysDeptList[i].label
+                }
+            }
+
+            return result;
+        },
+        roleFormatter: function(row, column, cellValue, index){
+            if(cellValue == undefined){
+                return ''
+            }
+            let result = ''
+            let valueArr = cellValue.split(',')
+            if(valueArr.length > 1){
+                let resultArr = []
+                for(var i=0;i<valueArr.length;i++){
+                    for(var j=0;j<this.sysRoleList.length;j++){
+                        if(valueArr[i] == this.sysRoleList[j].value){
+                            resultArr.push(this.sysRoleList[j].remark)
+                        }
+                    }
+                }
+                result = resultArr.join(',')
+            }else{
+                for(var i=0;i<this.sysRoleList.length;i++){
+                    if(cellValue == this.sysRoleList[i].value){
+                        result = this.sysRoleList[i].remark
+                    }
+                }
+            }
+            
+            return result;
+        },
     }
 }
 </script>

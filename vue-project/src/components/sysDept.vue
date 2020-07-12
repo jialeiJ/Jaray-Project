@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import API from '../api/api_sys_Dept'
+import API from '../api/api_sys_dept'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
 

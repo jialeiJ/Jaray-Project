@@ -4,7 +4,7 @@
         size="mini"
         :data="tableData"
         :key="iKey"
-        max-height="750px"
+        :max-height="tableHeight"
         tooltip-effect="dark"
         :highlight-current-row="true"
         @selection-change="handleSelectionChange"
@@ -28,6 +28,21 @@
                 :filter-method="filterHandler"
                 :formatter="item.formatter"
                 :show-overflow-tooltip="true">
+                <!-- 加入template主要是有操作一栏， 操作一栏的内容是相同的， 数据不是动态获取的，这里操作一栏的名字定死（operation表示是操作这一列，否则就不是） -->
+                <template slot-scope="scope">
+                    <!-- formatter：自定义过滤器 -->
+                    <div v-if="item.formatter">
+                        <span v-if="item.renderComponent == 'tag'">
+                            <!-- ** start ** 这一块做el-tag标签样式判断。不需要可以去除判断 -->
+                            <el-tag size="mini">{{ item.formatter(null, null, scope.row[item.prop], null) }}</el-tag>
+                            <!-- ** end ** -->
+                        </span>
+                        <span v-else>{{ item.formatter(null, null, scope.row[item.prop], null) }}</span>
+                    </div>
+                    <div v-else>
+                        <span>{{ scope.row[item.prop] }}</span>
+                    </div>
+                </template>
             </el-table-column>
             <el-table-column v-else
                 :key="key"
@@ -39,6 +54,30 @@
                 :column-key="item.prop"
                 :formatter="item.formatter"
                 :show-overflow-tooltip="true">
+                <!-- 加入template主要是有操作一栏， 操作一栏的内容是相同的， 数据不是动态获取的，这里操作一栏的名字定死（operation表示是操作这一列，否则就不是） -->
+                <template slot-scope="scope">
+                    <div v-if="item.operation">
+                        <el-button v-for="(it, index) in item.operation"
+                                :key="index" 
+                                @click="it.clickFun(scope.row)"
+                                :type="it.style"
+                                :icon="it.icon"
+                                size="mini">{{it.name}}
+                        </el-button>
+                    </div>
+                    <!-- formatter：自定义过滤器 -->
+                    <div v-if="item.formatter">
+                        <span v-if="item.renderComponent == 'tag'">
+                            <!-- ** start ** 这一块做el-tag标签样式判断。不需要可以去除判断 -->
+                            <el-tag size="mini">{{ item.formatter(null, null, scope.row[item.prop], null) }}</el-tag>
+                            <!-- ** end ** -->
+                        </span>
+                        <span v-else>{{ item.formatter(null, null, scope.row[item.prop], null) }}</span>
+                    </div>
+                    <div v-else>
+                        <span>{{ scope.row[item.prop] }}</span>
+                    </div>
+                </template>
             </el-table-column>
         </template>
         <el-table-column
@@ -69,7 +108,8 @@ export default {
             default: function(){
                 return []
             }
-        }
+        },
+        tableHeight: 0
     },
     data () {
         return {

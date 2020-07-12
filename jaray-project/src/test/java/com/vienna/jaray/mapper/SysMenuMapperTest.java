@@ -1,62 +1,88 @@
 package com.vienna.jaray.mapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.vienna.jaray.common.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import com.google.gson.Gson;
 import com.vienna.jaray.entity.SysMenuEntity;
 
 @Slf4j
 @SpringBootTest
 public class SysMenuMapperTest {
-	
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
+//	@Autowired
+//	private SysMenuPermMapper sysMenuPermMapper;
+	@Autowired
+	private SysUserMapper sysUserMapper;
 	
 	@Test
 	public void testFindMenu() throws Exception {
-		// 1、查询出所有菜单
-		List<SysMenuEntity> menuEntityList = sysMenuMapper.findAll();
-
-		// 2、获取顶层菜单
-		List<SysMenuEntity> firstLevelMenuEntityList = menuEntityList.stream()
-				.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals("M0")).collect(Collectors.toList());
-
-		// 3、遍历顶层菜单，递归为其子菜单赋值
-		firstLevelMenuEntityList.forEach(firstLevelMenuEntity -> {
-			List<SysMenuEntity> nextSubSetMenu = menuEntityList.stream()
-					.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(firstLevelMenuEntity.getId())).collect(Collectors.toList());
-			firstLevelMenuEntity.setChildren(getMenuTree(nextSubSetMenu, firstLevelMenuEntity.getId(), menuEntityList));
-		});
-
-		log.info("{}", new Gson().toJson(firstLevelMenuEntityList));
+//		String user_id = null;
+//		// 1、查询出所有菜单及用户菜单权限、查询所有菜单按钮权限
+//		List<SysMenuEntity> menuList = sysMenuMapper.findAll();
+//		List<SysMenuEntity> menuPermList = sysMenuPermMapper.findAll();
+//
+//		List<SysMenuEntity> noMenuList = new ArrayList<>();
+//		if(!StringUtils.isEmpty(user_id)){
+//			SysUserEntity sysUser = sysUserMapper.findById(user_id);
+//			String menu_perm = sysUser.getMenu_perm();
+//			String[] menu_perms = {};
+//			if(!StringUtils.isEmpty(menu_perm)){
+//				menu_perms = menu_perm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
+//			}
+//			noMenuList = sysMenuMapper.findByPerm(menu_perms);
+//		}
+//
+//		// 2、获取顶层菜单
+//		List<SysMenuEntity> firstLevelMenuList = menuList.stream()
+//				.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals("M0000000000000")).collect(Collectors.toList());
+//		firstLevelMenuList.removeAll(noMenuList);
+//
+//		// 3、遍历顶层菜单，递归为其子菜单赋值
+//		List<SysMenuEntity> finalNoMenuList = noMenuList;
+//		firstLevelMenuList.forEach(firstLevelMenu -> {
+//			List<SysMenuEntity> nextSubSetMenu = menuList.stream()
+//					.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
+//			nextSubSetMenu.removeAll(finalNoMenuList);
+//
+//			List<SysMenuEntity> perms = menuPermList.stream().filter(menuPerm -> menuPerm.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
+//			if(perms.size() > 0){
+//				firstLevelMenu.setChildren(perms);
+//			}
+//
+//			firstLevelMenu.setChildren(getMenuTree(nextSubSetMenu, firstLevelMenu.getId(), menuList, finalNoMenuList, menuPermList));
+//		});
+//
+//		log.info("{}", new Gson().toJson(firstLevelMenuList));
     }
     
 	/**
 	 * 递归取出所有关系树
-	 * @param nextSubSetMenuEntityList
+	 * @param nextSubSetMenuList
 	 * @param pid
-	 * @param menuEntityList
+	 * @param menuList
 	 * @return
 	 */
-	private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntityList,String pid, List<SysMenuEntity> menuEntityList) {
-		nextSubSetMenuEntityList.forEach(nextSubSetMenuEntity -> {
-			List<SysMenuEntity> nextSubSetMenu = menuEntityList.stream()
-					.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
+	private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuList,String pid, List<SysMenuEntity> menuList, List<SysMenuEntity> noMenuList, List<SysMenuEntity> menuPermList) {
+//		nextSubSetMenuList.forEach(nextSubSetMenuEntity -> {
+//			List<SysMenuEntity> nextSubSetMenu = menuList.stream()
+//					.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
+//			nextSubSetMenu.removeAll(noMenuList);
+//
+//			List<SysMenuEntity> perms = menuPermList.stream().filter(menuPerm -> menuPerm.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
+//			if(perms.size() > 0){
+//				nextSubSetMenuEntity.setChildren(perms);
+//			}
+//
+//			nextSubSetMenuEntity.setChildren(getMenuTree(nextSubSetMenu, nextSubSetMenuEntity.getId(), menuList, noMenuList, menuPermList));
+//
+//		});
 
-			nextSubSetMenuEntity.setChildren(getMenuTree(nextSubSetMenu, nextSubSetMenuEntity.getId(), menuEntityList));
-		});
-
-		return nextSubSetMenuEntityList;
-    }
+		return nextSubSetMenuList;
+	}
 
 }

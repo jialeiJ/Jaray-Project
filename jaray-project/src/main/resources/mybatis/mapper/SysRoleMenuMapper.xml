@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vienna.jaray.mapper.SysRolePermMapper">
+<mapper namespace="com.vienna.jaray.mapper.SysRoleMenuMapper">
 
-    <resultMap id="CommonResultMap" type="sysRolePermEntity">
+    <resultMap id="CommonResultMap" type="sysRoleMenuEntity">
         <id property="id" column="id"/>
         <result property="role_id" column="role_id"/>
-        <result property="perm_id" column="perm_id"/>
+        <result property="menu_id" column="menu_id"/>
         <result property="create_by" column="create_by"/>
         <result property="create_time" column="create_time"/>
         <result property="last_update_by" column="last_update_by"/>
@@ -14,43 +14,60 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-		srp.id,srp.role_id,srp.perm_id,srp.create_by,srp.create_time,srp.last_update_by,srp.last_update_time
+		srm.id,srm.role_id,srm.menu_id,srm.create_by,srm.create_time,srm.last_update_by,srm.last_update_time
     </sql>
 
     <!-- 查询角色权限列表 -->
     <select id="findAll" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_role_perm srp
+        from sys_role_menu srm
     </select>
 
     <!-- 添加角色权限角色 -->
     <insert id="add">
-    	insert into sys_role_perm (`id`, `role_id`, `perm_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
-    	values (findNextFormatSeqVal('R','s_sys_role_perm_id'), #{entity.role_id}, #{entity.perm_id}, #{entity.create_by},
+    	insert into sys_role_perm (`id`, `role_id`, `menu_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
+    	values (findNextFormatSeqVal('R','s_sys_role_perm_id'), #{entity.role_id}, #{entity.menu_id}, #{entity.create_by},
     	 #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time})
     </insert>
+
+    <!-- 查询角色权限 -->
+    <select id="findById" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_menu srm where srm.id = #{id}
+    </select>
+
+    <!-- 查询角色权限 -->
+    <select id="findByRids" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_menu srm where srm.role_id in
+        <foreach item="role_id" collection="role_ids" open="(" separator="," close=")">
+            #{role_id}
+        </foreach>
+    </select>
 
     <!-- 查询角色权限 -->
     <select id="findByRid" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_role_perm srp where srp.role_id = #{role_id}
+        from sys_role_menu srm where srm.role_id = #{role_id}
     </select>
 
     <!-- 删除角色权限 -->
     <delete id="deleteByIds">
-        delete from sys_role_perm srp where srp.role_id in
-        <foreach item="user_id" collection="userIds" open="(" separator="," close=")">
-            #{user_id}
+        delete from sys_role_menu srm where srm.role_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
         </foreach>
     </delete>
 
     <!-- 更新角色权限 -->
     <update id="updateByRid">
-        update sys_role_perm
+        update sys_role_menu
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.perm_id != null">`perm_id` = #{entity.perm_id},</if>
+            <if test="entity.menu_id != null">`menu_id` = #{entity.menu_id},</if>
             <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
             <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
             <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>

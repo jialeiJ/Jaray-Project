@@ -91,12 +91,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/system/captcha.jpg**",
+		web.ignoring().antMatchers(
+				"/",
+				"/system/captcha.jpg**",
 				"/system/login",
 				"/system/refreshToken",
-				"/v2/api-docs",
-				"/swagger-resources/configuration/ui",
-				"/swagger-resources",
+				"/druid/**",
+				"/actuator/**",
+				"/v2/**",
+				"/webjars/**",
+				"/webjars/springfox-swagger-ui/**",
+				"/swagger-resources/configuration/ui/**",
+				"/swagger-resources/**",
 				"/swagger-resources/configuration/security",
 				"/swagger-ui.html"
 		);

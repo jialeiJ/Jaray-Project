@@ -16,7 +16,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-		d.id,d.name,d.parent_id,d.order_num,d.create_by,d.create_time,d.last_update_by,d.last_update_time,d.del_flag
+		d.id,d.id as value,d.name as label,d.name,d.parent_id,d.order_num,d.create_by,d.create_time,d.last_update_by,d.last_update_time,d.del_flag
     </sql>
 
     <!-- 查询部门列表 -->
@@ -38,6 +38,16 @@
         select
         <include refid="Base_Column_List" />
         from sys_dept d where d.id = #{id}
+    </select>
+
+    <!-- 查询部门 -->
+    <select id="findByIds" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_dept d where d.id in
+        <foreach item="id" collection="idList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
     <!-- 查询部门 -->

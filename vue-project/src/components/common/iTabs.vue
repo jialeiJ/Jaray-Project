@@ -4,15 +4,14 @@
             <el-tabs 
                 v-model="tabsValue" 
                 type="border-card" 
-                closable 
                 @tab-remove="removeTab"
                 style="height: 100%;">
-                <el-tab-pane v-for="(item, index) in tabs" 
+                <el-tab-pane :closable="!(index == 0)" v-for="(item, index) in tabs"
                     :key="item.name" 
                     :label="item.title" 
                     :name="item.name">
                     <span slot="label"><i class="el-icon-date"></i> {{item.title}}</span>
-                    <tab-component :index="index" :name="index" style="padding-top: 0px;"></tab-component>
+                    <tab-component :index="index" :name="index" style="padding-top: 0px;width: 100%;"></tab-component>
                 </el-tab-pane>
             </el-tabs>
         </el-col>
@@ -21,6 +20,7 @@
 
 <script>
 import Vue from 'vue'
+import $ from 'jquery'
 
 export default {
     name: 'iTabs',
@@ -28,32 +28,33 @@ export default {
         return {
             tabsValue: '',
             tabs: [],
-            index:0,
-            tabComponent:{}
+            index: 0,
+            tabComponent: {},
+            iframeComponent: {}
         }
     },
     methods: {
         addOneTab(menu) {
+            let that = this
             var exist = false;
-            for (var i = 0; i < this.tabs.length; i++) {
-                if (menu.name === this.tabs[i].name) {
+            for (var i = 0; i < that.tabs.length; i++) {
+                if (menu.name === that.tabs[i].name) {
                     exist = true;
                     break
                 }
             }
             if (exist === true) {
-                this.tabsValue = menu.name;
+                that.tabsValue = menu.name;
                 return
             }
-            this.tabs.push({
+            that.tabs.push({
                 title: menu.name,
                 name: menu.name,
                 content: menu.component
             });
-            var _this = this;
-            this.tabComponent = Vue.component('tab-component', {
+            that.tabComponent = Vue.component('tab-component', {
                 render: function (h) {
-                    var comp = _this.tabs[this.index].content;
+                    var comp = that.tabs[this.index].content;
                     return h(comp)
                 },
                 props: {
@@ -63,18 +64,32 @@ export default {
                     }
                 }
             });
-            this.tabsValue = menu.name
+            that.tabsValue = menu.name
         },
         addTab(params) {
-            let tempRoutes = this.$router.options.routes;
+            let that = this
+            let tempRoutes = that.$router.options.routes;
             for (let i = 0; i < tempRoutes.length; i++) {
                 let temp = tempRoutes[i];
-                if(temp.path == params){
+                if(temp.path == params.path){
                     let menu = {};
                     menu.name = temp.title;
                     menu.component = temp.component;
-                    this.addOneTab(menu);
+                    console.log(menu.component)
+                    that.addOneTab(menu);
                 }
+            }
+
+            if(params.path && (params.path.indexOf('http') == 0 || params.path.indexOf('https') == 0)){
+                let uid = that.$moment(new Date()).format('YYYYMMDDHHmmss')
+                that.iframeComponent = Vue.component('iframe-component', {
+                    template: '<iframe id="'+uid+'" name="'+uid+'" src="'+params.path+'" scrolling="yes" width="100%" height="100%" frameborder="0" style="height: 780px;overflow: auto;"></iframe>',
+                });
+                let menu = {};
+                menu.name = params.title;
+                menu.component = that.iframeComponent.options;
+                console.log(menu.component)
+                that.addOneTab(menu);
             }
         },
         removeTab(targetName) {
@@ -92,8 +107,8 @@ export default {
             }
             this.tabsValue = activeName;
             this.tabs = tabs.filter(tab => tab.name !== targetName);
-            }
         },
+    },
     created: function(){
         let tempRoutes = this.$router.options.routes;
         for (let i = 0; i < tempRoutes.length; i++) {
@@ -112,7 +127,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-header, .el-footer {
     padding:  0px;
     background-color: #B3C0D1;
@@ -140,5 +155,6 @@ body > .el-container {
 
 .el-container {
     width: 100%;
+    height: 100%;
 }
 </style>

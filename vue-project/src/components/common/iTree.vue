@@ -1,5 +1,6 @@
 <template>
     <el-tree
+        size="mini"
         :data="treeData"
         show-checkbox
         node-key="id"
@@ -7,6 +8,23 @@
         highlight-current
         @check="handleCheck"
         :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span>{{ node.label }}</span>
+            <span>
+                <el-button
+                    type="text"
+                    size="mini"
+                    @click="() => append(data)">
+                    Append
+                </el-button>
+                <el-button
+                    type="text"
+                    size="mini"
+                    @click="() => remove(node, data)">
+                    Delete
+                </el-button>
+            </span>
+      </span>
     </el-tree>
 </template>
 
@@ -47,7 +65,23 @@ export default {
 
             that.$emit('transmitParentKeys', keys)
         },
-
+        allChecked(){
+            let that = this
+            let keys = []
+            console.log(that.tileTreeData)
+            that.tileTreeData.forEach(function(item, index){
+                let i = keys.indexOf(item.parent_id);
+                if(i == -1){
+                    keys.push(item.parent_id)
+                }
+                let j = keys.indexOf(item.id);
+                if(j == -1){
+                    keys.push(item.id)
+                }
+            })
+            that.$refs.tree.setCheckedKeys(keys);
+            that.$emit('transmitParentKeys', keys)
+        },
         // 重置
         resetChecked(keys) {
             let that = this
@@ -55,7 +89,7 @@ export default {
             that.tileTreeData.forEach(function(item, index){
                 let i = keys.indexOf(item.parent_id);
                 if(i > -1){
-                    keys.splice(i,1)
+                    //keys.splice(i,1)
                 }
             })
             that.$refs.tree.setCheckedKeys(keys);
@@ -101,18 +135,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-    font-weight: normal;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-li {
-    display: inline-block;
-    margin: 0 10px;
-}
-a {
-    color: #42b983;
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
 }
 </style>

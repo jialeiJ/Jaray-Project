@@ -1,5 +1,6 @@
 package com.vienna.jaray.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class SysMenuEntity {
 	private String label;
 	private String parent_id;
 	private String url;
+	private String perm;
 	private int type;
 	private String icon;
 	private int order_num;
@@ -22,7 +24,8 @@ public class SysMenuEntity {
 	private String last_update_by;
 	private String last_update_time;
 	private int del_flag;
-	
-	private List<SysMenuEntity> children;
+
+	private List<SysMenuEntity> perms;
+	private List<SysMenuEntity> children = new ArrayList<>();
 
 }

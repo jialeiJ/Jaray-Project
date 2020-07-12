@@ -21,7 +21,8 @@ export default {
     data () {
         return {
             leftMenus: [],
-            url: ''
+            url: '',
+            tileLeftNavData: []
         }
     },
     methods: {
@@ -49,8 +50,30 @@ export default {
         },
         addTab: function(key, keyPath){
             let that = this
+
+            let params = {
+                path: key
+            }
+            if(key.indexOf('http') == 0 || key.indexOf('https') == 0){
+                let obj = that.tileLeftNavData.filter(function(item){
+                    return item.url == key;
+                })
+                params.title = obj[0].label
+                params.path = obj[0].url
+            }
+
             //通过 emit 触发
-            this.$emit('addTab', key)
+            this.$emit('addTab', params)
+        },
+        // 平铺数据
+        tileLeftNav(leftNavData){
+            let that = this
+            leftNavData.forEach(function(item, index){
+                that.tileLeftNavData.push(item)
+                if(item.children.length){
+                    that.tileLeftNav(item.children)
+                }
+            })
         },
         ...mapActions( // 语法糖
             ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed'),提交这个方法
@@ -65,6 +88,18 @@ export default {
     },
     mounted: function(){
         
+    },
+    watch: {
+        // 使用监听
+        leftMenus: {
+            handler(newVal, oldVal){
+                if(newVal){
+                    this.tileLeftNav(newVal)
+                }
+            },
+            immediate: true, // 立即执行
+            deep: true //深度监听
+        }
     }
 }
 </script>

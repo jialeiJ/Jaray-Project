@@ -2,13 +2,17 @@ package com.vienna.jaray.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.common.Separator;
+import com.vienna.jaray.common.SysMenuConfig;
 import com.vienna.jaray.entity.SysMenuEntity;
+import com.vienna.jaray.entity.SysRoleMenuEntity;
 import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysUserRoleEntity;
 import com.vienna.jaray.mapper.SysMenuMapper;
+import com.vienna.jaray.mapper.SysRoleMenuMapper;
 import com.vienna.jaray.mapper.SysUserMapper;
+import com.vienna.jaray.mapper.SysUserRoleMapper;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.model.SelectOptionsModel;
 import com.vienna.jaray.service.SysMenuService;
@@ -17,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,37 +30,68 @@ public class SysMenuServiceImpl implements SysMenuService {
     private SysMenuMapper sysMenuMapper;
     @Autowired
     private SysUserMapper sysUserMapper;
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
+    @Autowired
+    private SysRoleMenuMapper sysRoleMenuMapper;
 
     @Override
     public ResponseResult findLeftNav(String user_id) {
-        // 1、查询出所有菜单及用户菜单权限
-        List<SysMenuEntity> menuEntityList = sysMenuMapper.findAll();
-        List<SysMenuEntity> noMenuEntityList = new ArrayList<>();
+        // 1、查询出所有菜单及用户菜单权限、查询所有菜单按钮权限
+        List<SysMenuEntity> menuList = sysMenuMapper.findAll();
+        List<SysMenuEntity> btnList = sysMenuMapper.findBtnAll();
+
+        List<SysMenuEntity> noMenuList = new ArrayList<>();
         if(!StringUtils.isEmpty(user_id)){
             SysUserEntity sysUser = sysUserMapper.findById(user_id);
-            String menu_perm = sysUser.getMenu_perm();
+            String roleIds = sysUser.getRole_id();
+            String[] roleIdArr = roleIds.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
+
+            SysUserRoleEntity userRole = sysUserRoleMapper.findByUserId(user_id);
+            List<SysRoleMenuEntity> sysRoleMenuList =  sysRoleMenuMapper.findByRids(roleIdArr);
+            StringBuffer menuStringBuffer = new StringBuffer("");
+
+            for(int i=0;i<sysRoleMenuList.size();i++){
+                if(i == (sysRoleMenuList.size()-1)){
+                    menuStringBuffer.append(sysRoleMenuList.get(i).getMenu_id());
+                }else{
+                    menuStringBuffer.append(sysRoleMenuList.get(i).getMenu_id()).append(Separator.COMMA_SEPARATOR_EN.getSeparator());
+                }
+            }
+
+            String menu_perm = menuStringBuffer.toString();
             String[] menu_perms = {};
             if(!StringUtils.isEmpty(menu_perm)){
                 menu_perms = menu_perm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
             }
-            noMenuEntityList = sysMenuMapper.findByPerm(menu_perms);
+            noMenuList = sysMenuMapper.findByPerm(menu_perms);
         }
 
         // 2、获取顶层菜单
-        List<SysMenuEntity> firstLevelMenuEntityList = menuEntityList.stream()
-                .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals("M0000000000000")).collect(Collectors.toList());
-        firstLevelMenuEntityList.removeAll(noMenuEntityList);
+        List<SysMenuEntity> firstLevelMenuList = menuList.stream()
+                .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(SysMenuConfig.TOP_DIR_ID)).collect(Collectors.toList());
+        firstLevelMenuList.removeAll(noMenuList);
 
         // 3、遍历顶层菜单，递归为其子菜单赋值
-        List<SysMenuEntity> finalNoMenuEntityList = noMenuEntityList;
-        firstLevelMenuEntityList.forEach(firstLevelMenuEntity -> {
-            List<SysMenuEntity> nextSubSetMenu = menuEntityList.stream()
-                    .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(firstLevelMenuEntity.getId())).collect(Collectors.toList());
-            nextSubSetMenu.removeAll(finalNoMenuEntityList);
-            firstLevelMenuEntity.setChildren(getMenuTree(nextSubSetMenu, firstLevelMenuEntity.getId(), menuEntityList, finalNoMenuEntityList));
+        List<SysMenuEntity> finalNoMenuList = noMenuList;
+        firstLevelMenuList.forEach(firstLevelMenu -> {
+            List<SysMenuEntity> nextSubSetMenu = menuList.stream()
+                    .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
+            nextSubSetMenu.removeAll(finalNoMenuList);
+
+            List<SysMenuEntity> perms = btnList.stream().filter(btn -> btn.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
+
+            if(perms.size() > 0 && firstLevelMenu.getType() == SysMenuConfig.MENU_FLAG) {
+                firstLevelMenu.setPerms(perms);
+                firstLevelMenu.setChildren(perms);
+            }
+
+            if(firstLevelMenu.getType() == SysMenuConfig.DIR_FLAG){
+                firstLevelMenu.setChildren(getMenuTree(nextSubSetMenu, firstLevelMenu.getId(), menuList, finalNoMenuList, btnList));
+            }
         });
 
-        return ResponseResult.success().add("leftMenu", firstLevelMenuEntityList);
+        return ResponseResult.success().add("leftMenu", firstLevelMenuList);
     }
 
     @Override
@@ -114,19 +148,30 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     /**
      * 递归取出所有关系树
-     * @param nextSubSetMenuEntityList
+     * @param nextSubSetMenuList
      * @param pid
      * @return
      */
-    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuEntityList,String pid, List<SysMenuEntity> menuEntityList, List<SysMenuEntity> noMenuEntityList) {
-        nextSubSetMenuEntityList.forEach(nextSubSetMenuEntity -> {
-            List<SysMenuEntity> nextSubSetMenu = menuEntityList.stream()
+    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuList,String pid, List<SysMenuEntity> menuList, List<SysMenuEntity> noMenuList, List<SysMenuEntity> btnList) {
+        nextSubSetMenuList.forEach(nextSubSetMenuEntity -> {
+            List<SysMenuEntity> nextSubSetMenu = menuList.stream()
                     .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
-            nextSubSetMenu.removeAll(noMenuEntityList);
-            nextSubSetMenuEntity.setChildren(getMenuTree(nextSubSetMenu, nextSubSetMenuEntity.getId(), menuEntityList, noMenuEntityList));
+            nextSubSetMenu.removeAll(noMenuList);
+
+            List<SysMenuEntity> perms = btnList.stream().filter(btn -> btn.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
+
+            if(perms.size() > 0 && nextSubSetMenuEntity.getType() == SysMenuConfig.MENU_FLAG) {
+                nextSubSetMenuEntity.setPerms(perms);
+                nextSubSetMenuEntity.setChildren(perms);
+            }
+
+            if(nextSubSetMenuEntity.getType() == SysMenuConfig.DIR_FLAG) {
+                nextSubSetMenuEntity.setChildren(getMenuTree(nextSubSetMenu, nextSubSetMenuEntity.getId(), menuList, noMenuList, btnList));
+            }
+
         });
 
-        return nextSubSetMenuEntityList;
+        return nextSubSetMenuList;
     }
 
 }

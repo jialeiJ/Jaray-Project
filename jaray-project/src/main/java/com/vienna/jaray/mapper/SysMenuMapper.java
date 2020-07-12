@@ -21,6 +21,12 @@ public interface SysMenuMapper {
 	public List<SysMenuEntity> findAll();
 
 	/**
+	 * 查询菜单按钮列表
+	 * @return
+	 */
+	public List<SysMenuEntity> findBtnAll();
+
+	/**
 	 * 添加菜单
 	 * @param sysMenuEntity 菜单对象
 	 * @return
@@ -47,6 +53,13 @@ public interface SysMenuMapper {
 	 * @return
 	 */
 	public SysMenuEntity findById(@Param("id")String id);
+
+	/**
+	 * 查询菜单
+	 * @param ids 菜单id数组
+	 * @return
+	 */
+	public List<SysMenuEntity> findByIds(@Param("ids")String[] ids);
 
 	/**
 	 * 查询所有目录菜单

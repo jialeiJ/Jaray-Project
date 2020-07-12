@@ -14,7 +14,8 @@ public class SysUserEntity {
     private String email;
     private String mobile;
     private int status;
-    private int dept_id;
+    private String dept_id;
+    private String role_id;
     private String create_by;
     private String create_time;
     private String last_update_by;

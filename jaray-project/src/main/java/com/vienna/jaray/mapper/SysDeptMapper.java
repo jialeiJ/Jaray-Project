@@ -25,6 +25,13 @@ public interface SysDeptMapper {
 
     /**
      * 查询部门
+     * @param  idList id集合
+     * @return
+     */
+    public List<SysDeptEntity> findByIds(@Param("idList")List<String> idList);
+
+    /**
+     * 查询部门
      * @param name
      * @return
      */

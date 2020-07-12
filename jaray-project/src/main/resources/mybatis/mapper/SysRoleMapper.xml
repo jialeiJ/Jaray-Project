@@ -5,7 +5,9 @@
 
     <resultMap id="CommonResultMap" type="sysRoleEntity">
         <id property="id" column="id"/>
+        <result property="value" column="value"/>
         <result property="name" column="name"/>
+        <result property="label" column="label"/>
         <result property="remark" column="remark"/>
         <result property="create_by" column="create_by"/>
         <result property="create_time" column="create_time"/>
@@ -15,7 +17,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-		r.id,r.name,r.remark,r.create_by,r.create_time,r.last_update_by,r.last_update_time,r.del_flag
+		r.id,r.id as value,r.name,r.name as label,r.remark,r.create_by,r.create_time,r.last_update_by,r.last_update_time,r.del_flag
     </sql>
 
     <!-- 查询角色列表 -->
@@ -36,19 +38,29 @@
     <select id="findById" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_role r where d.id = #{id}
+        from sys_role r where r.id = #{id}
+    </select>
+
+    <!-- 查询角色 -->
+    <select id="findByIds" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role r where r.id in
+        <foreach item="id" collection="idList" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
     <!-- 查询角色 -->
     <select id="findByName" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
-       from sys_role r where d.name = #{name}
+       from sys_role r where r.name = #{name}
     </select>
 
     <!-- 删除角色 -->
     <delete id="deleteByIds">
-        delete from sys_role r where d.id in
+        delete from sys_role r where r.id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>

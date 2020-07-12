@@ -152,6 +152,12 @@
             <div id="edit">
                 <el-dialog title="编辑" :visible.sync="editDialogFormVisible">
                     <el-form :model="editForm">
+                        <el-form-item label="类型" :label-width="formLabelWidth">
+                            <el-radio-group v-model="editForm.type">
+                                <el-radio :label="0">目录</el-radio>
+                                <el-radio :label="1">菜单</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="editForm.id" autocomplete="off"></el-input>
                         </el-form-item>
@@ -229,7 +235,7 @@ export default {
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
                 {prop: 'name', label: '名称', sort: true, filters: []},
-                {prop: 'type', label: '类型', formatter: this.typeFormatter},
+                {prop: 'type', label: '类型', formatter: this.typeFormatter,renderComponent: 'tag'},
                 {prop: 'url', label: '链接'},
                 {prop: 'icon', label: '图标'},
                 {prop: 'order_num', label: '排序'},
@@ -237,6 +243,13 @@ export default {
                 {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
+                {prop: 'operation', label: '操作', fixed: 'right',
+                    operation: [
+                        {name: '查看', style: 'primary', clickFun: this.viewSysMenu},
+                        {name: '修改', style: 'danger', clickFun: this.editViewSysMenu},
+                    ]
+                }
             ],
             tableData: [],
             multipleSelection: [],

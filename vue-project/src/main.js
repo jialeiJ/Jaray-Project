@@ -11,8 +11,8 @@ import store from './store'
 // 引入JavaScript 日期处理类库（格式化）
 import moment from "moment";
 // moment.locale('zh-cn') // 汉化
-
 import 'default-passive-events'
+import $ from 'jquery'
 
 import '@/assets/iconfont/iconfont.css'
 

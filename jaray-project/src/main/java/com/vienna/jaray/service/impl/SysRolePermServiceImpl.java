@@ -4,51 +4,44 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysRolePermEntity;
 import com.vienna.jaray.mapper.SysRoleMapper;
-import com.vienna.jaray.mapper.SysUserMapper;
+import com.vienna.jaray.mapper.SysRolePermMapper;
 import com.vienna.jaray.model.CommonParamsModel;
-import com.vienna.jaray.security.PasswordEncoderImpl;
+import com.vienna.jaray.service.SysRolePermService;
 import com.vienna.jaray.service.SysRoleService;
-import com.vienna.jaray.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SysRoleServiceImpl implements SysRoleService {
+public class SysRolePermServiceImpl implements SysRolePermService {
     @Autowired
-    private SysRoleMapper sysRoleMapper;
+    private SysRolePermMapper sysRolePermMapper;
 
     @Override
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysRoleEntity> sysRoleEntityList = sysRoleMapper.findAll();
+        List<SysRolePermEntity> sysRolePermList = sysRolePermMapper.findAll();
         //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(sysRoleEntityList);
-        return ResponseResult.success().add("sysRoles", pageInfo);
+        PageInfo<?> pageInfo = new PageInfo<>(sysRolePermList);
+        return ResponseResult.success().add("sysRolePermList", pageInfo);
     }
 
     @Override
-    public ResponseResult findById(String id) {
-        SysRoleEntity sysRoleEntity = sysRoleMapper.findById(id);
-        return ResponseResult.success().add("sysRole", sysRoleEntity);
+    public ResponseResult findByRid(String role_id) {
+        SysRolePermEntity sysRolePerm = sysRolePermMapper.findByRid(role_id);
+        return ResponseResult.success().add("sysRolePerm", sysRolePerm);
     }
 
     @Override
-    public ResponseResult findByName(String name) {
-        SysRoleEntity sysRoleEntity = sysRoleMapper.findByName(name);
-        return ResponseResult.success().add("sysRole", sysRoleEntity);
-    }
-
-    @Override
-    public ResponseResult add(SysRoleEntity sysRoleEntity) {
+    public ResponseResult add(SysRolePermEntity sysRolePermEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysRoleMapper.add(sysRoleEntity);
+        int result = sysRolePermMapper.add(sysRolePermEntity);
         if(result > 0){
-            responseResult = ResponseResult.success().add("sysRole", sysRoleEntity);
+            responseResult = ResponseResult.success().add("sysRolePerm", sysRolePermEntity);
         }
         return responseResult;
     }
@@ -56,7 +49,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public ResponseResult deleteByIds(String[] ids) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysRoleMapper.deleteByIds(ids);
+        int result = sysRolePermMapper.deleteByIds(ids);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }
@@ -64,9 +57,9 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public ResponseResult updateById(SysRoleEntity sysRoleEntity) {
+    public ResponseResult updateByRid(SysRolePermEntity sysRolePermEntity) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysRoleMapper.updateById(sysRoleEntity);
+        int result = sysRolePermMapper.updateByRid(sysRolePermEntity);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }

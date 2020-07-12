@@ -26,6 +26,13 @@ public interface SysRoleMapper {
 
     /**
      * 查询角色
+     * @param idList id集合
+     * @return
+     */
+    public List<SysRoleEntity> findByIds(@Param("idList")List<String> idList);
+
+    /**
+     * 查询角色
      * @param name
      * @return
      */
