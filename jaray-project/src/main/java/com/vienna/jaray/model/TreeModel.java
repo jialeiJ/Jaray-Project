@@ -1,6 +1,5 @@
 package com.vienna.jaray.model;
 
-import com.vienna.jaray.entity.SysMenuEntity;
 import lombok.Data;
 
 import java.util.List;

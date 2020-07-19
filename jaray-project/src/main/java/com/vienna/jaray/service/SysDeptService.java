@@ -1,9 +1,10 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDeptEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysDept;
 import com.vienna.jaray.model.CommonParamsModel;
+
+import java.util.List;
 
 public interface SysDeptService {
 
@@ -11,7 +12,7 @@ public interface SysDeptService {
      * 查询部门列表
      * @return
      */
-    public ResponseResult findAll(CommonParamsModel commonParamsModel);
+    public ResponseResult findAllTop(CommonParamsModel commonParamsModel);
 
     /**
      * 查询部门
@@ -32,7 +33,7 @@ public interface SysDeptService {
      * @param sysDeptEntity
      * @return
      */
-    public ResponseResult add(SysDeptEntity sysDeptEntity);
+    public ResponseResult add(SysDept sysDeptEntity);
 
     /**
      * 删除部门
@@ -46,5 +47,5 @@ public interface SysDeptService {
      * @param SysDeptEntity
      * @return
      */
-    public ResponseResult updateById(SysDeptEntity SysDeptEntity);
+    public ResponseResult updateById(SysDept SysDeptEntity);
 }

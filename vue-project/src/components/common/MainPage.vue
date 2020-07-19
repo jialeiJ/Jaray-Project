@@ -8,7 +8,7 @@
                 <menu-tree @addTab="addTab"></menu-tree>
             </el-aside>
             <el-main>
-                <i-tabs ref="iTabs" style="height: 100%;"></i-tabs>
+                <i-tabs ref="iTabs"></i-tabs>
                 <!-- <router-view /> -->
             </el-main>
         </el-container>
@@ -27,13 +27,13 @@ export default {
     data () {
         return {
             // 左边菜单默认宽度
-            asideWidth: '200'
+            asideWidth: 'c200'
         }
     },
     methods: {
         addTab: function(params){
             this.$refs['iTabs'].addTab(params)
-        },
+        }
     },
     created: function(){
         
@@ -64,6 +64,7 @@ export default {
     padding: 6px 6px;
     background-color: #FFFFFF;
     color: #333;
+    height: 100%;
     /* padding: 0 0px; */
 }
   

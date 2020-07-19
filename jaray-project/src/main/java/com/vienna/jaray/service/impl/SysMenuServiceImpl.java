@@ -5,10 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.common.Separator;
 import com.vienna.jaray.common.SysMenuConfig;
-import com.vienna.jaray.entity.SysMenuEntity;
-import com.vienna.jaray.entity.SysRoleMenuEntity;
-import com.vienna.jaray.entity.SysUserEntity;
-import com.vienna.jaray.entity.SysUserRoleEntity;
+import com.vienna.jaray.entity.SysMenu;
+import com.vienna.jaray.entity.SysRoleMenu;
+import com.vienna.jaray.entity.SysUser;
+import com.vienna.jaray.entity.SysUserRole;
 import com.vienna.jaray.mapper.SysMenuMapper;
 import com.vienna.jaray.mapper.SysRoleMenuMapper;
 import com.vienna.jaray.mapper.SysUserMapper;
@@ -16,9 +16,9 @@ import com.vienna.jaray.mapper.SysUserRoleMapper;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.model.SelectOptionsModel;
 import com.vienna.jaray.service.SysMenuService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,19 +38,22 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public ResponseResult findLeftNav(String user_id) {
         // 1、查询出所有菜单及用户菜单权限、查询所有菜单按钮权限
-        List<SysMenuEntity> menuList = sysMenuMapper.findAll();
-        List<SysMenuEntity> btnList = sysMenuMapper.findBtnAll();
+        List<SysMenu> menuList = sysMenuMapper.findAll();
+        List<SysMenu> btnList = sysMenuMapper.findBtnAll();
 
-        List<SysMenuEntity> noMenuList = new ArrayList<>();
-        if(!StringUtils.isEmpty(user_id)){
-            SysUserEntity sysUser = sysUserMapper.findById(user_id);
+        List<SysMenu> noMenuList = new ArrayList<>();
+        if(StringUtils.isNotEmpty(user_id)){
+            // 查询用户信息
+            SysUser sysUser = sysUserMapper.findById(user_id);
+            // 获取用户角色id并转为数组
             String roleIds = sysUser.getRole_id();
             String[] roleIdArr = roleIds.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
 
-            SysUserRoleEntity userRole = sysUserRoleMapper.findByUserId(user_id);
-            List<SysRoleMenuEntity> sysRoleMenuList =  sysRoleMenuMapper.findByRids(roleIdArr);
+            // 查询角色菜单
+            List<SysRoleMenu> sysRoleMenuList =  sysRoleMenuMapper.findByRids(roleIdArr);
             StringBuffer menuStringBuffer = new StringBuffer("");
 
+            // 遍历角色菜单集合获取菜单权限
             for(int i=0;i<sysRoleMenuList.size();i++){
                 if(i == (sysRoleMenuList.size()-1)){
                     menuStringBuffer.append(sysRoleMenuList.get(i).getMenu_id());
@@ -58,36 +61,42 @@ public class SysMenuServiceImpl implements SysMenuService {
                     menuStringBuffer.append(sysRoleMenuList.get(i).getMenu_id()).append(Separator.COMMA_SEPARATOR_EN.getSeparator());
                 }
             }
-
             String menu_perm = menuStringBuffer.toString();
+
+            // 获取菜单权限数组
             String[] menu_perms = {};
-            if(!StringUtils.isEmpty(menu_perm)){
+            if(StringUtils.isNotEmpty(menu_perm)){
                 menu_perms = menu_perm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
             }
+            // 获取无权限的菜单
             noMenuList = sysMenuMapper.findByPerm(menu_perms);
         }
 
         // 2、获取顶层菜单
-        List<SysMenuEntity> firstLevelMenuList = menuList.stream()
+        List<SysMenu> firstLevelMenuList = menuList.stream()
                 .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(SysMenuConfig.TOP_DIR_ID)).collect(Collectors.toList());
+        // 移除无权限的顶层菜单
         firstLevelMenuList.removeAll(noMenuList);
 
         // 3、遍历顶层菜单，递归为其子菜单赋值
-        List<SysMenuEntity> finalNoMenuList = noMenuList;
+        List<SysMenu> finalNoMenuList = noMenuList;
         firstLevelMenuList.forEach(firstLevelMenu -> {
-            List<SysMenuEntity> nextSubSetMenu = menuList.stream()
+            // 获取子菜单
+            List<SysMenu> nextSubSetMenu = menuList.stream()
                     .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
+            // 移除无权限的子菜单
             nextSubSetMenu.removeAll(finalNoMenuList);
 
-            List<SysMenuEntity> perms = btnList.stream().filter(btn -> btn.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
-
-            if(perms.size() > 0 && firstLevelMenu.getType() == SysMenuConfig.MENU_FLAG) {
+            // 如果是菜单获取菜单相应的权限
+            if(firstLevelMenu.getType() == SysMenuConfig.MENU_FLAG) {
+                List<SysMenu> perms = btnList.stream().filter(btn -> btn.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
                 firstLevelMenu.setPerms(perms);
                 firstLevelMenu.setChildren(perms);
             }
 
+            // 如果是目录则递归赋值子菜单
             if(firstLevelMenu.getType() == SysMenuConfig.DIR_FLAG){
-                firstLevelMenu.setChildren(getMenuTree(nextSubSetMenu, firstLevelMenu.getId(), menuList, finalNoMenuList, btnList));
+                firstLevelMenu.setChildren(getMenuTree(nextSubSetMenu, menuList, finalNoMenuList, btnList));
             }
         });
 
@@ -98,14 +107,14 @@ public class SysMenuServiceImpl implements SysMenuService {
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysMenuEntity> menuEntityList = sysMenuMapper.findAll();
+        List<SysMenu> menuEntityList = sysMenuMapper.findAll();
         //取记录总条数
         PageInfo<?> pageInfo = new PageInfo<>(menuEntityList);
         return ResponseResult.success().add("sysMenus", pageInfo);
     }
 
     @Override
-    public ResponseResult add(SysMenuEntity sysMenuEntity) {
+    public ResponseResult add(SysMenu sysMenuEntity) {
         ResponseResult responseResult = ResponseResult.fail();
         int result = sysMenuMapper.add(sysMenuEntity);
         if(result > 0){
@@ -125,7 +134,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public ResponseResult updateById(SysMenuEntity sysMenuEntity) {
+    public ResponseResult updateById(SysMenu sysMenuEntity) {
         ResponseResult responseResult = ResponseResult.fail();
         int result = sysMenuMapper.updateById(sysMenuEntity);
         if(result > 0){
@@ -136,7 +145,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @Override
     public ResponseResult findById(String id) {
-        SysMenuEntity sysMenuEntity = sysMenuMapper.findById(id);
+        SysMenu sysMenuEntity = sysMenuMapper.findById(id);
         return ResponseResult.success().add("sysMenu", sysMenuEntity);
     }
 
@@ -149,16 +158,18 @@ public class SysMenuServiceImpl implements SysMenuService {
     /**
      * 递归取出所有关系树
      * @param nextSubSetMenuList
-     * @param pid
+     * @param menuList
+     * @param noMenuList
+     * @param btnList
      * @return
      */
-    private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuList,String pid, List<SysMenuEntity> menuList, List<SysMenuEntity> noMenuList, List<SysMenuEntity> btnList) {
+    private List<SysMenu> getMenuTree(List<SysMenu> nextSubSetMenuList, List<SysMenu> menuList, List<SysMenu> noMenuList, List<SysMenu> btnList) {
         nextSubSetMenuList.forEach(nextSubSetMenuEntity -> {
-            List<SysMenuEntity> nextSubSetMenu = menuList.stream()
+            List<SysMenu> nextSubSetMenu = menuList.stream()
                     .filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
             nextSubSetMenu.removeAll(noMenuList);
 
-            List<SysMenuEntity> perms = btnList.stream().filter(btn -> btn.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
+            List<SysMenu> perms = btnList.stream().filter(btn -> btn.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
 
             if(perms.size() > 0 && nextSubSetMenuEntity.getType() == SysMenuConfig.MENU_FLAG) {
                 nextSubSetMenuEntity.setPerms(perms);
@@ -166,7 +177,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             }
 
             if(nextSubSetMenuEntity.getType() == SysMenuConfig.DIR_FLAG) {
-                nextSubSetMenuEntity.setChildren(getMenuTree(nextSubSetMenu, nextSubSetMenuEntity.getId(), menuList, noMenuList, btnList));
+                nextSubSetMenuEntity.setChildren(getMenuTree(nextSubSetMenu, menuList, noMenuList, btnList));
             }
 
         });

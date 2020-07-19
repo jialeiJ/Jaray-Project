@@ -1,7 +1,6 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysDictEntity;
-import com.vienna.jaray.entity.SysLogEntity;
+import com.vienna.jaray.entity.SysLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,28 +14,28 @@ public interface SysLogMapper {
      * 查询日志列表
      * @return
      */
-    public List<SysLogEntity> findAll();
+    public List<SysLog> findAll();
 
     /**
      * 查询日志
      * @param id
      * @return
      */
-    public SysLogEntity findById(@Param("id")String id);
+    public SysLog findById(@Param("id")String id);
 
     /**
      * 查询日志
      * @param user_name
      * @return
      */
-    public SysLogEntity findByName(@Param("user_name")String user_name);
+    public SysLog findByName(@Param("user_name")String user_name);
 
     /**
      * 添加日志
      * @param sysLogEntity
      * @return
      */
-    public int add(@Param("entity")SysLogEntity sysLogEntity);
+    public int add(@Param("entity") SysLog sysLogEntity);
 
     /**
      * 删除日志
@@ -50,5 +49,5 @@ public interface SysLogMapper {
      * @param sysLogEntity
      * @return
      */
-    public int updateById(@Param("entity")SysLogEntity sysLogEntity);
+    public int updateById(@Param("entity") SysLog sysLogEntity);
 }

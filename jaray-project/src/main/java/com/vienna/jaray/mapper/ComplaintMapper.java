@@ -5,21 +5,21 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.vienna.jaray.entity.ComplaintEntity;
+import com.vienna.jaray.entity.Complaint;
 import org.springframework.stereotype.Repository;
 
 @Mapper
 @Repository
 public interface ComplaintMapper {
 	
-	public List<ComplaintEntity> findAll();
+	public List<Complaint> findAll();
 	
-	public int add(@Param("entity")ComplaintEntity complaintEntity);
+	public int add(@Param("entity") Complaint complaintEntity);
 	
-	public ComplaintEntity findByCid(@Param("cid")String cid);
+	public Complaint findByCid(@Param("cid")String cid);
 
 	public int deleteByCids(@Param("cids") String[] cids);
 
-	public int updateByCid(@Param("entity")ComplaintEntity complaintEntity);
+	public int updateByCid(@Param("entity") Complaint complaintEntity);
 	
 }

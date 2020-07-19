@@ -3,7 +3,7 @@ package com.vienna.jaray.service;
 import java.util.concurrent.ExecutionException;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.ComplaintEntity;
+import com.vienna.jaray.entity.Complaint;
 import com.vienna.jaray.model.CommonParamsModel;
 
 public interface ComplaintService {
@@ -21,7 +21,7 @@ public interface ComplaintService {
 	 * @throws InterruptedException
 	 * @throws ExecutionException
 	 */
-	public ResponseResult add(ComplaintEntity complaintEntity);
+	public ResponseResult add(Complaint complaintEntity);
 
 	/**
 	 * 新增投诉信息
@@ -30,7 +30,7 @@ public interface ComplaintService {
 	 * @throws InterruptedException
 	 * @throws ExecutionException
 	 */
-	public ResponseResult updateByCid(ComplaintEntity complaintEntity);
+	public ResponseResult updateByCid(Complaint complaintEntity);
 
 	/**
 	 * 查询投诉信息

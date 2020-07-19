@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="el-pagination">
         <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -56,18 +56,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-    font-weight: normal;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-li {
-    display: inline-block;
-    margin: 0 10px;
-}
-a {
-    color: #42b983;
+/deep/ .el-pagination{
+    margin-top: 10px!important;
 }
 </style>

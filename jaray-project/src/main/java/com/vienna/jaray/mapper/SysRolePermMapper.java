@@ -1,7 +1,6 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysRolePermEntity;
+import com.vienna.jaray.entity.SysRolePerm;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,21 +14,21 @@ public interface SysRolePermMapper {
      * 查询角色权限
      * @return
      */
-    public List<SysRolePermEntity> findAll();
+    public List<SysRolePerm> findAll();
 
     /**
      * 查询角色权限
      * @param role_id
      * @return
      */
-    public SysRolePermEntity findByRid(@Param("role_id")String role_id);
+    public SysRolePerm findByRid(@Param("role_id")String role_id);
 
     /**
      * 添加角色权限
      * @param sysRolePermEntity
      * @return
      */
-    public int add(@Param("entity")SysRolePermEntity sysRolePermEntity);
+    public int add(@Param("entity") SysRolePerm sysRolePermEntity);
 
     /**
      * 删除角色权限
@@ -43,5 +42,5 @@ public interface SysRolePermMapper {
      * @param sysRolePermEntity
      * @return
      */
-    public int updateByRid(@Param("entity")SysRolePermEntity sysRolePermEntity);
+    public int updateByRid(@Param("entity") SysRolePerm sysRolePermEntity);
 }

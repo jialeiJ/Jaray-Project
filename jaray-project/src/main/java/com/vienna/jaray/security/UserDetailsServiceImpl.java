@@ -2,17 +2,12 @@ package com.vienna.jaray.security;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.vienna.jaray.entity.SysUserEntity;
-import com.vienna.jaray.entity.SysUserRoleEntity;
+import com.vienna.jaray.entity.SysUser;
+import com.vienna.jaray.entity.SysUserRole;
 import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.mapper.SysUserRoleMapper;
-import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,8 +31,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (StringUtils.isEmpty(username)) {
 			return null;
 		}else if("admin".equalsIgnoreCase(username) ){
-			SysUserEntity sysUserEntity = sysUserMapper.findByName(username);
-			SysUserRoleEntity sysUserRoleEntity = sysUserRoleMapper.findByUserId(sysUserEntity.getId());
+			SysUser sysUserEntity = sysUserMapper.findByName(username);
+			SysUserRole sysUserRoleEntity = sysUserRoleMapper.findByUserId(sysUserEntity.getId());
 			//这里使用自定义权限列表的方式初始化权限
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority> ();
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -50,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			UserDetails user = new User(sysUserEntity.getName(), sysUserEntity.getPassword(), grantedAuthorities);//注意：大写P，Passw0rd
 			return user;
 		}else{
-			SysUserEntity sysUserEntity = sysUserMapper.findByName(username);
+			SysUser sysUserEntity = sysUserMapper.findByName(username);
 			//这里使用自定义权限列表的方式初始化权限
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority> ();
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_NORMAL"));

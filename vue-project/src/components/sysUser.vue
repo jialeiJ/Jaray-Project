@@ -3,11 +3,16 @@
         <div>
             <div id="table">
                 <div style="margin-bottom: 10px">
-                    <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteSysUser">删除</el-button>
+                    <el-input
+                        placeholder="请输入姓名"
+                        v-model="search"
+                        clearable style="width: 200px">
+                    </el-input>
+                    <el-button type="success" @click="initTable" plain>查询</el-button>
+                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" @click="deleteSysUser" plain>删除</el-button>
                 </div>
-                <i-table ref="iTable" 
-                    :tableHeight="tableHeight"
+                <i-table ref="iTable"
                     @transmitParent="receiveChild"
                     @rowClick="rowClick"
                     @handleView="viewSysUser"
@@ -28,47 +33,79 @@
                 <el-dialog title="新增" :visible.sync="addDialogFormVisible">
                     <el-form :model="addForm">
                         <el-form-item label="ID" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="姓名" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.name" autocomplete="off"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="addForm.name" autocomplete="off"></el-input>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="部门" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="addForm.dept_ids"
+                                :options="deptOptions"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"></el-cascader>
                         </el-form-item>
                         <el-form-item label="邮箱" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.email" autocomplete="off"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="addForm.email" autocomplete="off"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="手机号" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.mobile" autocomplete="off"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="addForm.mobile" autocomplete="off"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.status" autocomplete="off"></el-input>
+                            <el-col :span="24">
+                                <el-select v-model="addForm.status" placeholder="请选择状态">
+                                    <el-option
+                                    v-for="item in statusOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="创建时间" :label-width="formLabelWidth">
-                            <el-date-picker
-                                v-model="addForm.create_time"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                align="right"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                :picker-options="pickerOptions">
-                            </el-date-picker>
+                            <el-col :span="24">
+                                <el-date-picker
+                                    v-model="addForm.create_time"
+                                    type="datetime"
+                                    placeholder="选择日期时间"
+                                    align="right"
+                                    format="yyyy-MM-dd HH:mm:ss"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    :picker-options="pickerOptions">
+                                </el-date-picker>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="更新人" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="更新时间" :label-width="formLabelWidth">
-                            <el-date-picker
-                                v-model="addForm.last_update_time"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                align="right"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                :picker-options="pickerOptions">
-                            </el-date-picker>
+                            <el-col :span="24">
+                                <el-date-picker
+                                    v-model="addForm.last_update_time"
+                                    type="datetime"
+                                    placeholder="选择日期时间"
+                                    align="right"
+                                    format="yyyy-MM-dd HH:mm:ss"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    :picker-options="pickerOptions">
+                                </el-date-picker>
+                            </el-col>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
@@ -82,47 +119,103 @@
                 <el-dialog title="详情" :visible.sync="viewDialogFormVisible">
                     <el-form :model="viewForm">
                         <el-form-item label="ID" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.id" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="viewForm.id" readonly="readonly"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="姓名" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.name" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="viewForm.name" readonly="readonly"></el-input>
+                            </el-col>
                         </el-form-item>
+                        <el-form-item label="部门" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="viewForm.dept_ids"
+                                :options="deptOptions"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"></el-cascader>
+                        </el-form-item>
+                        <el-form-item label="角色" :label-width="formLabelWidth">
+                            <el-col :span="24">
+                                <el-select v-model="role_ids" multiple placeholder="请选择角色">
+                                    <el-option
+                                    v-for="item in sysRoleList"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
+                        </el-form-item>
+                        <!-- <el-form-item label="部门" :label-width="formLabelWidth">
+                            <el-col :span="24">
+                                <el-select v-model="viewForm.dept_id" placeholder="请选择部门">
+                                    <el-option
+                                    v-for="item in sysDeptList"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
+                        </el-form-item> -->
                         <el-form-item label="邮箱" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.email" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="viewForm.email" readonly="readonly"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="手机号" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.mobile" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="viewForm.mobile" readonly="readonly"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.status" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-select v-model="viewForm.status" placeholder="请选择状态">
+                                    <el-option
+                                    v-for="item in statusOptions"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.create_by" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="viewForm.create_by" readonly="readonly"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="创建时间" :label-width="formLabelWidth">
-                            <el-date-picker
-                                v-model="viewForm.create_time"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                align="right"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                :picker-options="pickerOptions">
-                            </el-date-picker>
+                            <el-col :span="24">
+                                <el-date-picker
+                                    v-model="viewForm.create_time"
+                                    type="datetime"
+                                    placeholder="选择日期时间"
+                                    align="right"
+                                    format="yyyy-MM-dd HH:mm:ss"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    :picker-options="pickerOptions">
+                                </el-date-picker>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="更新人" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.last_update_by" readonly="readonly"></el-input>
+                            <el-col :span="24">
+                                <el-input v-model="viewForm.last_update_by" readonly="readonly"></el-input>
+                            </el-col>
                         </el-form-item>
                         <el-form-item label="更新时间" :label-width="formLabelWidth">
-                            <el-date-picker
-                                v-model="viewForm.last_update_time"
-                                type="datetime"
-                                placeholder="选择日期时间"
-                                align="right"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                value-format="yyyy-MM-dd HH:mm:ss"
-                                :picker-options="pickerOptions">
-                            </el-date-picker>
+                            <el-col :span="24">
+                                <el-date-picker
+                                    v-model="viewForm.last_update_time"
+                                    type="datetime"
+                                    placeholder="选择日期时间"
+                                    align="right"
+                                    format="yyyy-MM-dd HH:mm:ss"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
+                                    :picker-options="pickerOptions">
+                                </el-date-picker>
+                            </el-col>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
@@ -140,6 +233,25 @@
                         <el-form-item label="姓名" :label-width="formLabelWidth">
                             <el-input v-model="editForm.name" autocomplete="off"></el-input>
                         </el-form-item>
+                        <el-form-item label="部门" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="editForm.dept_ids"
+                                :options="deptOptions"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"></el-cascader>
+                        </el-form-item>
+                        <el-form-item label="角色" :label-width="formLabelWidth">
+                            <el-col :span="24">
+                                <el-select v-model="role_ids" multiple placeholder="请选择角色">
+                                    <el-option
+                                    v-for="item in sysRoleList"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
+                        </el-form-item>
                         <el-form-item label="邮箱" :label-width="formLabelWidth">
                             <el-input v-model="editForm.email" autocomplete="off"></el-input>
                         </el-form-item>
@@ -147,7 +259,14 @@
                             <el-input v-model="editForm.mobile" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="状态" :label-width="formLabelWidth">
-                            <el-input v-model="editForm.status" autocomplete="off"></el-input>
+                            <el-select v-model="editForm.status" placeholder="请选择状态">
+                                <el-option
+                                v-for="item in statusOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="创建人" :label-width="formLabelWidth">
                             <el-input v-model="editForm.create_by" autocomplete="off"></el-input>
@@ -191,6 +310,7 @@
 <script>
 import USER_API from '../api/api_sys_user'
 import DICT_API from '../api/api_sys_dict'
+import DEPT_API from '../api/api_sys_dept'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
 
@@ -199,9 +319,12 @@ export default {
     components: { iTable, iPagination },
     data () {
         return {
-            formLabelWidth: '120px',
-            tableHeight: 800,
-            loading: false,
+            // label宽度
+            formLabelWidth: 'calc(14vh - 0px)',
+            // 表格高度
+            tableHeight: 'calc(95vh - 200px)',
+            // 操作类型
+            operationType: 'view',
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
@@ -219,10 +342,10 @@ export default {
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
-                {prop: 'operation', label: '操作', fixed: 'right',
+                {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
                         {name: '查看', style: 'primary', clickFun: this.viewSysUser},
-                        {name: '修改', style: 'danger', clickFun: this.editViewSysUser},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysUser},
                     ]
                 }
             ],
@@ -258,7 +381,12 @@ export default {
             },
             statusOptions: [],
             sysDeptList: [],
-            sysRoleList: []
+            sysRoleList: [],
+            role_ids: [],
+            deptOptions: [],
+            tileDeptData: [],
+            // 部门ids,用于回显
+            deptIds: []
         }
     },
     created: function(){
@@ -267,15 +395,19 @@ export default {
         that.findSysDictByDesc()
     },
     methods: {
+        test: function(){
+            console.log(this.dept_ids)
+        },
         initTable: function(){
             let that = this
             // 定义请求参数
             let params = { 
+                search: that.search,
                 pageNum: that.pageNum,
                 pageSize: that.pageSize
             }
             // 调用接口
-            USER_API.findSysUserList(params).then(function (result) {
+            USER_API.findAllSysUser(params).then(function (result) {
                 if (result.code === 200) {
                     that.sysDeptList = result.map.sysDeptList
                     that.sysRoleList = result.map.sysRoleList
@@ -287,10 +419,25 @@ export default {
 
                     that.filtersHandler(that.tableData)
                 } else {
-                    that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
                 }
             });
+            // 重置请求参数
+            params = {}
+            // 调用接口
+            DEPT_API.findSysDeptList(params).then(function (result) {
+                if (result.code === 200) {
+                    that.deptOptions = result.map.sysDepts.list
+                    that.tileDeptList(result.map.sysDepts.list)
+                } else {
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            });
+        },
+        handleChange(value) {
+            let that = this
+            console.log(value);
+            console.log(that.tileDeptData)
         },
         receiveChild: function(data){
             let that = this
@@ -312,7 +459,6 @@ export default {
                     that.addDialogFormVisible = false
                     that.addForm = {}
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -322,37 +468,81 @@ export default {
             // 定义请求参数
             let params = row
             // 调用接口
-            USER_API.viewSysUser(params).then(function (result) {
+            USER_API.viewSysUserById(params).then(function (result) {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysUser
+
+                    // 回显角色
+                    that.role_ids = []
+                    let role_ids = result.map.sysUser.role_id.split(',')
+                    for(var i=0;i<role_ids.length;i++){
+                        that.role_ids.push(role_ids[i])
+                    }
+
+                    // 获取部门id的父id
+                    let id = result.map.sysUser.dept_id
+                    that.deptIds = []
+                    that.getAllPidById(id, that.tileDeptData)
+                    // 回显上层机构
+                    let dept_ids = that.deptIds.reverse()
+                    that.viewForm.dept_ids = dept_ids
+                    
                     that.viewDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
+        },
+        getAllPidById: function(id, tileDeptData){
+            let that = this
+            if(id){
+                that.deptIds.push(id)
+            }
+            tileDeptData.forEach(function(item, index){
+                if(item.id == id){
+                    that.getAllPidById(item.parent_id, tileDeptData)
+                }
+            })
         },
         editViewSysUser: function(row){
             let that = this
             // 定义请求参数
             let params = row
             // 调用接口
-            USER_API.viewSysUser(params).then(function (result) {
+            USER_API.viewSysUserById(params).then(function (result) {
                 if (result.code === 200) {
                     that.editForm = result.map.sysUser
+
+                    // 回显角色
+                    that.role_ids = []
+                    let role_ids = result.map.sysUser.role_id.split(',')
+                    for(var i=0;i<role_ids.length;i++){
+                        that.role_ids.push(role_ids[i])
+                    }
+
+                    // 获取部门id的父id
+                    let id = result.map.sysUser.dept_id
+                    that.deptIds = []
+                    that.getAllPidById(id, that.tileDeptData)
+                    // 回显上层机构
+                    let dept_ids = that.deptIds.reverse()
+                    that.editForm.dept_ids = dept_ids
+
                     that.editDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
         editSysUser: function(){
             let that = this
+            that.editForm.dept_id = that.editForm.dept_ids[(that.editForm.dept_ids.length - 1)]
+            that.editForm.role_id = that.role_ids.join(',')
+            console.log(that.editForm)
             // 定义请求参数
             let params = that.editForm
             // 调用接口
-            USER_API.updateSysUser(params).then(function (result) {
+            USER_API.updateSysUserById(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -361,7 +551,6 @@ export default {
                     });
                     that.editDialogFormVisible = false
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -377,7 +566,7 @@ export default {
                 ids: ids.join(',')
             }
             // 调用接口
-            USER_API.deleteSysUser(params).then(function (result) {
+            USER_API.deleteSysUserByIds(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
                     that.$message({
@@ -385,7 +574,6 @@ export default {
                         type: 'success'
                     });
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -504,24 +692,31 @@ export default {
             
             return result;
         },
+        // 平铺数据
+        tileDeptList(deptDataList){
+            let that = this
+            deptDataList.forEach(function(item, index){
+                that.tileDeptData.push(item)
+                if(item.children && item.children.length){
+                    that.tileDeptList(item.children)
+                }
+            })
+        }
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+/deep/ .el-select,.el-cascader {
+    display: block;
+    position: relative;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+
+/deep/ .el-dialog .el-dialog__body {
+  border-top: 1px solid #dcdfe6;
+  border-bottom: 1px solid #dcdfe6;
+  max-height: calc(85vh - 260px); 
+  overflow-y: auto;
 }
 </style>

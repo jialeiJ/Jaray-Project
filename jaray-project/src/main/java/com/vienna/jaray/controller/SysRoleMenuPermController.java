@@ -2,7 +2,7 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleMenuEntity;
+import com.vienna.jaray.entity.SysRoleMenu;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysRoleMenuPermService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class SysRoleMenuPermController {
 
     @ILogAnnotation(value = "添加角色菜单权限")
     @PostMapping("/add")
-    public ResponseResult add(SysRoleMenuEntity sysRoleMenuEntity) {
+    public ResponseResult add(SysRoleMenu sysRoleMenuEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysRoleMenuPermService.add(sysRoleMenuEntity);

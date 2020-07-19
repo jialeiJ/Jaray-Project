@@ -1,8 +1,7 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysRolePermEntity;
+import com.vienna.jaray.entity.SysRolePerm;
 import com.vienna.jaray.model.CommonParamsModel;
 
 public interface SysRolePermService {
@@ -25,7 +24,7 @@ public interface SysRolePermService {
      * @param sysRolePermEntity
      * @return
      */
-    public ResponseResult add(SysRolePermEntity sysRolePermEntity);
+    public ResponseResult add(SysRolePerm sysRolePermEntity);
 
     /**
      * 删除角色权限
@@ -39,5 +38,5 @@ public interface SysRolePermService {
      * @param sysRolePermEntity
      * @return
      */
-    public ResponseResult updateByRid(SysRolePermEntity sysRolePermEntity);
+    public ResponseResult updateByRid(SysRolePerm sysRolePermEntity);
 }

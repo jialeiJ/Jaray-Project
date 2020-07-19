@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vienna.jaray.mapper.SysRoleMenuMapper">
 
-    <resultMap id="CommonResultMap" type="sysRoleMenuEntity">
+    <resultMap id="CommonResultMap" type="sysRoleMenu">
         <id property="id" column="id"/>
         <result property="role_id" column="role_id"/>
         <result property="menu_id" column="menu_id"/>

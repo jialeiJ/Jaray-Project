@@ -2,10 +2,8 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDictEntity;
-import com.vienna.jaray.entity.SysLogEntity;
+import com.vienna.jaray.entity.SysLog;
 import com.vienna.jaray.model.CommonParamsModel;
-import com.vienna.jaray.service.SysDictService;
 import com.vienna.jaray.service.SysLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class SysLogController {
 
     @ILogAnnotation(value = "添加日志")
     @PostMapping("/add")
-    public ResponseResult add(SysLogEntity sysLogEntity) {
+    public ResponseResult add(SysLog sysLogEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysLogService.add(sysLogEntity);
@@ -57,7 +55,7 @@ public class SysLogController {
 
     @ILogAnnotation(value = "更新日志")
     @PostMapping("/update")
-    public ResponseResult updateById(SysLogEntity sysLogEntity) {
+    public ResponseResult updateById(SysLog sysLogEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysLogService.updateById(sysLogEntity);

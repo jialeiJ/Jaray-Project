@@ -3,8 +3,8 @@ package com.vienna.jaray.service.impl;
 import com.google.code.kaptcha.Constants;
 import com.vienna.jaray.common.HttpStatus;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUserEntity;
-import com.vienna.jaray.entity.SysUserTokenEntity;
+import com.vienna.jaray.entity.SysUser;
+import com.vienna.jaray.entity.SysUserToken;
 import com.vienna.jaray.mapper.SysUserMapper;
 import com.vienna.jaray.security.JwtAuthenticatioToken;
 import com.vienna.jaray.service.SystemService;
@@ -43,8 +43,8 @@ public class SystemServiceImpl implements SystemService {
         // 系统登录认证
         JwtAuthenticatioToken token = SecurityUtil.login(request, username, password, authenticationManager);
 
-        SysUserEntity sysUserEntity = sysUserMapper.findByName(username);
-        SysUserTokenEntity sysUserTokenEntity = new SysUserTokenEntity();
+        SysUser sysUserEntity = sysUserMapper.findByName(username);
+        SysUserToken sysUserTokenEntity = new SysUserToken();
         sysUserTokenEntity.setUser_id(sysUserEntity.getId());
         sysUserTokenEntity.setName(sysUserEntity.getName());
         sysUserTokenEntity.setToken(token.getToken());
@@ -62,11 +62,11 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public ResponseResult reLogin(HttpServletRequest request, SysUserTokenEntity sysUserToken) {
+    public ResponseResult reLogin(HttpServletRequest request, SysUserToken sysUserToken) {
         Authentication authentication = SecurityUtil.getAuthentication();
 
         // 生成令牌并返回给客户端
-        SysUserTokenEntity sysUserTokenEntity = new SysUserTokenEntity();
+        SysUserToken sysUserTokenEntity = new SysUserToken();
         String token = JwtTokenUtil.refreshToken(sysUserToken.getToken());
         sysUserTokenEntity.setToken(token);
         sysUserTokenEntity.setExpire_time(JwtTokenUtil.tokenExpireTime(token));
@@ -77,7 +77,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public ResponseResult updatePassword(String id, String password) {
         ResponseResult responseResult = ResponseResult.fail();
-        SysUserEntity sysUserEntity = new SysUserEntity();
+        SysUser sysUserEntity = new SysUser();
         sysUserEntity.setId(id);
         sysUserEntity.setPassword(passwordEncoder.encode(password));
         int result = sysUserMapper.updateById(sysUserEntity);

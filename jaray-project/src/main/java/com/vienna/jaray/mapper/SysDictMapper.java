@@ -1,7 +1,6 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysDictEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysDict;
 import com.vienna.jaray.model.SelectOptionsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,28 +15,28 @@ public interface SysDictMapper {
      * 查询字典列表
      * @return
      */
-    public List<SysDictEntity> findAll();
+    public List<SysDict> findAll();
 
     /**
      * 查询字典
      * @param id
      * @return
      */
-    public SysDictEntity findById(@Param("id")String id);
+    public SysDict findById(@Param("id")String id);
 
     /**
      * 查询字典
      * @param name
      * @return
      */
-    public SysDictEntity findByName(@Param("name")String name);
+    public SysDict findByName(@Param("name")String name);
 
     /**
      * 添加字典
      * @param sysDictEntity
      * @return
      */
-    public int add(@Param("entity")SysDictEntity sysDictEntity);
+    public int add(@Param("entity") SysDict sysDictEntity);
 
     /**
      * 删除字典
@@ -51,7 +50,7 @@ public interface SysDictMapper {
      * @param sysDictEntity
      * @return
      */
-    public int updateById(@Param("entity")SysDictEntity sysDictEntity);
+    public int updateById(@Param("entity") SysDict sysDictEntity);
 
     /**
      * 查询字典

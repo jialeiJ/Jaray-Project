@@ -1,8 +1,7 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysRole;
 import com.vienna.jaray.model.CommonParamsModel;
 
 public interface SysRoleService {
@@ -32,7 +31,7 @@ public interface SysRoleService {
      * @param sysRoleEntity
      * @return
      */
-    public ResponseResult add(SysRoleEntity sysRoleEntity);
+    public ResponseResult add(SysRole sysRoleEntity);
 
     /**
      * 删除角色
@@ -46,5 +45,5 @@ public interface SysRoleService {
      * @param sysRoleEntity
      * @return
      */
-    public ResponseResult updateById(SysRoleEntity sysRoleEntity);
+    public ResponseResult updateById(SysRole sysRoleEntity);
 }

@@ -1,6 +1,6 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysRoleMenuEntity;
+import com.vienna.jaray.entity.SysRoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,28 +14,28 @@ public interface SysRoleMenuMapper {
      * 查询角色菜单
      * @return
      */
-    public List<SysRoleMenuEntity> findAll();
+    public List<SysRoleMenu> findAll();
 
     /**
      * 查询角色菜单
      * @param role_id
      * @return
      */
-    public SysRoleMenuEntity findByRid(@Param("role_id")String role_id);
+    public SysRoleMenu findByRid(@Param("role_id")String role_id);
 
     /**
      * 查询角色菜单
      * @param role_ids
      * @return
      */
-    public List<SysRoleMenuEntity> findByRids(@Param("role_ids")String[] role_ids);
+    public List<SysRoleMenu> findByRids(@Param("role_ids")String[] role_ids);
 
     /**
      * 添加角色菜单
      * @param sysRoleMenuEntity
      * @return
      */
-    public int add(@Param("entity") SysRoleMenuEntity sysRoleMenuEntity);
+    public int add(@Param("entity") SysRoleMenu sysRoleMenuEntity);
 
     /**
      * 删除角色菜单
@@ -49,5 +49,5 @@ public interface SysRoleMenuMapper {
      * @param sysRoleMenuEntity
      * @return
      */
-    public int updateByRid(@Param("entity") SysRoleMenuEntity sysRoleMenuEntity);
+    public int updateByRid(@Param("entity") SysRoleMenu sysRoleMenuEntity);
 }

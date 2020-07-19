@@ -3,7 +3,7 @@ package com.vienna.jaray.entity;
 import lombok.Data;
 
 @Data
-public class DecisionEntity {
+public class Decision {
 	
 	private int did;
 	private String dOpinion;

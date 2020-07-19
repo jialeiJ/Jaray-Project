@@ -1,7 +1,6 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysUserEntity;
-import com.vienna.jaray.entity.SysUserRoleEntity;
+import com.vienna.jaray.entity.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,21 +14,21 @@ public interface SysUserRoleMapper {
      * 查询用户角色列表
      * @return
      */
-    public List<SysUserRoleEntity> findAll();
+    public List<SysUserRole> findAll();
 
     /**
      * 添加用户角色
      * @param sysUserRoleEntity 用户角色对象
      * @return
      */
-    public SysUserRoleEntity add(@Param("entity") SysUserRoleEntity sysUserRoleEntity);
+    public SysUserRole add(@Param("entity") SysUserRole sysUserRoleEntity);
 
     /**
      * 查询用户角色
      * @param user_id 用户id
      * @return
      */
-    public SysUserRoleEntity findByUserId(@Param("user_id")String user_id);
+    public SysUserRole findByUserId(@Param("user_id")String user_id);
 
     /**
      * 删除用户角色
@@ -43,5 +42,5 @@ public interface SysUserRoleMapper {
      * @param id
      * @return
      */
-    public SysUserRoleEntity updateById(@Param("id")String id);
+    public SysUserRole updateById(@Param("id")String id);
 }

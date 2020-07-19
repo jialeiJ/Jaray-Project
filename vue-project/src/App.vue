@@ -47,4 +47,9 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     color: #46515c;
 }
+
+/*修复谷歌浏览器下table组件border错位问题*/
+body .el-table th.gutter{
+    display: table-cell!important;
+}
 </style>

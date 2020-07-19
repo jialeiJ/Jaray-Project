@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.ComplaintEntity;
+import com.vienna.jaray.entity.Complaint;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.ComplaintService;
 
@@ -34,7 +34,7 @@ public class ComplaintController {
 	
 	@ILogAnnotation(value = "添加投诉信息")
 	@PostMapping("/add")
-	public ResponseResult add(ComplaintEntity complaintEntity) {
+	public ResponseResult add(Complaint complaintEntity) {
 		ResponseResult resultMsg = null;
 		try {
 			resultMsg = complaintService.add(complaintEntity);
@@ -58,7 +58,7 @@ public class ComplaintController {
 
 	@ILogAnnotation(value = "更新投诉信息")
 	@PostMapping("/update")
-	public ResponseResult updateByCid(ComplaintEntity complaintEntity) {
+	public ResponseResult updateByCid(Complaint complaintEntity) {
 		ResponseResult resultMsg = null;
 		complaintEntity.setCFileIds("11,22");
 		try {

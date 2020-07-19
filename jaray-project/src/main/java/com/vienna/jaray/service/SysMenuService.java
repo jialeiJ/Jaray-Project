@@ -1,11 +1,9 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysMenuEntity;
+import com.vienna.jaray.entity.SysMenu;
 import com.vienna.jaray.model.CommonParamsModel;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 public interface SysMenuService {
     /**
@@ -26,7 +24,7 @@ public interface SysMenuService {
      * @param sysMenuEntity 菜单对象
      * @return
      */
-    public ResponseResult add(@Param("entity")SysMenuEntity sysMenuEntity);
+    public ResponseResult add(@Param("entity") SysMenu sysMenuEntity);
 
     /**
      * 删除菜单
@@ -40,7 +38,7 @@ public interface SysMenuService {
      * @param sysMenuEntity 菜单对象
      * @return
      */
-    public ResponseResult updateById(@Param("entity")SysMenuEntity sysMenuEntity);
+    public ResponseResult updateById(@Param("entity") SysMenu sysMenuEntity);
 
     /**
      * 查询菜单

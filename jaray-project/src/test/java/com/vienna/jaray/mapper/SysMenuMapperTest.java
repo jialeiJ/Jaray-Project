@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.vienna.jaray.entity.SysMenuEntity;
+import com.vienna.jaray.entity.SysMenu;
 
 @Slf4j
 @SpringBootTest
@@ -67,7 +67,7 @@ public class SysMenuMapperTest {
 	 * @param menuList
 	 * @return
 	 */
-	private List<SysMenuEntity> getMenuTree(List<SysMenuEntity> nextSubSetMenuList,String pid, List<SysMenuEntity> menuList, List<SysMenuEntity> noMenuList, List<SysMenuEntity> menuPermList) {
+	private List<SysMenu> getMenuTree(List<SysMenu> nextSubSetMenuList, String pid, List<SysMenu> menuList, List<SysMenu> noMenuList, List<SysMenu> menuPermList) {
 //		nextSubSetMenuList.forEach(nextSubSetMenuEntity -> {
 //			List<SysMenuEntity> nextSubSetMenu = menuList.stream()
 //					.filter(sysMenuEntity -> sysMenuEntity.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());

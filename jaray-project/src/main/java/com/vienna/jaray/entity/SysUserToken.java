@@ -6,19 +6,14 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class SysUserEntity {
-    private String id;
+public class SysUserToken {
+    private int id;
+    private String user_id;
     private String name;
-    private String password;
-    private String menu_perm;
-    private String email;
-    private String mobile;
-    private int status;
-    private String dept_id;
-    private String role_id;
+    private String token;
+    private String expire_time;
     private String create_by;
     private String create_time;
     private String last_update_by;
     private String last_update_time;
-    private int del_flag;
 }

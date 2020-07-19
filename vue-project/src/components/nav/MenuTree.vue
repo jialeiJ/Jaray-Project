@@ -20,8 +20,8 @@ export default {
     components: { LeftNav },
     data () {
         return {
-            leftMenus: [],
             url: '',
+            leftMenus: [],
             tileLeftNavData: []
         }
     },
@@ -37,7 +37,6 @@ export default {
                 if (result.code === 200) {
                     that.leftMenus =result.map.leftMenu
                 } else {
-                    that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
                 }
             })

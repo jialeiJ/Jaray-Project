@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vienna.jaray.mapper.SysDictMapper">
 
-    <resultMap id="CommonResultMap" type="sysDictEntity">
+    <resultMap id="CommonResultMap" type="sysDict">
         <id property="id" column="id"/>
         <result property="value" column="value"/>
         <result property="label" column="label"/>

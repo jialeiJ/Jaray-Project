@@ -1,8 +1,7 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDictEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysDict;
 import com.vienna.jaray.model.CommonParamsModel;
 
 public interface SysDictService {
@@ -32,7 +31,7 @@ public interface SysDictService {
      * @param sysDictEntity
      * @return
      */
-    public ResponseResult add(SysDictEntity sysDictEntity);
+    public ResponseResult add(SysDict sysDictEntity);
 
     /**
      * 删除字典
@@ -46,7 +45,7 @@ public interface SysDictService {
      * @param sysDictEntity
      * @return
      */
-    public ResponseResult updateById(SysDictEntity sysDictEntity);
+    public ResponseResult updateById(SysDict sysDictEntity);
 
     /**
      * 查询字典

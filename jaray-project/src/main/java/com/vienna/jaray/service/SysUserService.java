@@ -1,11 +1,8 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysUser;
 import com.vienna.jaray.model.CommonParamsModel;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 public interface SysUserService {
 
@@ -34,7 +31,7 @@ public interface SysUserService {
      * @param sysUserEntity
      * @return
      */
-    public ResponseResult add(SysUserEntity sysUserEntity);
+    public ResponseResult add(SysUser sysUserEntity);
 
     /**
      * 删除用户
@@ -48,5 +45,5 @@ public interface SysUserService {
      * @param sysUserEntity
      * @return
      */
-    public ResponseResult updateById(SysUserEntity sysUserEntity);
+    public ResponseResult updateById(SysUser sysUserEntity);
 }

@@ -1,8 +1,7 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDictEntity;
-import com.vienna.jaray.entity.SysLogEntity;
+import com.vienna.jaray.entity.SysLog;
 import com.vienna.jaray.model.CommonParamsModel;
 
 public interface SysLogService {
@@ -32,7 +31,7 @@ public interface SysLogService {
      * @param sysLogEntity
      * @return
      */
-    public ResponseResult add(SysLogEntity sysLogEntity);
+    public ResponseResult add(SysLog sysLogEntity);
 
     /**
      * 删除日志
@@ -46,5 +45,5 @@ public interface SysLogService {
      * @param sysLogEntity
      * @return
      */
-    public ResponseResult updateById(SysLogEntity sysLogEntity);
+    public ResponseResult updateById(SysLog sysLogEntity);
 }

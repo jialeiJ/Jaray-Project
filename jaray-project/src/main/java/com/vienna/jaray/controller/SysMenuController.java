@@ -2,7 +2,7 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysMenuEntity;
+import com.vienna.jaray.entity.SysMenu;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysMenuService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class SysMenuController {
 
     @ILogAnnotation(value = "添加菜单")
     @PostMapping("/add")
-    public ResponseResult add(SysMenuEntity sysMenuEntity) {
+    public ResponseResult add(SysMenu sysMenuEntity) {
         return sysMenuService.add(sysMenuEntity);
     }
 
@@ -37,7 +37,7 @@ public class SysMenuController {
 
     @ILogAnnotation(value = "更新菜单")
     @PostMapping("/update")
-    public ResponseResult updateById(SysMenuEntity sysMenuEntity) {
+    public ResponseResult updateById(SysMenu sysMenuEntity) {
         return sysMenuService.updateById(sysMenuEntity);
     }
 

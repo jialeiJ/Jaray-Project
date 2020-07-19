@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.ComplaintEntity;
+import com.vienna.jaray.entity.Complaint;
 import com.vienna.jaray.mapper.ComplaintMapper;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.ComplaintService;
@@ -29,7 +29,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 		
 		//设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-		List<ComplaintEntity> complaintEntities = complaintMapper.findAll();
+		List<Complaint> complaintEntities = complaintMapper.findAll();
 		//取记录总条数
         PageInfo<?> pageInfo = new PageInfo<>(complaintEntities);
 		return ResponseResult.success().add("complaints", pageInfo);
@@ -37,9 +37,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 
 	@Override
 	@Transactional(timeout = 30)
-	public ResponseResult add(ComplaintEntity complaintEntity) {
+	public ResponseResult add(Complaint complaintEntity) {
 		ResponseResult responseResult = ResponseResult.fail();
-		ComplaintEntity findResult = complaintMapper.findByCid(complaintEntity.getCid());
+		Complaint findResult = complaintMapper.findByCid(complaintEntity.getCid());
 		int result = complaintMapper.add(complaintEntity);
 		if(result > 0){
 			responseResult = ResponseResult.success().add("complaint", complaintEntity);
@@ -49,9 +49,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 
 	@Override
 	@Transactional(timeout = 30)
-	public ResponseResult updateByCid(ComplaintEntity complaintEntity) {
+	public ResponseResult updateByCid(Complaint complaintEntity) {
 		ResponseResult responseResult = ResponseResult.fail();
-		ComplaintEntity findResult = complaintMapper.findByCid(complaintEntity.getCid());
+		Complaint findResult = complaintMapper.findByCid(complaintEntity.getCid());
 		int result = complaintMapper.updateByCid(complaintEntity);
 		if(result > 0){
 			responseResult = ResponseResult.success().add("complaint", complaintEntity);
@@ -62,7 +62,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	@Override
 	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
 	public ResponseResult findByCid(String cid) {
-        ComplaintEntity complaintEntitiy = complaintMapper.findByCid(cid);
+        Complaint complaintEntitiy = complaintMapper.findByCid(cid);
 		return ResponseResult.success().add("complaint", complaintEntitiy);
 	}
 

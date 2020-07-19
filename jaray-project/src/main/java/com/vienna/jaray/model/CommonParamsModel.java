@@ -10,6 +10,8 @@ import lombok.Data;
  */
 @Data
 public class CommonParamsModel {
+	/* 查询内容 */
+	private String search;
 	/* 分页信息，第几页 */
 	private int pageNum = 0;
 	/* 分页信息，每页的数量 */

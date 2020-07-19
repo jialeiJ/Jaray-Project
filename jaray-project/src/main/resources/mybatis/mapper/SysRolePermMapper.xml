@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vienna.jaray.mapper.SysRolePermMapper">
 
-    <resultMap id="CommonResultMap" type="sysRolePermEntity">
+    <resultMap id="CommonResultMap" type="sysRolePerm">
         <id property="id" column="id"/>
         <result property="role_id" column="role_id"/>
         <result property="perm_id" column="perm_id"/>

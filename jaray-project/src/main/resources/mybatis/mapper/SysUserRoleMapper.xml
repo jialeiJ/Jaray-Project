@@ -3,7 +3,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vienna.jaray.mapper.SysUserRoleMapper">
 
-    <resultMap id="CommonResultMap" type="sysUserRoleEntity">
+    <resultMap id="CommonResultMap" type="sysUserRole">
         <id property="id" column="id"/>
         <result property="user_id" column="user_id"/>
         <result property="role_id" column="role_id"/>

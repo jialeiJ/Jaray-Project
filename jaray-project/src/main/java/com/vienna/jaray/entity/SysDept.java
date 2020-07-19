@@ -2,18 +2,21 @@ package com.vienna.jaray.entity;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class SysDictEntity {
+public class SysDept {
     private String id;
     private String value;
+    private String name;
     private String label;
-    private String type;
-    private String description;
-    private int sort;
-    private String remarks;
+    private String parent_id;
+    private int order_num;
     private String create_by;
     private String create_time;
     private String last_update_by;
     private String last_update_time;
     private int del_flag;
+
+    private List<SysDept> children;
 }

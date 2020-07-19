@@ -2,11 +2,9 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDeptEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysDept;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysDeptService;
-import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +22,7 @@ public class SysDeptController {
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         ResponseResult resultMsg = null;
         try {
-            resultMsg = sysDeptService.findAll(commonParamsModel);
+            resultMsg = sysDeptService.findAllTop(commonParamsModel);
         } catch (Exception e) {
             log.error("findAll Method Exception", e);
         }
@@ -33,7 +31,7 @@ public class SysDeptController {
 
     @ILogAnnotation(value = "添加部门")
     @PostMapping("/add")
-    public ResponseResult add(SysDeptEntity sysDeptEntity) {
+    public ResponseResult add(SysDept sysDeptEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysDeptService.add(sysDeptEntity);
@@ -57,7 +55,7 @@ public class SysDeptController {
 
     @ILogAnnotation(value = "更新部门")
     @PostMapping("/update")
-    public ResponseResult updateById(SysDeptEntity sysDeptEntity) {
+    public ResponseResult updateById(SysDept sysDeptEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysDeptService.updateById(sysDeptEntity);

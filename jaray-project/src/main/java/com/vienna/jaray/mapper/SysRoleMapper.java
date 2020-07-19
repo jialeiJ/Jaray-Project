@@ -1,7 +1,6 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,35 +14,35 @@ public interface SysRoleMapper {
      * 查询角色列表
      * @return
      */
-    public List<SysRoleEntity> findAll();
+    public List<SysRole> findAll();
 
     /**
      * 查询角色
      * @param id
      * @return
      */
-    public SysRoleEntity findById(@Param("id")String id);
+    public SysRole findById(@Param("id")String id);
 
     /**
      * 查询角色
      * @param idList id集合
      * @return
      */
-    public List<SysRoleEntity> findByIds(@Param("idList")List<String> idList);
+    public List<SysRole> findByIds(@Param("idList")List<String> idList);
 
     /**
      * 查询角色
      * @param name
      * @return
      */
-    public SysRoleEntity findByName(@Param("name")String name);
+    public SysRole findByName(@Param("name")String name);
 
     /**
      * 添加角色
      * @param sysRoleEntity
      * @return
      */
-    public int add(@Param("entity")SysRoleEntity sysRoleEntity);
+    public int add(@Param("entity") SysRole sysRoleEntity);
 
     /**
      * 删除角色
@@ -57,5 +56,5 @@ public interface SysRoleMapper {
      * @param sysRoleEntity
      * @return
      */
-    public int updateById(@Param("entity")SysRoleEntity sysRoleEntity);
+    public int updateById(@Param("entity") SysRole sysRoleEntity);
 }

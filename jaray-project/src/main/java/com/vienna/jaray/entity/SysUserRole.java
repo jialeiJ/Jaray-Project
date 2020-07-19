@@ -3,16 +3,12 @@ package com.vienna.jaray.entity;
 import lombok.Data;
 
 @Data
-public class SysDeptEntity {
+public class SysUserRole {
     private String id;
-    private String value;
-    private String name;
-    private String label;
-    private String parent_id;
-    private int order_num;
+    private String user_id;
+    private String role_id;
     private String create_by;
     private String create_time;
     private String last_update_by;
     private String last_update_time;
-    private int del_flag;
 }

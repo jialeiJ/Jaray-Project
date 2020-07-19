@@ -2,11 +2,9 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysRole;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysRoleService;
-import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,7 @@ public class SysRoleController {
 
     @ILogAnnotation(value = "添加角色")
     @PostMapping("/add")
-    public ResponseResult add(SysRoleEntity sysRoleEntity) {
+    public ResponseResult add(SysRole sysRoleEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysRoleService.add(sysRoleEntity);
@@ -57,7 +55,7 @@ public class SysRoleController {
 
     @ILogAnnotation(value = "更新角色")
     @PostMapping("/update")
-    public ResponseResult updateById(SysRoleEntity sysRoleEntity) {
+    public ResponseResult updateById(SysRole sysRoleEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysRoleService.updateById(sysRoleEntity);

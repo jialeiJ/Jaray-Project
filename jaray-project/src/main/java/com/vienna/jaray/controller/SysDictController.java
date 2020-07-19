@@ -2,11 +2,9 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDictEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysDict;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysDictService;
-import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "添加字典")
     @PostMapping("/add")
-    public ResponseResult add(SysDictEntity sysDictEntity) {
+    public ResponseResult add(SysDict sysDictEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysDictService.add(sysDictEntity);
@@ -57,7 +55,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "更新字典")
     @PostMapping("/update")
-    public ResponseResult updateById(SysDictEntity sysDictEntity) {
+    public ResponseResult updateById(SysDict sysDictEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysDictService.updateById(sysDictEntity);

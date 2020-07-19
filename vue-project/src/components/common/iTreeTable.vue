@@ -5,11 +5,13 @@
             size="mini"
             :data="tableData"
             :key="iKey"
+            row-key="id"
             :height="tableHeight"
             :highlight-current-row="true"
             @selection-change="handleSelectionChange"
             @filter-change="handlerFilterChange"
             @row-click="rowClick"
+            :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
             style="height: 100%;width: 100%;box-shadow: 3px 6px 5px #888888;">
             <el-table-column
                 type="selection"

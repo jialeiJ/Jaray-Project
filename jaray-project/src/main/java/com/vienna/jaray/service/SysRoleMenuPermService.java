@@ -1,7 +1,7 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleMenuEntity;
+import com.vienna.jaray.entity.SysRoleMenu;
 import com.vienna.jaray.model.CommonParamsModel;
 
 public interface SysRoleMenuPermService {
@@ -24,7 +24,7 @@ public interface SysRoleMenuPermService {
      * @param sysRoleMenuEntity
      * @return
      */
-    public ResponseResult add(SysRoleMenuEntity sysRoleMenuEntity);
+    public ResponseResult add(SysRoleMenu sysRoleMenuEntity);
 
     /**
      * 删除角色菜单权限

@@ -222,6 +222,13 @@ export default {
                 {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
+                {prop: 'operation', label: '操作', fixed: 'right', width: 90,
+                    operation: [
+                        {name: '查看', style: 'text', clickFun: this.viewSysLog},
+                        {name: '修改', style: 'text', clickFun: this.editViewSysLog},
+                    ]
+                }
             ],
             tableData: [],
             multipleSelection: [],

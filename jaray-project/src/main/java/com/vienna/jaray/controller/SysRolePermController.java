@@ -2,11 +2,9 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleEntity;
-import com.vienna.jaray.entity.SysRolePermEntity;
+import com.vienna.jaray.entity.SysRolePerm;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysRolePermService;
-import com.vienna.jaray.service.SysRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +31,7 @@ public class SysRolePermController {
 
     @ILogAnnotation(value = "添加角色权限")
     @PostMapping("/add")
-    public ResponseResult add(SysRolePermEntity sysRolePermEntity) {
+    public ResponseResult add(SysRolePerm sysRolePermEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysRolePermService.add(sysRolePermEntity);
@@ -57,7 +55,7 @@ public class SysRolePermController {
 
     @ILogAnnotation(value = "更新角色权限")
     @PostMapping("/update")
-    public ResponseResult updateByRid(SysRolePermEntity sysRolePermEntity) {
+    public ResponseResult updateByRid(SysRolePerm sysRolePermEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysRolePermService.updateByRid(sysRolePermEntity);

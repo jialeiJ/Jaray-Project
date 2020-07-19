@@ -1,7 +1,7 @@
 package com.vienna.jaray.controller;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUserTokenEntity;
+import com.vienna.jaray.entity.SysUserToken;
 import com.vienna.jaray.service.KaptchaService;
 import com.vienna.jaray.service.SystemService;
 import com.vienna.jaray.service.SysMenuService;
@@ -43,7 +43,7 @@ public class SystemController {
     }
 
     @PostMapping("/refreshToken")
-    public ResponseResult refreshToken(HttpServletRequest request, SysUserTokenEntity sysUserToken){
+    public ResponseResult refreshToken(HttpServletRequest request, SysUserToken sysUserToken){
         return systemService.reLogin(request, sysUserToken);
     }
 

@@ -1,7 +1,7 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUserTokenEntity;
+import com.vienna.jaray.entity.SysUserToken;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,7 +24,7 @@ public interface SystemService {
      * @param sysUserToken sysUserToken对象
      * @return
      */
-    public ResponseResult reLogin(HttpServletRequest request, SysUserTokenEntity sysUserToken);
+    public ResponseResult reLogin(HttpServletRequest request, SysUserToken sysUserToken);
 
     /**
      * 更新密码

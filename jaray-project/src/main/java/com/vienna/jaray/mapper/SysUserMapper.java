@@ -1,6 +1,7 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysUser;
+import com.vienna.jaray.model.CommonParamsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,28 +15,28 @@ public interface SysUserMapper {
      * 查询用户列表
      * @return
      */
-    public List<SysUserEntity> findAll();
+    public List<SysUser> findAll(@Param("common")CommonParamsModel commonParamsModel);
 
     /**
      * 查询用户
      * @param id
      * @return
      */
-    public SysUserEntity findById(@Param("id")String id);
+    public SysUser findById(@Param("id")String id);
 
     /**
      * 查询用户
      * @param name
      * @return
      */
-    public SysUserEntity findByName(@Param("name")String name);
+    public SysUser findByName(@Param("name")String name);
 
     /**
      * 添加用户
      * @param sysUserEntity
      * @return
      */
-    public int add(@Param("entity")SysUserEntity sysUserEntity);
+    public int add(@Param("entity") SysUser sysUserEntity);
 
     /**
      * 删除用户
@@ -49,5 +50,5 @@ public interface SysUserMapper {
      * @param sysUserEntity
      * @return
      */
-    public int updateById(@Param("entity")SysUserEntity sysUserEntity);
+    public int updateById(@Param("entity") SysUser sysUserEntity);
 }

@@ -3,14 +3,10 @@ package com.vienna.jaray.entity;
 import lombok.Data;
 
 @Data
-public class SysLogEntity {
+public class SysRolePerm {
     private String id;
-    private String user_name;
-    private String operation;
-    private String method;
-    private String params;
-    private String time;
-    private String ip;
+    private String role_id;
+    private String perm_id;
     private String create_by;
     private String create_time;
     private String last_update_by;

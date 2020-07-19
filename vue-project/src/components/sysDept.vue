@@ -3,16 +3,22 @@
         <div>
             <div id="table">
                 <div style="margin-bottom: 10px">
-                    <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteSysDept">删除</el-button>
+                    <el-input
+                        placeholder="请输入姓名"
+                        v-model="search"
+                        clearable style="width: 200px">
+                    </el-input>
+                    <el-button type="success" @click="initTable" plain>查询</el-button>
+                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" @click="deleteSysDept" plain>删除</el-button>
                 </div>
-                <i-table ref="iTable" 
+                <i-tree-table ref="iTable" 
                     @transmitParent="receiveChild"
                     @handleView="viewSysDept"
                     @handleEdit="editViewSysDept"
                     :tableTitle="tableTitle" 
                     :tableData="tableData">
-                </i-table>
+                </i-tree-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
                     :currentPage="pageNum"
@@ -26,9 +32,16 @@
                 <el-dialog title="新增" :visible.sync="addDialogFormVisible">
                     <el-form :model="addForm">
                         <el-form-item label="ID" :label-width="formLabelWidth">
-                            <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
+                            <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写" readonly="readonly"></el-input>
                         </el-form-item>
-                        <el-form-item label="姓名" :label-width="formLabelWidth">
+                        <el-form-item label="上级机构" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="addForm.dept_ids"
+                                :options="deptOptions"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"></el-cascader>
+                        </el-form-item>
+                        <el-form-item label="名称" :label-width="formLabelWidth">
                             <el-input v-model="addForm.name" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="备注" :label-width="formLabelWidth">
@@ -76,8 +89,15 @@
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.id" readonly="readonly"></el-input>
                         </el-form-item>
-                        <el-form-item label="姓名" :label-width="formLabelWidth">
-                            <el-input v-model="viewForm.name" readonly="readonly"></el-input>
+                        <el-form-item label="上级机构" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="viewForm.dept_ids"
+                                :options="deptOptions"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"></el-cascader>
+                        </el-form-item>
+                        <el-form-item label="名称" :label-width="formLabelWidth">
+                            <el-input v-model="viewForm.name" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
                         </el-form-item>
                         <el-form-item label="备注" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.remark" readonly="readonly"></el-input>
@@ -123,8 +143,15 @@
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="editForm.id" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="姓名" :label-width="formLabelWidth">
-                            <el-input v-model="editForm.name" autocomplete="off"></el-input>
+                        <el-form-item label="上级机构" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="editForm.dept_ids"
+                                :options="deptOptions"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"></el-cascader>
+                        </el-form-item>
+                        <el-form-item label="名称" :label-width="formLabelWidth">
+                            <el-input v-model="editForm.name" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
                         </el-form-item>
                         <el-form-item label="备注" :label-width="formLabelWidth">
                             <el-input v-model="editForm.remark" autocomplete="off"></el-input>
@@ -170,28 +197,34 @@
 
 <script>
 import API from '../api/api_sys_dept'
-import iTable from '../components/common/iTable'
+import iTreeTable from '../components/common/iTreeTable'
 import iPagination from '../components/common/iPagination'
 
 export default {
     name: 'sysDept',
-    components: { iTable, iPagination },
+    components: { iTreeTable, iPagination },
     data () {
         return {
             formLabelWidth: '120px',
-            loading: false,
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
             search: '',
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
-                {prop: 'name', label: '姓名', sort: true, filters: []},
+                {prop: 'name', label: '名称', sort: true, filters: []},
                 {prop: 'remark', label: '备注'},
                 {prop: 'create_by', label: '创建人'},
                 {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
+                {prop: 'operation', label: '操作', fixed: 'right', width: 175,
+                    operation: [
+                        {name: '查看', style: 'primary', clickFun: this.viewSysDept},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysDept},
+                    ]
+                }
             ],
             tableData: [],
             multipleSelection: [],
@@ -222,7 +255,11 @@ export default {
                         picker.$emit('pick', date);
                     }
                 }]
-            }
+            },
+            deptOptions: [],
+            tileDeptData: [],
+            // 部门ids,用于回显
+            deptIds: []
         }
     },
     created: function(){
@@ -245,12 +282,19 @@ export default {
                     that.pageSize = result.map.sysDepts.pageSize
                     that.tableData = result.map.sysDepts.list
 
+                    that.deptOptions = result.map.sysDepts.list
+                    that.tileDeptList(result.map.sysDepts.list)
+
                     that.filtersHandler(that.tableData)
                 } else {
-                    that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
                 }
             });
+        },
+        handleChange(value) {
+            let that = this
+            console.log(value);
+            console.log(that.tileDeptData)
         },
         receiveChild: function(data){
             let that = this
@@ -259,6 +303,9 @@ export default {
         },
         addSysDept: function(){
             let that = this
+            if(that.addForm.dept_ids && that.addForm.dept_ids.length > 0){
+                that.addForm.parent_id = that.addForm.dept_ids[0]
+            }
             // 定义请求参数
             let params = that.addForm
             // 调用接口
@@ -272,7 +319,6 @@ export default {
                     that.addDialogFormVisible = false
                     that.addForm = {}
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -285,12 +331,32 @@ export default {
             API.viewSysDept(params).then(function (result) {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysDept
+
+                    // 获取部门id的父id
+                    let id = result.map.sysDept.id
+                    that.deptIds = []
+                    that.getAllPidById(id, that.tileDeptData)
+                    // 删除本机构,用于回显上层机构
+                    let dept_ids = that.deptIds.reverse()
+                    dept_ids.splice(that.deptIds.length-1, 1)
+                    that.viewForm.dept_ids = dept_ids
+                    
                     that.viewDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
+        },
+        getAllPidById: function(id, tileDeptData){
+            let that = this
+            if(id){
+                that.deptIds.push(id)
+            }
+            tileDeptData.forEach(function(item, index){
+                if(item.id == id){
+                    that.getAllPidById(item.parent_id, tileDeptData)
+                }
+            })
         },
         editViewSysDept: function(row){
             let that = this
@@ -300,15 +366,29 @@ export default {
             API.viewSysDept(params).then(function (result) {
                 if (result.code === 200) {
                     that.editForm = result.map.sysDept
+
+                    // 获取部门id的父id
+                    let id = result.map.sysDept.id
+                    that.deptIds = []
+                    that.getAllPidById(id, that.tileDeptData)
+                    // 删除本机构,用于回显上层机构
+                    let dept_ids = that.deptIds.reverse()
+                    dept_ids.splice(that.deptIds.length-1, 1)
+                    that.editForm.dept_ids = dept_ids
+
                     that.editDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
         editSysDept: function(){
             let that = this
+            if(that.editForm.dept_ids && that.editForm.dept_ids.length > 0){
+                that.editForm.parent_id = that.editForm.dept_ids[0]
+            }
+            // 删除children属性
+            that.$delete(this.editForm, 'children');
             // 定义请求参数
             let params = that.editForm
             // 调用接口
@@ -321,7 +401,6 @@ export default {
                     });
                     that.editDialogFormVisible = false
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -345,7 +424,6 @@ export default {
                         type: 'success'
                     });
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -395,6 +473,16 @@ export default {
                 }
             }
             return filters
+        },
+        // 平铺数据
+        tileDeptList(deptDataList){
+            let that = this
+            deptDataList.forEach(function(item, index){
+                that.tileDeptData.push(item)
+                if(item.children && item.children.length){
+                    that.tileDeptList(item.children)
+                }
+            })
         }
     }
 }
@@ -402,18 +490,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+/deep/ .el-cascader {
+    display: block;
+    position: relative;
 }
 </style>

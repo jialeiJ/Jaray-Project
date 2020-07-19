@@ -2,10 +2,8 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.ComplaintEntity;
-import com.vienna.jaray.entity.SysUserEntity;
+import com.vienna.jaray.entity.SysUser;
 import com.vienna.jaray.model.CommonParamsModel;
-import com.vienna.jaray.service.ComplaintService;
 import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class SysUserController {
 
     @ILogAnnotation(value = "添加用户")
     @PostMapping("/add")
-    public ResponseResult add(SysUserEntity sysUserEntity) {
+    public ResponseResult add(SysUser sysUserEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysUserService.add(sysUserEntity);
@@ -44,7 +42,7 @@ public class SysUserController {
     }
 
     @ILogAnnotation(value = "删除用户")
-    @PostMapping("/delete")
+    @PostMapping("/deleteByIds")
     public ResponseResult deleteByIds(String ids) {
         ResponseResult resultMsg = null;
         try {
@@ -56,8 +54,8 @@ public class SysUserController {
     }
 
     @ILogAnnotation(value = "更新用户")
-    @PostMapping("/update")
-    public ResponseResult updateById(SysUserEntity sysUserEntity) {
+    @PostMapping("/updateById")
+    public ResponseResult updateById(SysUser sysUserEntity) {
         ResponseResult resultMsg = null;
         try {
             resultMsg = sysUserService.updateById(sysUserEntity);
@@ -69,7 +67,7 @@ public class SysUserController {
 
 
     @ILogAnnotation(value = "查询用户")
-    @PostMapping("/find")
+    @PostMapping("/findById")
     public ResponseResult findById(String id) {
         ResponseResult resultMsg = null;
         try {

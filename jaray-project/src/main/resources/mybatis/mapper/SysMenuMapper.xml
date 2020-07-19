@@ -9,7 +9,7 @@
     </sql>
 
     <!-- 查询菜单列表 -->
-    <select id="findAll" resultType="sysMenuEntity">
+    <select id="findAll" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where type = 0
@@ -20,7 +20,7 @@
     </select>
 
     <!-- 查询菜单按钮列表 -->
-    <select id="findBtnAll" resultType="sysMenuEntity">
+    <select id="findBtnAll" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.type = 2
@@ -61,14 +61,14 @@
     </update>
 
     <!-- 查询菜单 -->
-    <select id="findById" resultType="sysMenuEntity">
+    <select id="findById" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id = #{id}
     </select>
 
     <!-- 查询菜单 -->
-    <select id="findByIds" resultType="sysMenuEntity">
+    <select id="findByIds" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id in
@@ -85,7 +85,7 @@
     </select>
 
     <!-- 查询菜单列表 -->
-    <select id="findByPerm" resultType="sysMenuEntity">
+    <select id="findByPerm" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id not in
