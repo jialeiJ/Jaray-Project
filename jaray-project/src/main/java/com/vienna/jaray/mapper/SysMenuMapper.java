@@ -14,6 +14,24 @@ import org.springframework.stereotype.Repository;
 public interface SysMenuMapper {
 
 	/**
+	 * 查询顶级目录
+	 * @return
+	 */
+	public List<SysMenu> findAllTopDir();
+
+	/**
+	 * 查询子目录
+	 * @return
+	 */
+	public List<SysMenu> findAllSubDir();
+
+	/**
+	 * 查询菜单
+	 * @return
+	 */
+	public List<SysMenu> findAllMenu();
+
+	/**
 	 * 查询菜单列表
 	 * @return
 	 */

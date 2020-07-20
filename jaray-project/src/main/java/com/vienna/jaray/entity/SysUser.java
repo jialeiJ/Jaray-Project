@@ -1,9 +1,6 @@
 package com.vienna.jaray.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class SysUser {

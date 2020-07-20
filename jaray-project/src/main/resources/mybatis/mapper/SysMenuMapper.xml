@@ -8,6 +8,27 @@
 		m.create_time,m.last_update_by,m.last_update_time,m.del_flag
     </sql>
 
+    <!-- 查询顶级目录列表 -->
+    <select id="findAllTopDir" resultType="sysMenu">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where m.parent_id = 'M0000000000000'
+    </select>
+
+    <!-- 查询子目录列表 -->
+    <select id="findAllSubDir" resultType="sysMenu">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where m.parent_id != 'M0000000000000' and type = 0
+    </select>
+
+    <!-- 查询子菜单列表 -->
+    <select id="findAllMenu" resultType="sysMenu">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where type = 1
+    </select>
+
     <!-- 查询菜单列表 -->
     <select id="findAll" resultType="sysMenu">
         select

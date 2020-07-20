@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.common.Separator;
 import com.vienna.jaray.common.SysMenuConfig;
-import com.vienna.jaray.entity.SysMenu;
-import com.vienna.jaray.entity.SysRoleMenu;
-import com.vienna.jaray.entity.SysUser;
-import com.vienna.jaray.entity.SysUserRole;
+import com.vienna.jaray.entity.*;
 import com.vienna.jaray.mapper.SysMenuMapper;
 import com.vienna.jaray.mapper.SysRoleMenuMapper;
 import com.vienna.jaray.mapper.SysUserMapper;
@@ -16,6 +13,7 @@ import com.vienna.jaray.mapper.SysUserRoleMapper;
 import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.model.SelectOptionsModel;
 import com.vienna.jaray.service.SysMenuService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,11 +105,31 @@ public class SysMenuServiceImpl implements SysMenuService {
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysMenu> menuEntityList = sysMenuMapper.findAll();
+        List<SysMenu> topSysMenuList = sysMenuMapper.findAllTopDir();
+        List<SysMenu> subSysMenuList = sysMenuMapper.findAll();
+        List<SysMenu> sysMenuList = sysMenuMapper.findAllMenu();
+
+        topSysMenuList.forEach(sysMenu -> {
+            List<SysMenu> nextSysMenus = subSysMenuList.stream().filter(subSysMenu -> subSysMenu.getParent_id().equals(sysMenu.getId())).collect(Collectors.toList());
+            sysMenu.setChildren(nextSysMenus);
+
+            sysMenu.setChildren(getMenuChildren(nextSysMenus, subSysMenuList, sysMenuList));
+        });
+
         //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(menuEntityList);
+        PageInfo<?> pageInfo = new PageInfo<>(topSysMenuList);
         return ResponseResult.success().add("sysMenus", pageInfo);
     }
+
+//    @Override
+//    public ResponseResult findAll(CommonParamsModel commonParamsModel) {
+//        //设置分页信息(第几页，每页数量)
+//        PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
+//        List<SysMenu> menuEntityList = sysMenuMapper.findAll();
+//        //取记录总条数
+//        PageInfo<?> pageInfo = new PageInfo<>(menuEntityList);
+//        return ResponseResult.success().add("sysMenus", pageInfo);
+//    }
 
     @Override
     public ResponseResult add(SysMenu sysMenuEntity) {
@@ -183,6 +201,27 @@ public class SysMenuServiceImpl implements SysMenuService {
         });
 
         return nextSubSetMenuList;
+    }
+
+    /**
+     * 递归取出所有关系树
+     * @param nextSysMenus
+     * @param subSysMentList
+     * @param sysMenuList
+     * @return
+     */
+    private List<SysMenu> getMenuChildren(List<SysMenu> nextSysMenus, List<SysMenu> subSysMentList, List<SysMenu> sysMenuList) {
+        nextSysMenus.forEach(nextSysMenu -> {
+            List<SysMenu> subSysDepts = subSysMentList.stream().filter(subSysMenu -> subSysMenu.getParent_id().equals(nextSysMenu.getId())).collect(Collectors.toList());
+
+            if(CollectionUtils.isEmpty(subSysDepts)){
+                List<SysMenu> sysMenus = sysMenuList.stream().filter(sysMenu -> sysMenu.getParent_id().equals(nextSysMenu.getId())).collect(Collectors.toList());
+                nextSysMenu.setChildren(sysMenus);
+            }else{
+                nextSysMenu.setChildren(subSysDepts);
+            }
+        });
+        return nextSysMenus;
     }
 
 }

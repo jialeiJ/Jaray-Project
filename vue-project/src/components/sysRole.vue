@@ -3,8 +3,14 @@
         <div>
             <div id="table">
                 <div style="margin-bottom: 10px">
-                    <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteSysRole">删除</el-button>
+                    <el-input
+                        placeholder="请输入姓名"
+                        v-model="search"
+                        clearable style="width: 200px">
+                    </el-input>
+                    <el-button type="success" @click="initTable" plain>查询</el-button>
+                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" @click="deleteSysRole" plain>删除</el-button>
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
@@ -213,10 +219,10 @@ export default {
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
-                {prop: 'operation', label: '操作', fixed: 'right', width: 90,
+                {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
-                        {name: '查看', style: 'text', clickFun: this.viewSysRole},
-                        {name: '修改', style: 'text', clickFun: this.editViewSysRole},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysRole},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysRole},
                     ]
                 }
             ],

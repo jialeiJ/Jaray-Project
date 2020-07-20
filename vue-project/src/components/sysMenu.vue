@@ -3,16 +3,22 @@
         <div>
             <div id="table">
                 <div style="margin-bottom: 10px">
-                    <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteSysMenu">删除</el-button>
+                    <el-input
+                        placeholder="请输入姓名"
+                        v-model="search"
+                        clearable style="width: 200px">
+                    </el-input>
+                    <el-button type="success" @click="initTable" plain>查询</el-button>
+                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" @click="deleteSysMenu" plain>删除</el-button>
                 </div>
-                <i-table ref="iTable" 
+                <i-tree-table ref="iTable" 
                     @transmitParent="receiveChild"
                     @handleView="viewSysMenu"
                     @handleEdit="editViewSysMenu"
                     :tableTitle="tableTitle" 
                     :tableData="tableData">
-                </i-table>
+                </i-tree-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
                     :currentPage="pageNum"
@@ -218,12 +224,12 @@
 <script>
 import MENU_API from '../api/api_sys_menu'
 import DICT_API from '../api/api_sys_dict'
-import iTable from '../components/common/iTable'
+import iTreeTable from '../components/common/iTreeTable'
 import iPagination from '../components/common/iPagination'
 
 export default {
     name: 'sysMenu',
-    components: { iTable, iPagination },
+    components: { iTreeTable, iPagination },
     data () {
         return {
             formLabelWidth: '120px',
@@ -244,10 +250,10 @@ export default {
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
-                {prop: 'operation', label: '操作', fixed: 'right', width: 90,
+                {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
-                        {name: '查看', style: 'text', clickFun: this.viewSysMenu},
-                        {name: '修改', style: 'text', clickFun: this.editViewSysMenu},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysMenu},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysMenu},
                     ]
                 }
             ],
