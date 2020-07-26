@@ -14,7 +14,13 @@ public interface SysMenuService {
     public ResponseResult findLeftNav(String user_id);
 
     /**
-     * 查询菜单列表
+     * 查询菜单Tree列表
+     * @return
+     */
+    public ResponseResult findTreeAll(CommonParamsModel commonParamsModel);
+
+    /**
+     * 查询菜单平铺列表
      * @return
      */
     public ResponseResult findAll(CommonParamsModel commonParamsModel);
@@ -46,10 +52,4 @@ public interface SysMenuService {
      * @return
      */
     public ResponseResult findById(@Param("id")String id);
-
-    /**
-     * 查询所有目录菜单
-     * @return
-     */
-    public ResponseResult findAllDir();
 }

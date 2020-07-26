@@ -38,6 +38,16 @@
         from sys_role_perm srp where srp.role_id = #{role_id}
     </select>
 
+    <!-- 查询角色权限 -->
+    <select id="findByRids" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_perm srp where srp.role_id in
+        <foreach item="role_id" collection="role_ids" open="(" separator="," close=")">
+            #{role_id}
+        </foreach>
+    </select>
+
     <!-- 删除角色权限 -->
     <delete id="deleteByIds">
         delete from sys_role_perm srp where srp.role_id in

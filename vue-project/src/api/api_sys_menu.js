@@ -20,10 +20,5 @@ export default {
     //查询菜单信息
     viewSysMenu: params => {
         return API.POST('/sys/menu/find', params);
-    },
-    //查询所有目录菜单
-    findAllDir: params => {
-        return API.POST('/sys/menu/dir/find/all', params);
-    },
-    
+    }
 }

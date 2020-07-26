@@ -12,14 +12,14 @@
     <select id="findAllTopDir" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
-        from sys_menu m where m.parent_id = 'M0000000000000'
+        from sys_menu m where m.parent_id is null
     </select>
 
     <!-- 查询子目录列表 -->
     <select id="findAllSubDir" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
-        from sys_menu m where m.parent_id != 'M0000000000000' and type = 0
+        from sys_menu m where m.parent_id is not null and type = 0
     </select>
 
     <!-- 查询子菜单列表 -->
@@ -98,18 +98,21 @@
         </foreach>
     </select>
 
-    <!-- 查询所有目录菜单 -->
-    <select id="findAllDir" resultType="selectOptionsModel">
-        select
-        <include refid="Base_Column_List" />
-        from sys_menu m where m.type = 0 and (m.url is null or m.url ='')
-    </select>
-
-    <!-- 查询菜单列表 -->
-    <select id="findByPerm" resultType="sysMenu">
+    <!-- 查询无权限菜单列表 -->
+    <select id="findNoPermByIds" resultType="sysMenu">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id not in
+        <foreach collection="menu_perms" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 查询菜单权限列表 -->
+    <select id="findPermByIds" resultType="sysMenu">
+        select
+        <include refid="Base_Column_List" />
+        from sys_menu m where m.id in
         <foreach collection="menu_perms" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>

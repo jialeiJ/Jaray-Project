@@ -9,8 +9,8 @@
                         clearable style="width: 200px">
                     </el-input>
                     <el-button type="success" @click="initTable" plain>查询</el-button>
-                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
-                    <el-button type="danger" @click="deleteSysUser" plain>删除</el-button>
+                    <el-button type="success" v-if="hasPermission('sys:user:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" v-if="hasPermission('sys:user:delete')" @click="deleteSysUser" plain>删除</el-button>
                 </div>
                 <i-table ref="iTable"
                     @transmitParent="receiveChild"
@@ -18,7 +18,8 @@
                     @handleView="viewSysUser"
                     @handleEdit="editViewSysUser"
                     :tableTitle="tableTitle" 
-                    :tableData="tableData">
+                    :tableData="tableData"
+                    :tableHeight="tableHeight">
                 </i-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
@@ -47,7 +48,8 @@
                                 v-model="addForm.dept_ids"
                                 :options="deptOptions"
                                 :props="{ expandTrigger: 'hover', checkStrictly: true }"
-                                @change="handleChange"></el-cascader>
+                                @change="handleChange"
+                                clearable></el-cascader>
                         </el-form-item>
                         <el-form-item label="邮箱" :label-width="formLabelWidth">
                             <el-col :span="24">
@@ -147,18 +149,6 @@
                                 </el-select>
                             </el-col>
                         </el-form-item>
-                        <!-- <el-form-item label="部门" :label-width="formLabelWidth">
-                            <el-col :span="24">
-                                <el-select v-model="viewForm.dept_id" placeholder="请选择部门">
-                                    <el-option
-                                    v-for="item in sysDeptList"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-col>
-                        </el-form-item> -->
                         <el-form-item label="邮箱" :label-width="formLabelWidth">
                             <el-col :span="24">
                                 <el-input v-model="viewForm.email" readonly="readonly"></el-input>
@@ -313,6 +303,7 @@ import DICT_API from '../api/api_sys_dict'
 import DEPT_API from '../api/api_sys_dept'
 import iTable from '../components/common/iTable'
 import iPagination from '../components/common/iPagination'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: 'sysUser',
@@ -323,8 +314,6 @@ export default {
             formLabelWidth: 'calc(14vh - 0px)',
             // 表格高度
             tableHeight: 'calc(95vh - 200px)',
-            // 操作类型
-            operationType: 'view',
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
@@ -344,8 +333,8 @@ export default {
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
-                        {name: '查看', style: 'primary', clickFun: this.viewSysUser},
-                        {name: '修改', style: 'primary', clickFun: this.editViewSysUser},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysUser, disabled: this.hasPermission('sys:user:view')},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysUser, disabled: this.hasPermission('sys:user:view')},
                     ]
                 }
             ],
@@ -395,9 +384,6 @@ export default {
         that.findSysDictByDesc()
     },
     methods: {
-        test: function(){
-            console.log(this.dept_ids)
-        },
         initTable: function(){
             let that = this
             // 定义请求参数
@@ -416,6 +402,8 @@ export default {
                     that.currentPage = result.map.sysUsers.pageNum
                     that.pageSize = result.map.sysUsers.pageSize
                     that.tableData = result.map.sysUsers.list
+
+                    console.log(that.$store.getters.leftMenus)
 
                     that.filtersHandler(that.tableData)
                 } else {
@@ -437,7 +425,6 @@ export default {
         handleChange(value) {
             let that = this
             console.log(value);
-            console.log(that.tileDeptData)
         },
         receiveChild: function(data){
             let that = this
@@ -495,7 +482,7 @@ export default {
         },
         getAllPidById: function(id, tileDeptData){
             let that = this
-            if(id){
+            if(id && that.deptIds.indexOf(id) == -1){
                 that.deptIds.push(id)
             }
             tileDeptData.forEach(function(item, index){

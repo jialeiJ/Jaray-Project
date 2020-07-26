@@ -19,8 +19,8 @@ public class SysMenuController {
 
     @ILogAnnotation(value = "查询菜单列表")
     @PostMapping("/find/all")
-    public ResponseResult findAll(CommonParamsModel commonParamsModel) {
-        return sysMenuService.findAll(commonParamsModel);
+    public ResponseResult findTreeAll(CommonParamsModel commonParamsModel) {
+        return sysMenuService.findTreeAll(commonParamsModel);
     }
 
     @ILogAnnotation(value = "添加菜单")
@@ -46,11 +46,4 @@ public class SysMenuController {
     public ResponseResult findById(String id) {
         return sysMenuService.findById(id);
     }
-
-    @ILogAnnotation(value = "查询所有目录菜单")
-    @PostMapping("/dir/find/all")
-    public ResponseResult findAllDir(){
-        return sysMenuService.findAllDir();
-    }
-
 }

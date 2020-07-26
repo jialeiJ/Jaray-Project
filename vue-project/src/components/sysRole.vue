@@ -9,8 +9,8 @@
                         clearable style="width: 200px">
                     </el-input>
                     <el-button type="success" @click="initTable" plain>查询</el-button>
-                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
-                    <el-button type="danger" @click="deleteSysRole" plain>删除</el-button>
+                    <el-button type="success" v-if="hasPermission('sys:role:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" v-if="hasPermission('sys:role:delete')" @click="deleteSysRole" plain>删除</el-button>
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
@@ -18,7 +18,8 @@
                     @handleView="viewSysRole"
                     @handleEdit="editViewSysRole"
                     :tableTitle="tableTitle" 
-                    :tableData="tableData">
+                    :tableData="tableData"
+                    :tableHeight="tableHeight">
                 </i-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
@@ -34,13 +35,13 @@
                     ref="iTree"
                     @transmitParentKeys="receiveKeys"
                     :treeData="treeData"
-                    style="max-height: 300px;overflow-y: auto;"
-                ></i-tree>
+                    style="max-height: 300px;overflow-y: auto;">
+                </i-tree>
                 <div slot="footer" class="dialog-footer">
                     <el-button size="mini" @click="allChecked">全选</el-button>
                     <el-button size="mini" @click="clearTreeChecked">清空</el-button>
                     <el-button size="mini" @click="resetTreeChecked">重置</el-button>
-                    <el-button size="mini" type="primary" @click="editSysRoleMenuPerm">保存</el-button>
+                    <el-button size="mini" type="primary" v-if="hasPermission('sys:role:edit')" @click="editSysRoleMenuPerm">保存</el-button>
                 </div>
             </div>
 
@@ -191,6 +192,7 @@
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
 import API from '../api/api_sys_role'
 import SYS_API from '../api/api_system'
 import ROLE_MENU_PERM_API from '../api/api_sys_role_menu_perm'
@@ -204,7 +206,10 @@ export default {
     components: { iTable, iPagination, iTree },
     data () {
         return {
-            formLabelWidth: '120px',
+            // label宽度
+            formLabelWidth: 'calc(14vh - 0px)',
+            // 表格高度
+            tableHeight: 'calc(65vh - 260px)',
             loading: false,
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
@@ -221,8 +226,8 @@ export default {
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
-                        {name: '查看', style: 'primary', clickFun: this.viewSysRole},
-                        {name: '修改', style: 'primary', clickFun: this.editViewSysRole},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysRole, disabled: this.hasPermission('sys:role:view')},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysRole, disabled: this.hasPermission('sys:role:edit')},
                     ]
                 }
             ],
@@ -376,6 +381,8 @@ export default {
                         message: '恭喜你，编辑成功',
                         type: 'success'
                     });
+                    // 刷新左侧菜单（自己不能修改自己，所以不用刷新）
+                    //that.refreshFindLeftNav()
                 } else {
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
@@ -533,7 +540,36 @@ export default {
                 }
             })
         },
-    }
+        refreshFindLeftNav: function(){
+            let that = this;
+            // 定义请求参数
+            let accessUser = JSON.parse(sessionStorage.getItem('access-user'))
+
+            let params = {user_id: accessUser.user_id}
+            // 调用接口
+            SYS_API.findLeftNav(params).then(function (result) {
+                if (result.code === 200) {
+                    that.leftMenus =result.map.leftMenu
+                } else {
+                    that.$message.error(result.msg);// elementUI消息提示
+                }
+            })
+        },
+        ...mapActions( // 语法糖
+            ['modifyLeftMenus'] // 相当于this.$store.dispatch('modifyLeftMenus'),提交这个方法
+        ),
+    },
+    computed: {
+        ...mapGetters(['leftMenus']),// 动态计算属性，相当于this.$store.getters.collapsed
+        leftMenus: {
+            get(){
+                return this.$store.state.leftMenus
+            },
+            set(val){
+                this.$store.state.leftMenus = val
+            }
+        },
+    },
 }
 </script>
 

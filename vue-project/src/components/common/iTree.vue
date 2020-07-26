@@ -7,7 +7,8 @@
         ref="tree"
         highlight-current
         @check="handleCheck"
-        :props="defaultProps">
+        :props="defaultProps"
+        :height="treeHeight">
         <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
             <span>
@@ -46,7 +47,8 @@ export default {
                 children: 'children',
                 label: 'label'
             },
-            tileTreeData: []
+            tileTreeData: [],
+            treeHeight: 0
         }
     },
     methods: {

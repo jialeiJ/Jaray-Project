@@ -9,15 +9,16 @@
                         clearable style="width: 200px">
                     </el-input>
                     <el-button type="success" @click="initTable" plain>查询</el-button>
-                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
-                    <el-button type="danger"  @click="deleteSysDict" plain>删除</el-button>
+                    <el-button type="success" v-if="hasPermission('sys:dict:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" v-if="hasPermission('sys:dict:delete')" @click="deleteSysDict" plain>删除</el-button>
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
                     @handleView="viewSysDict"
                     @handleEdit="editViewSysDict"
                     :tableTitle="tableTitle" 
-                    :tableData="tableData">
+                    :tableData="tableData"
+                    :tableHeight="tableHeight">
                 </i-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
@@ -202,8 +203,10 @@ export default {
     components: { iTable, iPagination },
     data () {
         return {
-            formLabelWidth: '120px',
-            loading: false,
+            // label宽度
+            formLabelWidth: 'calc(14vh - 0px)',
+            // 表格高度
+            tableHeight: 'calc(95vh - 200px)',
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
@@ -221,8 +224,8 @@ export default {
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right',width: 175,
                     operation: [
-                        {name: '查看', style: 'primary', clickFun: this.viewSysDict},
-                        {name: '修改', style: 'primary', clickFun: this.editViewSysDict},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysDict, disabled: this.hasPermission('sys:dict:view')},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysDict, disabled: this.hasPermission('sys:dict:edit')},
                     ]
                 }
             ],
@@ -280,7 +283,6 @@ export default {
 
                     that.filtersHandler(that.tableData)
                 } else {
-                    that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
                 }
             });
@@ -305,7 +307,6 @@ export default {
                     that.addDialogFormVisible = false
                     that.addForm = {}
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -320,7 +321,6 @@ export default {
                     that.viewForm = result.map.sysDict
                     that.viewDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -335,7 +335,6 @@ export default {
                     that.editForm = result.map.sysDict
                     that.editDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -354,7 +353,6 @@ export default {
                     });
                     that.editDialogFormVisible = false
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -378,7 +376,6 @@ export default {
                         type: 'success'
                     });
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });

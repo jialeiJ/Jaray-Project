@@ -37,7 +37,7 @@ public class SystemController {
     }
 
     @PostMapping("/findLeftNav")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseResult findLeftNav(String user_id){
         return sysMenuService.findLeftNav(user_id);
     }

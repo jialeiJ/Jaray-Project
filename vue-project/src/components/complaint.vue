@@ -4,14 +4,15 @@
             <div id="table">
                 <div style="margin-bottom: 10px">
                     <el-button size="mini" @click="addDialogFormVisible = true;">增加</el-button>
-                    <el-button size="mini" :loading="loading" @click="deleteComplaints">删除</el-button>
+                    <el-button size="mini" @click="deleteComplaints">删除</el-button>
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
                     @handleView="viewComplaint"
                     @handleEdit="editViewComplaint"
                     :tableTitle="tableTitle" 
-                    :tableData="tableData">
+                    :tableData="tableData"
+                    :tableHeight="tableHeight">
                 </i-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
@@ -97,8 +98,10 @@ export default {
     components: { iTable, iPagination },
     data () {
         return {
-            formLabelWidth: '120px',
-            loading: false,
+            // label宽度
+            formLabelWidth: 'calc(14vh - 0px)',
+            // 表格高度
+            tableHeight: 'calc(95vh - 200px)',
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
@@ -140,7 +143,6 @@ export default {
 
                     that.filtersHandler(that.tableData)
                 } else {
-                    that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
                 }
             });
@@ -164,7 +166,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -188,7 +189,6 @@ export default {
                         type: 'success'
                     });
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -203,7 +203,6 @@ export default {
                     that.form = result.map.complaint
                     that.editDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -222,7 +221,6 @@ export default {
                     });
                     that.editDialogFormVisible = false
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -237,7 +235,6 @@ export default {
                     that.form = result.map.complaint
                     that.viewDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });

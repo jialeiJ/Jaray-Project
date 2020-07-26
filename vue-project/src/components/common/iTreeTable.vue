@@ -33,7 +33,9 @@
                     <!-- 加入template主要是有操作一栏， 操作一栏的内容是相同的， 数据不是动态获取的，这里操作一栏的名字定死（operation表示是操作这一列，否则就不是） -->
                     <template slot-scope="scope">
                         <span v-if="item.operation">
-                            <el-button v-for="(it, index) in item.operation"
+                            <template v-for="(it, index) in item.operation">
+                            <el-button 
+                                    v-if="it.disabled"
                                     :key="index" 
                                     @click.stop="it.clickFun(scope.row)"
                                     :type="it.style"
@@ -41,6 +43,7 @@
                                     :icon="it.icon"
                                     plain>{{it.name}}
                             </el-button>
+                            </template>
                         </span>
                         <!-- formatter：自定义过滤器 -->
                         <span v-else-if="item.formatter">

@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value =Exception.class)
     public ResponseResult globalException(HttpServletResponse response, Exception e){
-        log.info("GlobalExceptionHandled...{}", e.getMessage());
+        log.info("GlobalExceptionHandled...{}", e);
         String msg = "GlobalExceptionHandler:"+e.getMessage();
         return ResponseResult.fail().setMsg(msg);
     }

@@ -13,6 +13,7 @@ import moment from "moment";
 // moment.locale('zh-cn') // 汉化
 import 'default-passive-events'
 import $ from 'jquery'
+import hasPermissionFun from './permission/index'
 
 import '@/assets/iconfont/iconfont.css'
 
@@ -20,6 +21,7 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI, { size: 'medium', zIndex: 3000 });
 Vue.use(Fragment.Plugin)
+Vue.use(hasPermissionFun)
 
 Vue.prototype.axios = axios
 

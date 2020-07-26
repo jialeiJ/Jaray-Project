@@ -21,7 +21,7 @@ export default {
     data () {
         return {
             url: '',
-            leftMenus: [],
+            //leftMenus: [],
             tileLeftNavData: []
         }
     },
@@ -77,9 +77,29 @@ export default {
         ...mapActions( // 语法糖
             ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed'),提交这个方法
         ),
+        ...mapActions( // 语法糖
+            ['modifyLeftMenus'] // 相当于this.$store.dispatch('modifyLeftMenus'),提交这个方法
+        ),
     },
     computed: {
-        ...mapGetters(['collapsed']) //动态计算属性，相当于this.$store.getters.name
+        ...mapGetters(['collapsed']),// 动态计算属性，相当于this.$store.getters.collapsed
+        collapsed: {
+            get(){
+                return this.$store.state.collapsed
+            },
+            set(val){
+                this.$store.state.collapsed = val
+            }
+        },
+        ...mapGetters(['leftMenus']),// 动态计算属性，相当于this.$store.getters.collapsed
+        leftMenus: {
+            get(){
+                return this.$store.state.leftMenus
+            },
+            set(val){
+                this.$store.state.leftMenus = val
+            }
+        },
     },
     created: function(){
         let that = this

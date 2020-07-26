@@ -79,16 +79,17 @@ public interface SysMenuMapper {
 	public List<SysMenu> findByIds(@Param("ids")String[] ids);
 
 	/**
-	 * 查询所有目录菜单
-	 * @return
-	 */
-	public List<SelectOptionsModel> findAllDir();
-
-	/**
-	 * 查询菜单
+	 * 查询无权限菜单
 	 * @param menu_perms 用户菜单权限
 	 * @return
 	 */
-	public List<SysMenu> findByPerm(@Param("menu_perms")String[] menu_perms);
+	public List<SysMenu> findNoPermByIds(@Param("menu_perms")String[] menu_perms);
+
+	/**
+	 * 查询菜单权限
+	 * @param menu_perms 用户菜单权限
+	 * @return
+	 */
+	public List<SysMenu> findPermByIds(@Param("menu_perms")String[] menu_perms);
 	
 }

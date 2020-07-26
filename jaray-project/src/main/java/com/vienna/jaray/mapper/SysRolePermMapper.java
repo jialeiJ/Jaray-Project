@@ -24,6 +24,13 @@ public interface SysRolePermMapper {
     public SysRolePerm findByRid(@Param("role_id")String role_id);
 
     /**
+     * 查询角色权限
+     * @param role_ids
+     * @return
+     */
+    public List<SysRolePerm> findByRids(@Param("role_ids")String[] role_ids);
+
+    /**
      * 添加角色权限
      * @param sysRolePermEntity
      * @return

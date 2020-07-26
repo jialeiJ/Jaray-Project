@@ -9,15 +9,16 @@
                         clearable style="width: 200px">
                     </el-input>
                     <el-button type="success" @click="initTable" plain>查询</el-button>
-                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
-                    <el-button type="danger" @click="deleteSysMenu" plain>删除</el-button>
+                    <el-button type="success" v-if="hasPermission('sys:menu:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" v-if="hasPermission('sys:menu:delete')" @click="deleteSysMenu" plain>删除</el-button>
                 </div>
                 <i-tree-table ref="iTable" 
                     @transmitParent="receiveChild"
                     @handleView="viewSysMenu"
                     @handleEdit="editViewSysMenu"
                     :tableTitle="tableTitle" 
-                    :tableData="tableData">
+                    :tableData="tableData"
+                    :tableHeight="tableHeight">
                 </i-tree-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
@@ -40,21 +41,19 @@
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
                         </el-form-item>
+                        <el-form-item label="上级菜单" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="addForm.menu_pids"
+                                :options="dirTreeData"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"
+                                clearable>
+                            </el-cascader>
+                        </el-form-item>
                         <el-form-item label="名称" :label-width="formLabelWidth">
                             <el-input v-model="addForm.name" autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="上级菜单" :label-width="formLabelWidth">
-                            <!-- <el-input v-model="addForm.parent_id" autocomplete="off"></el-input> -->
-                            <el-select v-model="addForm.parent_id" placeholder="请选择">
-                                <el-option
-                                v-for="item in menuOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="菜单路径" :label-width="formLabelWidth">
+                        <el-form-item v-if="addForm.type == 1" label="菜单路径" :label-width="formLabelWidth">
                             <el-input v-model="addForm.url" :disabled="addForm.type == 0?true:false" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="图标" :label-width="formLabelWidth">
@@ -107,6 +106,15 @@
                         </el-form-item>
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.id" readonly="readonly"></el-input>
+                        </el-form-item>
+                        <el-form-item label="上级菜单" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="viewForm.menu_pids"
+                                :options="dirTreeData"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"
+                                clearable>
+                            </el-cascader>
                         </el-form-item>
                         <el-form-item label="名称" :label-width="formLabelWidth">
                             <el-input v-model="viewForm.name" readonly="readonly"></el-input>
@@ -166,6 +174,15 @@
                         </el-form-item>
                         <el-form-item label="ID" :label-width="formLabelWidth">
                             <el-input v-model="editForm.id" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="上级菜单" :label-width="formLabelWidth">
+                            <el-cascader
+                                v-model="editForm.menu_pids"
+                                :options="dirTreeData"
+                                :props="{ expandTrigger: 'hover', checkStrictly: true }"
+                                @change="handleChange"
+                                clearable>
+                            </el-cascader>
                         </el-form-item>
                         <el-form-item label="名称" :label-width="formLabelWidth">
                             <el-input v-model="editForm.name" autocomplete="off"></el-input>
@@ -232,8 +249,10 @@ export default {
     components: { iTreeTable, iPagination },
     data () {
         return {
-            formLabelWidth: '120px',
-            loading: false,
+            // label宽度
+            formLabelWidth: 'calc(14vh - 0px)',
+            // 表格高度
+            tableHeight: 'calc(95vh - 200px)',
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
@@ -252,8 +271,8 @@ export default {
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
-                        {name: '查看', style: 'primary', clickFun: this.viewSysMenu},
-                        {name: '修改', style: 'primary', clickFun: this.editViewSysMenu},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysMenu, disabled: this.hasPermission('sys:menu:view')},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysMenu, disabled: this.hasPermission('sys:menu:edit')},
                     ]
                 }
             ],
@@ -287,14 +306,16 @@ export default {
                     }
                 }]
             },
-            menuOptions: [],
+            dirTreeData: [],
+            tileMenuData: [],
+            // 菜单ids,用于回显
+            menuIds: [],
             typeOptions: [],
         }
     },
     created: function(){
         let that = this
         that.initTable()
-        that.findAllDir()
         that.findSysDictByDesc()
     },
     methods: {
@@ -313,9 +334,20 @@ export default {
                     that.pageSize = result.map.sysMenus.pageSize
                     that.tableData = result.map.sysMenus.list
 
+                    that.tileMenuList(result.map.sysMenus.list)
+
+                    // 解决双向修改问题
+                    //JSON.parse(JSON.stringify(result.map.sysMenus.list))
+                    let dirTreeData = JSON.parse(JSON.stringify(result.map.sysMenus.list))
+                    let data = dirTreeData.filter(function(item){
+                        return item.type == 0
+                    })
+                    that.dirTreeData = data
+                    that.getDirTreeData(that.dirTreeData)
+                    console.log(that.dirTreeData)
+
                     that.filtersHandler(that.tableData)
                 } else {
-                    that.loading = false;
                     that.$message.error(result.msg);// elementUI消息提示
                 }
             });
@@ -327,6 +359,8 @@ export default {
         },
         addSysMenu: function(){
             let that = this
+            // 目录/菜单父id赋值
+            that.addForm.parent_id = that.addForm.menu_pids[that.addForm.menu_pids.length-1]
             // 定义请求参数
             let params = that.addForm
             // 调用接口
@@ -340,7 +374,6 @@ export default {
                     that.addDialogFormVisible = false
                     that.addForm = {}
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -353,12 +386,33 @@ export default {
             MENU_API.viewSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysMenu
+
+                    // 获取部门id的父id
+                    let id = result.map.sysMenu.parent_id
+                    that.menuIds = []
+                    that.getAllPidById(id, that.tileMenuData)
+                    
+                    // 回显上层机构
+                    let menu_ids = that.menuIds.reverse()
+                    that.viewForm.menu_pids = menu_ids
+                    console.log(that.viewForm.menu_pids)
+
                     that.viewDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
+        },
+        getAllPidById: function(id, tileMenuData){
+            let that = this
+            if(id && that.menuIds.indexOf(id) == -1){
+                that.menuIds.push(id)
+            }
+            tileMenuData.forEach(function(item, index){
+                if(item.id == id){
+                    that.getAllPidById(item.parent_id, tileMenuData)
+                }
+            })
         },
         editViewSysMenu: function(row){
             let that = this
@@ -370,7 +424,6 @@ export default {
                     that.editForm = result.map.sysMenu
                     that.editDialogFormVisible = true
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -379,6 +432,10 @@ export default {
             let that = this
             // 删除该属性
             delete that.editForm.childMenus
+            delete that.editForm.perms
+
+            // 目录/菜单父id赋值
+            that.editForm.parent_id = that.editForm.menu_pids[that.editForm.menu_pids.length-1]
             // 定义请求参数
             let params = that.editForm
             // 调用接口
@@ -391,7 +448,6 @@ export default {
                     });
                     that.editDialogFormVisible = false
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
@@ -415,10 +471,14 @@ export default {
                         type: 'success'
                     });
                 } else {
-                    that.loading = false;
                     that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
+        },
+        handleChange(value) {
+            let that = this
+            that.parent_id = value[value.length-1]
+            console.log(that.parent_id);
         },
         typeFormatter: function(row, column, cellValue, index){
             if(cellValue == undefined){
@@ -467,6 +527,33 @@ export default {
             }
             
         },
+        getDirTreeData: function(dirTreeData){
+            let that = this
+            for(var i=0;i<dirTreeData.length;i++){
+                if(dirTreeData[i].children && dirTreeData[i].children.length){
+                    let data = dirTreeData[i].children.filter(function(item){
+                        return item.type == 0
+                    })
+
+                    if(data && data.length){
+                        dirTreeData[i].children = data
+                    }else{
+                        // 删除children属性
+                        that.$delete(dirTreeData[i], 'children');
+                    }
+                    
+                    //dirTreeData[i].children = data
+                    if(data.length){
+                        that.getDirTreeData(dirTreeData[i].children)
+                        
+                    }else{
+                        continue
+                    }
+                    
+                }
+            }
+            console.log(that.dirTreeData)
+        },
         filtersArrayUnique: function(filters){
             let that = this
             for(var i=0;i<filters.length;i++){
@@ -479,18 +566,15 @@ export default {
             }
             return filters
         },
-        findAllDir: function(){
+        // 平铺数据
+        tileMenuList(menuDataList){
             let that = this
-            // 定义请求参数
-            let params = {}
-            // 调用接口
-            MENU_API.findAllDir(params).then(function (result) {
-                if (result.code === 200) {
-                    that.menuOptions = result.map.selectOptions
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
+            menuDataList.forEach(function(item, index){
+                that.tileMenuData.push(item)
+                if(item.children && item.children.length){
+                    that.tileMenuList(item.children)
                 }
-            });
+            })
         },
         findSysDictByDesc: function(){
             let that = this
@@ -514,18 +598,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-/* ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-} */
-a {
-  color: #42b983;
+/deep/ .el-dialog .el-dialog__body {
+  border-top: 1px solid #dcdfe6;
+  border-bottom: 1px solid #dcdfe6;
+  max-height: calc(85vh - 260px); 
+  overflow-y: auto;
 }
 </style>

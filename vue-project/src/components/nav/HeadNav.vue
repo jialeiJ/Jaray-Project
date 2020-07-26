@@ -108,9 +108,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions( // 语法糖
-            ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed') 提交这个方法
-        ),
         toMain: function(){
             this.$router.push({name: 'MainPage'})
         },
@@ -169,7 +166,10 @@ export default {
             let that = this
             sessionStorage.clear()
             that.$router.push({path: "/"});
-        }
+        },
+        ...mapActions( // 语法糖
+            ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed') 提交这个方法
+        ),
     },
     mounted: function() {
         this.setUserInfo();

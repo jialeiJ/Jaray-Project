@@ -9,15 +9,16 @@
                         clearable style="width: 200px">
                     </el-input>
                     <el-button type="success" @click="initTable" plain>查询</el-button>
-                    <el-button type="success" @click="addDialogFormVisible = true;" plain>增加</el-button>
-                    <el-button type="danger" @click="deleteSysDept" plain>删除</el-button>
+                    <el-button type="success" v-if="hasPermission('sys:dept:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
+                    <el-button type="danger" v-if="hasPermission('sys:dept:delete')" @click="deleteSysDept" plain>删除</el-button>
                 </div>
                 <i-tree-table ref="iTable" 
                     @transmitParent="receiveChild"
                     @handleView="viewSysDept"
                     @handleEdit="editViewSysDept"
                     :tableTitle="tableTitle" 
-                    :tableData="tableData">
+                    :tableData="tableData"
+                    :tableHeight="tableHeight">
                 </i-tree-table>
                 <i-pagination ref="iPagination" 
                     :total="total"
@@ -205,7 +206,10 @@ export default {
     components: { iTreeTable, iPagination },
     data () {
         return {
-            formLabelWidth: '120px',
+            // label宽度
+            formLabelWidth: 'calc(14vh - 0px)',
+            // 表格高度
+            tableHeight: 'calc(95vh - 200px)',
             addDialogFormVisible: false,
             viewDialogFormVisible: false,
             editDialogFormVisible: false,
@@ -221,8 +225,8 @@ export default {
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 175,
                     operation: [
-                        {name: '查看', style: 'primary', clickFun: this.viewSysDept},
-                        {name: '修改', style: 'primary', clickFun: this.editViewSysDept},
+                        {name: '查看', style: 'primary', clickFun: this.viewSysDept, disabled: this.hasPermission('sys:dept:view')},
+                        {name: '修改', style: 'primary', clickFun: this.editViewSysDept, disabled: this.hasPermission('sys:dept:edit')},
                     ]
                 }
             ],
@@ -475,7 +479,7 @@ export default {
             return filters
         },
         // 平铺数据
-        tileDeptList(deptDataList){
+        tileDeptList: function(deptDataList){
             let that = this
             deptDataList.forEach(function(item, index){
                 that.tileDeptData.push(item)

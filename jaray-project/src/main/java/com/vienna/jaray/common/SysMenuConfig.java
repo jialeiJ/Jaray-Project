@@ -1,8 +1,6 @@
 package com.vienna.jaray.common;
 
 public class SysMenuConfig {
-
-    public final static String TOP_DIR_ID = "M0000000000000";
     /**
      * 目录标志
      */
