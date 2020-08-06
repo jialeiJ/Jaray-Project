@@ -6,7 +6,6 @@
             :data="tableData"
             :key="iKey"
             row-key="id"
-            :height="tableHeight"
             :highlight-current-row="true"
             @selection-change="handleSelectionChange"
             @filter-change="handlerFilterChange"

@@ -31,7 +31,7 @@
 
     <!-- 添加字典 -->
     <insert id="add">
-    	insert into sys_dict (`id`, `user_name`, `operation`, `method`, `params`, `time`, `ip`, `create_by`, `create_time`)
+    	insert into sys_log (`id`, `user_name`, `operation`, `method`, `params`, `time`, `ip`, `create_by`, `create_time`)
     	values (findNextFormatSeqVal('U','s_sys_log_id'), #{entity.user_name}, #{entity.operation}, #{entity.method},
     	 #{entity.params}, #{entity.time}, #{entity.ip}, #{entity.create_by}, #{entity.create_time})
     </insert>

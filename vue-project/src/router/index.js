@@ -10,6 +10,7 @@ import SysRole from '@/components/sysRole'
 import SysDept from '@/components/sysDept'
 import SysDict from '@/components/sysDict'
 import SysLog from '@/components/sysLog'
+import Textarea from '@/components/Textarea'
 
 Vue.use(Router)
 
@@ -74,6 +75,12 @@ export default new Router({
             name: 'sysLog',
             title: '日志',
             component: SysLog
+        },
+        {
+            path: '/sys/textarea',
+            name: 'textarea',
+            title: '日志',
+            component: Textarea
         }
     ]
 })

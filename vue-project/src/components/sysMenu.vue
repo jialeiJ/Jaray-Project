@@ -422,6 +422,17 @@ export default {
             MENU_API.viewSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.editForm = result.map.sysMenu
+
+                     // 获取部门id的父id
+                    let id = result.map.sysMenu.parent_id
+                    that.menuIds = []
+                    that.getAllPidById(id, that.tileMenuData)
+                    
+                    // 回显上层机构
+                    let menu_ids = that.menuIds.reverse()
+                    that.editForm.menu_pids = menu_ids
+                    console.log(that.viewForm.menu_pids)
+
                     that.editDialogFormVisible = true
                 } else {
                     that.$message.error('失败：'+result.msg);// elementUI消息提示

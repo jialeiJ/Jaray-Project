@@ -31,18 +31,18 @@
             <el-carousel-item class="carousel-item-env">
                 <h2>开发环境</h2>
                 <ul>
-                <li>IDE : eclipse 4.6.x。     JDK : JDK 1.8.x。</li>
-                <li>Maven : Maven 3.5.x。   MySQL: MySQL 5.7.x。</li>
-                <li>IDE : VS Code 1.27。    Webpack：webpack 3.2.x。</li>
-                <li>NODE: Node 8.9.x。      NPM : NPM 6.4.x。</li>
+                <li>IDE : eclipse 4.11.x。     JDK : JDK 1.8.x。</li>
+                <li>Maven : Maven 3.5.x。   MySQL: MySQL 8.0.x。</li>
+                <li>IDE : VS Code 1.47.x。    Webpack：webpack 3.2.x。</li>
+                <li>NODE: Node 12.18.x。      NPM : NPM 6.14.x。</li>
                 </ul>
                 <h2>技术选型</h2>
                 <ul>
                 <li>核心框架：Spring Boot 2.x。  服务治理：Spring Cloud。</li>
                 <li>视图框架：Spring MVC 5.x。   持久层框架：MyBatis 3.x。</li>
-                <li>数据库连接池：Druid 1.x。    安全框架：Shiro 1.4.x。</li>
+                <li>数据库连接池：Druid 1.x。    安全框架：Spring-Security 2.3.x。</li>
                 <li>前端框架：Vue.js 2.x。       页面组件：Element 2.x。</li>
-                <li>状态管理：Vuex.js 2.x。      后台交互：axios 0.18.x。</li>
+                <li>状态管理：Vuex.js 2.x。      后台交互：axios 0.19.x。</li>
                 <li>...</li>
                 </ul>
             </el-carousel-item>
@@ -76,6 +76,7 @@ export default {
     padding-left: 20px;
     padding-right: 20px;
     margin-right: 20px;
+    text-align: center;
 }
 .carousel h2 {
     color: #475669;

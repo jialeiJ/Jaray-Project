@@ -5,12 +5,11 @@
             size="mini"
             :data="tableData"
             :key="iKey"
-            :height="tableHeight"
             :highlight-current-row="true"
             @selection-change="handleSelectionChange"
             @filter-change="handlerFilterChange"
             @row-click="rowClick"
-            style="height: 100%;width: 100%;box-shadow: 3px 6px 5px #888888;">
+            style="width: 100%;box-shadow: 3px 6px 5px #888888;">
             <el-table-column
                 type="selection"
                 width="40">

@@ -53,7 +53,7 @@
     <select id="findByName" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
-       from sys_user u where u.name = #{name}
+       from sys_user u where u.name = #{name} and u.status = '1'
     </select>
 
     <!-- 删除用户 -->

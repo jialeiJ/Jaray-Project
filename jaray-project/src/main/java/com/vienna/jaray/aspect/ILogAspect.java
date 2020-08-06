@@ -1,18 +1,20 @@
 package com.vienna.jaray.aspect;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 
+import com.vienna.jaray.entity.SysLog;
+import com.vienna.jaray.service.SysLogService;
+import com.vienna.jaray.utils.DateTimeUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.vienna.jaray.annotation.ILogAnnotation;
-import com.vienna.jaray.entity.ISysLog;
 
 /**
  * @Title: ILogAspect.java
@@ -23,6 +25,8 @@ import com.vienna.jaray.entity.ISysLog;
 @Aspect
 @Component
 public class ILogAspect {
+	@Autowired
+	private SysLogService sysLogService;
 	
 	/* 定义切点@Pointcut */
 	/* 在注解的位置切入代码 */
@@ -36,7 +40,7 @@ public class ILogAspect {
 	public void saveILog(JoinPoint joinPoint) {
 		
 		//保存日志
-		ISysLog iSysLog = new ISysLog();
+		SysLog sysLog = new SysLog();
 		
 		//从切面织入点处通过反射机制获取织入点处的方法
 		MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -48,31 +52,32 @@ public class ILogAspect {
 		if(iLogAnnotation != null) {
 			String value = iLogAnnotation.value();
 			/* 保存获取的操作 */
-			iSysLog.setOperation(value);
+			sysLog.setOperation(value);
 		}
 		
 		//获取请求的类名
 		String className = joinPoint.getTarget().getClass().getName();
 		//获取请求的方法名
 		String methodName = method.getName();
-		iSysLog.setMethod(className +"."+ methodName);
+		sysLog.setMethod(className +"."+ methodName);
 		
 		//请求的参数
 		Object[] args = joinPoint.getArgs();
 		//将参数所在的数组转成json
 		String params = new Gson().toJson(args);
-		iSysLog.setParams(params);
-		
-		iSysLog.setCreateDate(new Date());
+		sysLog.setParams(params);
+
+		sysLog.setCreate_time(DateTimeUtil.getCurDateTime(DateTimeUtil.DATE_FORMAT_FULL));
 		//获取用户名
-		iSysLog.setUsername("Jaray");
+		sysLog.setUser_name("Jaray");
 		
 		//获取用户ip地址
-		iSysLog.setIp("");
+		sysLog.setIp("");
 		
 		//保存ILog实体类到数据库
+		sysLogService.add(sysLog);
 		
-		System.out.println(iSysLog);
+		System.out.println(sysLog);
 	}
 
 }

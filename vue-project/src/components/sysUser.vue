@@ -12,6 +12,7 @@
                     <el-button type="success" v-if="hasPermission('sys:user:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
                     <el-button type="danger" v-if="hasPermission('sys:user:delete')" @click="deleteSysUser" plain>删除</el-button>
                 </div>
+
                 <i-table ref="iTable"
                     @transmitParent="receiveChild"
                     @rowClick="rowClick"

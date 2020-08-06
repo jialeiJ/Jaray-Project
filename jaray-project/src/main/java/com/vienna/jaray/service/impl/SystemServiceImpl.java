@@ -45,13 +45,15 @@ public class SystemServiceImpl implements SystemService {
 
         SysUser sysUserEntity = sysUserMapper.findByName(username);
         SysUserToken sysUserTokenEntity = new SysUserToken();
-        sysUserTokenEntity.setUser_id(sysUserEntity.getId());
-        sysUserTokenEntity.setName(sysUserEntity.getName());
-        sysUserTokenEntity.setToken(token.getToken());
-        sysUserTokenEntity.setExpire_time(token.getExpireTime());
-        sysUserTokenEntity.setCreate_by(sysUserEntity.getCreate_by());
-        sysUserTokenEntity.setCreate_time(sysUserEntity.getCreate_time());
-        
+        if(sysUserEntity != null){
+            sysUserTokenEntity.setUser_id(sysUserEntity.getId());
+            sysUserTokenEntity.setName(sysUserEntity.getName());
+            sysUserTokenEntity.setToken(token.getToken());
+            sysUserTokenEntity.setExpire_time(token.getExpireTime());
+            sysUserTokenEntity.setCreate_by(sysUserEntity.getCreate_by());
+            sysUserTokenEntity.setCreate_time(sysUserEntity.getCreate_time());
+        }
+
         if(token.getToken() != null){
             result = ResponseResult.success().add("sysUserToken",sysUserTokenEntity);
         }else{
