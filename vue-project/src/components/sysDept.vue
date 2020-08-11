@@ -290,8 +290,6 @@ export default {
                     that.tileDeptList(result.map.sysDepts.list)
 
                     that.filtersHandler(that.tableData)
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -322,8 +320,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                     that.addForm = {}
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -346,8 +342,6 @@ export default {
                     that.viewForm.dept_ids = dept_ids
                     
                     that.viewDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -381,8 +375,6 @@ export default {
                     that.editForm.dept_ids = dept_ids
 
                     that.editDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -404,8 +396,6 @@ export default {
                         type: 'success'
                     });
                     that.editDialogFormVisible = false
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -427,8 +417,6 @@ export default {
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -493,7 +481,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 /deep/ .el-cascader {
     display: block;
     position: relative;

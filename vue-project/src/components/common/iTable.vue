@@ -5,6 +5,7 @@
             size="mini"
             :data="tableData"
             :key="iKey"
+            :height="tableHeight"
             :highlight-current-row="true"
             @selection-change="handleSelectionChange"
             @filter-change="handlerFilterChange"

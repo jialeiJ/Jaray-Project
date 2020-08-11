@@ -293,9 +293,6 @@ export default {
                     that.tableData = result.map.sysRoles.list
 
                     that.filtersHandler(that.tableData)
-                } else {
-                    that.loading = false;
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -383,8 +380,6 @@ export default {
                     });
                     // 刷新左侧菜单（自己不能修改自己，所以不用刷新）
                     //that.refreshFindLeftNav()
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -402,9 +397,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                     that.addForm = {}
-                } else {
-                    that.loading = false;
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -417,9 +409,6 @@ export default {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysRole
                     that.viewDialogFormVisible = true
-                } else {
-                    that.loading = false;
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -432,9 +421,6 @@ export default {
                 if (result.code === 200) {
                     that.editForm = result.map.sysRole
                     that.editDialogFormVisible = true
-                } else {
-                    that.loading = false;
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -451,9 +437,6 @@ export default {
                         type: 'success'
                     });
                     that.editDialogFormVisible = false
-                } else {
-                    that.loading = false;
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -475,9 +458,6 @@ export default {
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
-                } else {
-                    that.loading = false;
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -535,8 +515,6 @@ export default {
             SYS_API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {
                     that.treeData =result.map.leftMenu
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             })
         },
@@ -550,8 +528,6 @@ export default {
             SYS_API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {
                     that.leftMenus =result.map.leftMenu
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             })
         },

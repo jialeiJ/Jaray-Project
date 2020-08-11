@@ -6,6 +6,7 @@
             :data="tableData"
             :key="iKey"
             row-key="id"
+            :height="tableHeight"
             :highlight-current-row="true"
             @selection-change="handleSelectionChange"
             @filter-change="handlerFilterChange"
@@ -85,7 +86,7 @@ export default {
             multipleSelection: [],
             currentPage: 1,
             // 表格高度自适应
-            iKey: 1
+            iKey: 1,
         }
     },
     mounted: function(){
@@ -129,7 +130,7 @@ export default {
     watch: {
         tableLoading: function() {
             ++this.iKey
-        }
+        },
     }
 }
 </script>

@@ -282,8 +282,6 @@ export default {
                     that.tableData = result.map.sysDicts.list
 
                     that.filtersHandler(that.tableData)
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -306,8 +304,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                     that.addForm = {}
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -320,8 +316,6 @@ export default {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysDict
                     that.viewDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -334,8 +328,6 @@ export default {
                 if (result.code === 200) {
                     that.editForm = result.map.sysDict
                     that.editDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -352,8 +344,6 @@ export default {
                         type: 'success'
                     });
                     that.editDialogFormVisible = false
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -375,8 +365,6 @@ export default {
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },

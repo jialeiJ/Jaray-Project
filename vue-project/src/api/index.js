@@ -12,13 +12,15 @@ import {
 
 let token = '';
 let refreshTokenFalg = true
+let noPermissionFalg = false
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['token'] = token;
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';// 配置请求头，发送一次预请求和一次正式请求两次请求
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 //添加一个请求拦截器
-axios.interceptors.request.use(function (config) {
+axios.interceptors.request.use(function (request) {
+    noPermissionFalg = false
     // 如果有token 说明该用户已登陆
     // let accessUser = localStorage.getItem('access-user')
     let accessUser = sessionStorage.getItem('access-user')
@@ -51,9 +53,9 @@ axios.interceptors.request.use(function (config) {
     // token = localStorage.getItem('access-token')
     token = sessionStorage.getItem('access-token')
     if(token){
-        config.headers.common['token'] = token;
+        request.headers.common['token'] = token;
     }
-    return config;
+    return request;
 }, function (error) {
     return Promise.reject(error);
 });
@@ -61,7 +63,8 @@ axios.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 axios.interceptors.response.use(function (response) {
     if (response.data && response.data.code) {
-        if (parseInt(response.data.code) === 403) {
+        if (!noPermissionFalg && parseInt(response.data.code) === 403) {
+            noPermissionFalg = true
             // localStorage.clear()
             sessionStorage.clear()
             //未登录
@@ -71,9 +74,12 @@ axios.interceptors.response.use(function (response) {
                 duration: 5 * 1000
             })
             router.push({path : '/'});
-        }
-        if (parseInt(response.data.code) === 100) {
-            console.error("请求失败")
+        } else if (!noPermissionFalg && parseInt(response.data.code) === 100) {
+            Message({
+                message: response.data.msg,
+                type: 'error'
+            });
+            console.error("请求失败", response.data.msg);
         }
     }
     return response;

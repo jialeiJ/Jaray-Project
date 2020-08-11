@@ -21,7 +21,7 @@ public class SysLogServiceImpl implements SysLogService {
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysLog> sysLogEntityList = sysLogMapper.findAll();
+        List<SysLog> sysLogEntityList = sysLogMapper.findAll(commonParamsModel);
         //取记录总条数
         PageInfo<?> pageInfo = new PageInfo<>(sysLogEntityList);
         return ResponseResult.success().add("sysLogs", pageInfo);

@@ -1,6 +1,7 @@
 package com.vienna.jaray.mapper;
 
 import com.vienna.jaray.entity.SysLog;
+import com.vienna.jaray.model.CommonParamsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ public interface SysLogMapper {
      * 查询日志列表
      * @return
      */
-    public List<SysLog> findAll();
+    public List<SysLog> findAll(@Param("common")CommonParamsModel commonParamsModel);
 
     /**
      * 查询日志

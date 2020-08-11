@@ -27,6 +27,12 @@
         select
         <include refid="Base_Column_List" />
         from sys_log l
+        <where>
+            <trim suffixOverrides="or">
+                <if test="common.search != null and common.search != ''"> l.operation like concat(#{common.search}) or </if>
+                <if test="common.search != null and common.search != ''"> l.operation like concat(#{common.search}) or </if>
+            </trim>
+        </where>
     </select>
 
     <!-- 添加字典 -->

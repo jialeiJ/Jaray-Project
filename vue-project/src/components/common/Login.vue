@@ -80,9 +80,6 @@ export default {
                             //localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
                             //localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中
                             that.$router.push({path: "main"});
-                        } else {
-                            that.loading = false;
-                            that.$message.error(result.msg);// elementUI消息提示
                         }
                     });
                 } else {
@@ -112,7 +109,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 /deep/ .el-form-item__content{
     margin-left:0!important;
 } 

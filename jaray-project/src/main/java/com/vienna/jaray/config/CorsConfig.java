@@ -16,19 +16,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class CorsConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedMethod("*");
-        config.setMaxAge(168000L);
-        config.addAllowedHeader("*");
-        //config.addExposedHeader("*");
-
-        UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
-        configSource.registerCorsConfiguration("/**", config);
-
-        return new CorsFilter(configSource);
+    public CorsFilter corsFilter(){
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", buildConfig());
+        return new CorsFilter(source);
     }
 
+    private CorsConfiguration buildConfig(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedHeader("*"); // 允许任何的HEAD头部
+        corsConfiguration.addAllowedOrigin("*"); // 允许任何域名
+        corsConfiguration.addAllowedMethod("*"); // 允许任何方法
+        corsConfiguration.setMaxAge(168000L);
+        corsConfiguration.setAllowCredentials(true);
+        //corsConfiguration.addExposedHeader("*");
+        return corsConfiguration;
+    }
 }

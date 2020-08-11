@@ -280,6 +280,7 @@ export default {
             let that = this
             // 定义请求参数
             let params = { 
+                search: that.search,
                 pageNum: that.pageNum,
                 pageSize: that.pageSize
             }
@@ -292,8 +293,6 @@ export default {
                     that.tableData = result.map.sysLogs.list
 
                     that.filtersHandler(that.tableData)
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -316,8 +315,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                     that.addForm = {}
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -330,8 +327,6 @@ export default {
                 if (result.code === 200) {
                     that.viewForm = result.map.sysLog
                     that.viewDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -345,8 +340,6 @@ export default {
                     console.log()
                     that.editForm = result.map.sysLog
                     that.editDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -363,8 +356,6 @@ export default {
                         type: 'success'
                     });
                     that.editDialogFormVisible = false
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -386,8 +377,6 @@ export default {
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },

@@ -40,22 +40,30 @@ export default {
             for (var i = 0; i < that.tabs.length; i++) {
                 if (menu.name === that.tabs[i].name) {
                     exist = true;
+                    that.index = i;
                     break
                 }
             }
             if (exist === true) {
                 that.tabsValue = menu.name;
                 return
+            } else {
+                that.index = that.tabs.length
             }
             that.tabs.push({
                 title: menu.name,
                 name: menu.name,
                 content: menu.component
             });
+            
             that.tabComponent = Vue.component('tab-component', {
                 render: function (h) {
-                    var comp = that.tabs[this.index].content;
-                    return h(comp)
+                    // 每次只渲染当前tab
+                    if(this.index === that.index) {
+                        var comp = that.tabs[this.index].content;
+                        return h(comp)
+                    }
+                    
                 },
                 props: {
                     index: {
@@ -75,7 +83,6 @@ export default {
                     let menu = {};
                     menu.name = temp.title;
                     menu.component = temp.component;
-                    console.log(menu.component)
                     that.addOneTab(menu);
                 }
             }
@@ -88,13 +95,14 @@ export default {
                 let menu = {};
                 menu.name = params.title;
                 menu.component = that.iframeComponent.options;
-                console.log(menu.component)
+                that.index++
                 that.addOneTab(menu);
             }
         },
         removeTab(targetName) {
-            let tabs = this.tabs;
-            let activeName = this.tabsValue;
+            let that = this
+            let tabs = that.tabs;
+            let activeName = that.tabsValue;
             if (activeName === targetName) {
                 tabs.forEach((tab, index) => {
                     if (tab.name === targetName) {
@@ -105,9 +113,10 @@ export default {
                     }
                 });
             }
-            this.tabsValue = activeName;
-            this.tabs = tabs.filter(tab => tab.name !== targetName);
-        },
+            that.index--
+            that.tabsValue = activeName;
+            that.tabs = tabs.filter(tab => tab.name !== targetName);
+        }
     },
     created: function(){
         let tempRoutes = this.$router.options.routes;
@@ -123,6 +132,17 @@ export default {
     },
     mounted: function(){
         
+    },
+    watch: {
+        'tabsValue': function(tabName) {
+            let that = this
+            for (var i = 0; i < that.tabs.length; i++) {
+                if (tabName === that.tabs[i].name) {
+                    that.index = i;
+                    break
+                }
+            }
+        }
     }
 }
 </script>
@@ -156,5 +176,10 @@ body > .el-container {
 .el-container {
     width: 100%;
     height: 100%;
+}
+
+.el-row {
+    display: flex;
+    flex-wrap: wrap;
 }
 </style>

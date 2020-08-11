@@ -347,8 +347,6 @@ export default {
                     console.log(that.dirTreeData)
 
                     that.filtersHandler(that.tableData)
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -373,8 +371,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                     that.addForm = {}
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -395,11 +391,8 @@ export default {
                     // 回显上层机构
                     let menu_ids = that.menuIds.reverse()
                     that.viewForm.menu_pids = menu_ids
-                    console.log(that.viewForm.menu_pids)
 
                     that.viewDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -431,11 +424,8 @@ export default {
                     // 回显上层机构
                     let menu_ids = that.menuIds.reverse()
                     that.editForm.menu_pids = menu_ids
-                    console.log(that.viewForm.menu_pids)
 
                     that.editDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -458,8 +448,6 @@ export default {
                         type: 'success'
                     });
                     that.editDialogFormVisible = false
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -481,15 +469,12 @@ export default {
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
         handleChange(value) {
             let that = this
             that.parent_id = value[value.length-1]
-            console.log(that.parent_id);
         },
         typeFormatter: function(row, column, cellValue, index){
             if(cellValue == undefined){
@@ -553,17 +538,14 @@ export default {
                         that.$delete(dirTreeData[i], 'children');
                     }
                     
-                    //dirTreeData[i].children = data
                     if(data.length){
-                        that.getDirTreeData(dirTreeData[i].children)
-                        
+                        that.getDirTreeData(dirTreeData[i].children)    
                     }else{
                         continue
                     }
                     
                 }
             }
-            console.log(that.dirTreeData)
         },
         filtersArrayUnique: function(filters){
             let that = this
@@ -595,8 +577,6 @@ export default {
             DICT_API.findSysDictByDesc(params).then(function (result) {
                 if (result.code === 200) {
                     that.typeOptions = result.map.selectOptions
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         }
@@ -608,7 +588,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 /deep/ .el-dialog .el-dialog__body {
   border-top: 1px solid #dcdfe6;
   border-bottom: 1px solid #dcdfe6;

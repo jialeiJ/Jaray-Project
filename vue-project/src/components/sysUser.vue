@@ -407,8 +407,6 @@ export default {
                     console.log(that.$store.getters.leftMenus)
 
                     that.filtersHandler(that.tableData)
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
             // 重置请求参数
@@ -418,8 +416,6 @@ export default {
                 if (result.code === 200) {
                     that.deptOptions = result.map.sysDepts.list
                     that.tileDeptList(result.map.sysDepts.list)
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -446,8 +442,6 @@ export default {
                     });
                     that.addDialogFormVisible = false
                     that.addForm = {}
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -476,8 +470,6 @@ export default {
                     that.viewForm.dept_ids = dept_ids
                     
                     that.viewDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -517,8 +509,6 @@ export default {
                     that.editForm.dept_ids = dept_ids
 
                     that.editDialogFormVisible = true
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -538,8 +528,6 @@ export default {
                         type: 'success'
                     });
                     that.editDialogFormVisible = false
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -561,8 +549,6 @@ export default {
                         message: '恭喜你，删除成功',
                         type: 'success'
                     });
-                } else {
-                    that.$message.error('失败：'+result.msg);// elementUI消息提示
                 }
             });
         },
@@ -623,8 +609,6 @@ export default {
             DICT_API.findSysDictByDesc(params).then(function (result) {
                 if (result.code === 200) {
                     that.statusOptions = result.map.selectOptions
-                } else {
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             });
         },
@@ -695,7 +679,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 /deep/ .el-select,.el-cascader {
     display: block;
     position: relative;

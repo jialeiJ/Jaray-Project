@@ -18,6 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.vienna.jaray.security.JwtAuthenticationFilter;
 import com.vienna.jaray.security.UserDetailsServiceImpl;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * 添加安全配置类， 继承 WebSecurityConfigurerAdapter，
@@ -113,5 +116,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
 	}
-
 }

@@ -14,8 +14,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加拦截器，配置拦截器地址
-//        registry.addInterceptor(tokenInterceptor)
+        registry.addInterceptor(tokenInterceptor)
 //            .addPathPatterns("/system/findLeftNav") // 配置拦截
-//            .excludePathPatterns("/system/login"); // 配置不拦截
+            .excludePathPatterns("/system/login"); // 配置不拦截
     }
 }

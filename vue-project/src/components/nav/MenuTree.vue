@@ -36,8 +36,6 @@ export default {
             API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {
                     that.leftMenus =result.map.leftMenu
-                } else if(result.code !== 403){
-                    that.$message.error(result.msg);// elementUI消息提示
                 }
             })
         },

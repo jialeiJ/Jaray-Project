@@ -24,13 +24,18 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // OPTIONS请求类型直接返回不处理
+        if ("OPTIONS".equals(request.getMethod())){
+            return false;
+        }
+
         String token = JwtTokenUtil.getToken(request);
         boolean isTokenExpired = JwtTokenUtil.isTokenExpired(token);
         if(isTokenExpired){
             resultMsg(response);
             return false;
         }
-        return isTokenExpired;
+        return !isTokenExpired;
     }
 
     @Override
