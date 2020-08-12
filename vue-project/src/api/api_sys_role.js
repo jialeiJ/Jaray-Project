@@ -3,7 +3,7 @@ import * as API from '.'
 export default {
     //查询角色信息列表
     findSysRoleList: params => {
-        return API.GET('/sys/role/find/all', params);
+        return API.POST('/sys/role/find/all', params);
     },
     //删除角色信息
     deleteSysRole: params => {

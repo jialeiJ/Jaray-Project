@@ -3,7 +3,7 @@ import * as API from './'
 export default {
     //查询投诉信息列表
     findComplaintList: params => {
-        return API.GET('/complaint/find/all', params);
+        return API.POST('/complaint/find/all', params);
     },
     //添加投诉信息
     addComplaint: params => {

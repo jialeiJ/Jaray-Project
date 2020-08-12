@@ -3,7 +3,7 @@ import * as API from '.'
 export default {
     //查询日志信息列表
     findSysLogList: params => {
-        return API.GET('/sys/log/find/all', params);
+        return API.POST('/sys/log/find/all', params);
     },
     //删除日志信息
     deleteSysLog: params => {

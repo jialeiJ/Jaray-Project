@@ -1,12 +1,15 @@
 <template>
 <div>
-    <el-menu
+    <el-menu unique-opened 
+        :default-active="$route.path" 
+        @select="addTab" 
+        @open="handleOpen" 
+        @close="handleClose"
         class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
         background-color="#545c64"
         text-color="#fff"
-        active-text-color="#ffd04b">
+        active-text-color="#ffd04b"
+        mode="horizontal">
         <el-menu-item index="title">
             <a style="text-decoration:none;color:white;font-size:20px;">
                 后台管理系统
@@ -15,20 +18,7 @@
         <el-menu-item index="collapsed">
             <i style="display : block;" :class="[collapsed?'iconfont icon-collapse-white go':'iconfont icon-collapse-white to']"></i>
         </el-menu-item>
-        <el-submenu index="1">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="1-1">选项1</el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
-            <el-menu-item index="1-3">选项3</el-menu-item>
-            <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-                <el-menu-item index="1-4-2">选项2</el-menu-item>
-                <el-menu-item index="1-4-3">选项3</el-menu-item>
-            </el-submenu>
-        </el-submenu>
-        <el-menu-item index="2">消息中心</el-menu-item>
-        <el-menu-item index="3"><a href="#" target="_blank">订单管理</a></el-menu-item>
+        <left-nav id="leftNav" :leftMenus="leftMenus" :icon="false" @addTab="addTab"></left-nav>
 
         <el-submenu index="user" style="float: right;">
             <template slot="title">用户：{{userInfo.name}}</template>
@@ -60,10 +50,12 @@
 </template>
 
 <script>
-import API from '../../api/api_system'
 import {mapActions, mapGetters} from 'vuex'
+import API from '../../api/api_system'
+import LeftNav from '@/components/nav/LeftNav'
 
 export default {
+    components: { LeftNav },
     name: 'HeadNav',
     data () {
         var validatePass = (rule, value, callback) => {
@@ -88,6 +80,7 @@ export default {
         return {
             formLabelWidth: '120px',
             editDialogFormVisible: false,
+            tileLeftNavData: [],
             userInfo: {
                 name: ''
             },
@@ -108,19 +101,6 @@ export default {
         }
     },
     methods: {
-        toMain: function(){
-            this.$router.push({name: 'MainPage'})
-        },
-        handleSelect: function(key, keyPath) {
-            // 跳转默认页
-            if(key === "title"){
-                this.toMain()
-            }
-            if(key === "collapsed"){
-                this.changeCollapse()
-            }
-            console.log(key, keyPath);
-        },
         //折叠导航栏
         changeCollapse: function() {
             this.collapsed = !this.collapsed
@@ -167,8 +147,63 @@ export default {
             sessionStorage.clear()
             that.$router.push({path: "/"});
         },
+
+        findLeftNav: function(){
+            let that = this;
+            // 定义请求参数
+            let accessUser = JSON.parse(sessionStorage.getItem('access-user'))
+
+            let params = {user_id: accessUser.user_id}
+            // 调用接口
+            API.findLeftNav(params).then(function (result) {
+                if (result.code === 200) {
+                    that.leftMenus =result.map.leftMenu
+                }
+            })
+        },
+        handleOpen: function(key, keyPath) {
+            // console.log(key, keyPath);
+        },
+        handleClose: function(key, keyPath) {
+            // console.log(key, keyPath);
+        },
+        addTab: function(key, keyPath){
+            let that = this
+
+            if(key === "collapsed"){
+                that.changeCollapse()
+                return false
+            }
+
+            let params = {
+                path: key
+            }
+            if(key.indexOf('http') == 0 || key.indexOf('https') == 0){
+                let obj = that.tileLeftNavData.filter(function(item){
+                    return item.url == key;
+                })
+                params.title = obj[0].label
+                params.path = obj[0].url
+            }
+
+            //通过 emit 触发
+            this.$emit('addTab', params)
+        },
+        // 平铺数据
+        tileLeftNav(leftNavData){
+            let that = this
+            leftNavData.forEach(function(item, index){
+                that.tileLeftNavData.push(item)
+                if(item.children.length){
+                    that.tileLeftNav(item.children)
+                }
+            })
+        },
         ...mapActions( // 语法糖
-            ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed') 提交这个方法
+            ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed'),提交这个方法
+        ),
+        ...mapActions( // 语法糖
+            ['modifyLeftMenus'] // 相当于this.$store.dispatch('modifyLeftMenus'),提交这个方法
         ),
     },
     mounted: function() {
@@ -183,12 +218,37 @@ export default {
             set(val){
                 this.$store.state.collapsed = val
             }
+        },
+        ...mapGetters(['leftMenus']),// 动态计算属性，相当于this.$store.getters.collapsed
+        leftMenus: {
+            get(){
+                return this.$store.state.leftMenus
+            },
+            set(val){
+                this.$store.state.leftMenus = val
+            }
+        },
+    },
+    created: function(){
+        let that = this
+        that.findLeftNav()
+    },
+    watch: {
+        // 使用监听
+        leftMenus: {
+            handler(newVal, oldVal){
+                if(newVal){
+                    this.tileLeftNav(newVal)
+                }
+            },
+            immediate: true, // 立即执行
+            deep: true //深度监听
         }
     }
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 /* 去除el-menu-item下划线样式 */
 .el-menu-demo .el-menu-item {
     border-bottom-color:black;

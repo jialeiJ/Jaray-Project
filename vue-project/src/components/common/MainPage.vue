@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header>
-            <head-nav></head-nav>
+            <head-nav @addTab="addTab"></head-nav>
         </el-header>
         <el-container>
             <el-aside style="width:auto;" :width="asideWidth">

@@ -6,7 +6,7 @@
                 :data="navMenu" 
                 :index="(navMenu.url == null || navMenu.url =='')?navMenu.id:navMenu.url">
                 <template slot="title">
-                <i :class="navMenu.icon"></i>
+                <i v-if="icon" :class="navMenu.icon"></i>
                 <span slot="title"> {{navMenu.name}}</span>
                 </template>
 
@@ -34,6 +34,12 @@ export default {
             type: Array,
             default: function(){
                 return []
+            }
+        },
+        icon: {
+            type: Boolean,
+            default: function(){
+                return true
             }
         }
     },

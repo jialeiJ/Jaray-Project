@@ -3,7 +3,7 @@ import * as API from '.'
 export default {
     //查询角色信息列表
     findSysDeptList: params => {
-        return API.GET('/sys/dept/find/all', params);
+        return API.POST('/sys/dept/find/all', params);
     },
     //删除角色信息
     deleteSysDept: params => {

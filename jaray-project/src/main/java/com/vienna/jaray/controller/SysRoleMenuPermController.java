@@ -7,6 +7,7 @@ import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysRoleMenuPermService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -18,7 +19,7 @@ public class SysRoleMenuPermController {
     private SysRoleMenuPermService sysRoleMenuPermService;
 
     @ILogAnnotation(value = "查询角色菜单权限列表")
-    @GetMapping("/find/all")
+    @PostMapping("/find/all")
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         ResponseResult resultMsg = null;
         try {
@@ -55,6 +56,7 @@ public class SysRoleMenuPermController {
 
     @ILogAnnotation(value = "更新角色菜单权限")
     @PostMapping("/update")
+    @PreAuthorize("hasAuthority('sys:role:update')")
     public ResponseResult updateByRid(String role_id, String menu_perm_id) {
         ResponseResult resultMsg = null;
         try {

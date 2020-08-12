@@ -11,7 +11,7 @@
                     :label="item.title" 
                     :name="item.name">
                     <span slot="label"><i class="el-icon-date"></i> {{item.title}}</span>
-                    <tab-component :index="index" :name="index" style="padding-top: 0px;width: 100%;"></tab-component>
+                    <tab-component :index="index" :name="index" class="tabComponent"></tab-component>
                 </el-tab-pane>
             </el-tabs>
         </el-col>
@@ -90,7 +90,7 @@ export default {
             if(params.path && (params.path.indexOf('http') == 0 || params.path.indexOf('https') == 0)){
                 let uid = that.$moment(new Date()).format('YYYYMMDDHHmmss')
                 that.iframeComponent = Vue.component('iframe-component', {
-                    template: '<iframe id="'+uid+'" name="'+uid+'" src="'+params.path+'" scrolling="yes" width="100%" height="100%" frameborder="0" style="height: 780px;overflow: auto;"></iframe>',
+                    template: '<iframe id="'+uid+'" name="'+uid+'" src="'+params.path+'" scrolling="yes" width="100%" height="100%" frameborder="0" style="height: calc(95vh - 100px);overflow: auto;"></iframe>',
                 });
                 let menu = {};
                 menu.name = params.title;
@@ -181,5 +181,10 @@ body > .el-container {
 .el-row {
     display: flex;
     flex-wrap: wrap;
+}
+
+.tabComponent {
+    padding-top: 0px;
+    width: 100%;
 }
 </style>

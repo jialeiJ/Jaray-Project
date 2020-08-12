@@ -15,8 +15,6 @@ let refreshTokenFalg = true
 let noPermissionFalg = false
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['token'] = token;
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';// 配置请求头，发送一次预请求和一次正式请求两次请求
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 //添加一个请求拦截器
 axios.interceptors.request.use(function (request) {
@@ -122,13 +120,16 @@ export const GET = (url, params) => {
 }
 
 export const PUT = (url, params) => {
-    return axios.put(`${base}${url}`, params).then(result => result.data)
+    let config = {headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}}
+    return axios.put(`${base}${url}`, params, config).then(result => result.data)
 }
 
 export const DELETE = (url, params) => {
-    return axios.delete(`${base}${url}`, {params: params}).then(result => result.data)
+    let config = {headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}}
+    return axios.delete(`${base}${url}`, {params: params}, config).then(result => result.data)
 }
 
 export const PATCH = (url, params) => {
-    return axios.patch(`${base}${url}`, params).then(result => result.data)
+    let config = {headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}}
+    return axios.patch(`${base}${url}`, params, config).then(result => result.data)
 }

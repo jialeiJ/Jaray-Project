@@ -7,6 +7,7 @@ import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -18,7 +19,8 @@ public class SysDictController {
     private SysDictService sysDictService;
 
     @ILogAnnotation(value = "查询字典列表")
-    @GetMapping("/find/all")
+    @PostMapping("/find/all")
+    @PreAuthorize("hasAuthority('sys:dict:view')")
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         ResponseResult resultMsg = null;
         try {
@@ -31,6 +33,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "添加字典")
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('sys:dict:add')")
     public ResponseResult add(SysDict sysDictEntity) {
         ResponseResult resultMsg = null;
         try {
@@ -43,6 +46,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "删除字典")
     @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('sys:dict:delete')")
     public ResponseResult deleteByIds(String ids) {
         ResponseResult resultMsg = null;
         try {
@@ -55,6 +59,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "更新字典")
     @PostMapping("/update")
+    @PreAuthorize("hasAuthority('sys:dict:update')")
     public ResponseResult updateById(SysDict sysDictEntity) {
         ResponseResult resultMsg = null;
         try {
@@ -68,6 +73,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "查询字典")
     @PostMapping("/find")
+    @PreAuthorize("hasAuthority('sys:dict:view')")
     public ResponseResult findById(String id) {
         ResponseResult resultMsg = null;
         try {

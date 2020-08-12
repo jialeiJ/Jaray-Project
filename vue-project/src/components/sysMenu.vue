@@ -358,7 +358,10 @@ export default {
         addSysMenu: function(){
             let that = this
             // 目录/菜单父id赋值
-            that.addForm.parent_id = that.addForm.menu_pids[that.addForm.menu_pids.length-1]
+            if(that.addForm.menu_pids){
+                that.addForm.parent_id = that.addForm.menu_pids[that.addForm.menu_pids.length-1]
+            }
+            
             // 定义请求参数
             let params = that.addForm
             // 调用接口

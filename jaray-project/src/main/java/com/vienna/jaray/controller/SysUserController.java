@@ -7,6 +7,7 @@ import com.vienna.jaray.model.CommonParamsModel;
 import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -18,7 +19,8 @@ public class SysUserController {
     private SysUserService sysUserService;
 
     @ILogAnnotation(value = "查询用户列表")
-    @GetMapping("/find/all")
+    @PostMapping("/find/all")
+    @PreAuthorize("hasAuthority('sys:user:view')")
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         ResponseResult resultMsg = null;
         try {
@@ -31,6 +33,7 @@ public class SysUserController {
 
     @ILogAnnotation(value = "添加用户")
     @PostMapping("/add")
+    @PreAuthorize("hasAuthority('sys:user:add')")
     public ResponseResult add(SysUser sysUserEntity) {
         ResponseResult resultMsg = null;
         try {
@@ -43,6 +46,7 @@ public class SysUserController {
 
     @ILogAnnotation(value = "删除用户")
     @PostMapping("/deleteByIds")
+    @PreAuthorize("hasAuthority('sys:user:delete')")
     public ResponseResult deleteByIds(String ids) {
         ResponseResult resultMsg = null;
         try {
@@ -55,6 +59,7 @@ public class SysUserController {
 
     @ILogAnnotation(value = "更新用户")
     @PostMapping("/updateById")
+    @PreAuthorize("hasAuthority('sys:user:update')")
     public ResponseResult updateById(SysUser sysUserEntity) {
         ResponseResult resultMsg = null;
         try {
@@ -68,6 +73,7 @@ public class SysUserController {
 
     @ILogAnnotation(value = "查询用户")
     @PostMapping("/findById")
+    @PreAuthorize("hasAuthority('sys:user:view')")
     public ResponseResult findById(String id) {
         ResponseResult resultMsg = null;
         try {

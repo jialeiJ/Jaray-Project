@@ -3,7 +3,7 @@ import * as API from '.'
 export default {
     //查询用户信息列表
     findAllSysUser: params => {
-        return API.GET('/sys/user/find/all', params);
+        return API.POST('/sys/user/find/all', params);
     },
     //删除用户信息
     deleteSysUserByIds: params => {

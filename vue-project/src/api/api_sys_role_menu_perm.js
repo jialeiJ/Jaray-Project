@@ -3,7 +3,7 @@ import * as API from '.'
 export default {
     //查询角色菜单列表
     findSysRoleMenuPermList: params => {
-        return API.GET('/sys/role/menu/perm/find/all', params);
+        return API.POST('/sys/role/menu/perm/find/all', params);
     },
     //删除角色菜单信息
     deleteSysRoleMenuPerm: params => {

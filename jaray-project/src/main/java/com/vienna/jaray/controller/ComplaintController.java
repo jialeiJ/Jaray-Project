@@ -21,7 +21,7 @@ public class ComplaintController {
 	private ComplaintService complaintService;
 	
 	@ILogAnnotation(value = "查询投诉列表")
-	@GetMapping("/find/all")
+	@PostMapping("/find/all")
 	public ResponseResult findAll(CommonParamsModel commonParamsModel) {
 		ResponseResult resultMsg = null;
 		try {

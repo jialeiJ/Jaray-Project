@@ -3,7 +3,7 @@ import * as API from '.'
 export default {
     //查询字典信息列表
     findSysDictList: params => {
-        return API.GET('/sys/dict/find/all', params);
+        return API.POST('/sys/dict/find/all', params);
     },
     //删除字典信息
     deleteSysDict: params => {
