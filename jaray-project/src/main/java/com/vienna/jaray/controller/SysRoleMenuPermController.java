@@ -2,8 +2,8 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRoleMenu;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysRoleMenu;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.SysRoleMenuPermService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class SysRoleMenuPermController {
 
     @ILogAnnotation(value = "更新角色菜单权限")
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('sys:role:update')")
+    @PreAuthorize("hasAuthority('sys:role:edit')")
     public ResponseResult updateByRid(String role_id, String menu_perm_id) {
         ResponseResult resultMsg = null;
         try {

@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.vienna.jaray.service.KaptchaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -18,6 +19,8 @@ import java.io.IOException;
 public class KaptchaServiceImpl implements KaptchaService {
     @Autowired
     private Producer captchaProducer = null;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     public void kaptchaImage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
@@ -28,7 +31,6 @@ public class KaptchaServiceImpl implements KaptchaService {
         response.setContentType("image/jpeg");
         //生成验证码
         String capText = captchaProducer.createText();
-
         session.setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
 
         //向客户端写出

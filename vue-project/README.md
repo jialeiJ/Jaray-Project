@@ -112,3 +112,5 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         ],
     2、在main.js引入jquery
         import $ from jquery
+
+七、配置代理，避免跨域

@@ -2,8 +2,8 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDept;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysDept;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.SysDeptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class SysDeptController {
 
     @ILogAnnotation(value = "更新部门")
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('sys:dept:update')")
+    @PreAuthorize("hasAuthority('sys:dept:edit')")
     public ResponseResult updateById(SysDept sysDeptEntity) {
         ResponseResult resultMsg = null;
         try {

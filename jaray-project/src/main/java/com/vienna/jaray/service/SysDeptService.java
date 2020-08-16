@@ -1,10 +1,8 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDept;
-import com.vienna.jaray.model.CommonParamsModel;
-
-import java.util.List;
+import com.vienna.jaray.entity.system.SysDept;
+import com.vienna.jaray.model.system.CommonParamsModel;
 
 public interface SysDeptService {
 

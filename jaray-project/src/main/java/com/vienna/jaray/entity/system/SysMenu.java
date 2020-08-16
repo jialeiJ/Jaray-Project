@@ -1,4 +1,4 @@
-package com.vienna.jaray.entity;
+package com.vienna.jaray.entity.system;
 
 import java.util.ArrayList;
 import java.util.List;

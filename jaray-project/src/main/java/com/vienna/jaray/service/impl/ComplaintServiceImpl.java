@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.Complaint;
+import com.vienna.jaray.entity.complaint.Complaint;
 import com.vienna.jaray.mapper.ComplaintMapper;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.ComplaintService;
 
 @Service

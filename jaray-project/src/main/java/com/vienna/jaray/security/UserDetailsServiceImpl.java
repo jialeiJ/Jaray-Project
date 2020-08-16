@@ -1,15 +1,14 @@
 package com.vienna.jaray.security;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.vienna.jaray.common.Separator;
-import com.vienna.jaray.entity.SysMenu;
-import com.vienna.jaray.entity.SysRolePerm;
-import com.vienna.jaray.entity.SysUser;
+import com.vienna.jaray.entity.system.SysMenu;
+import com.vienna.jaray.entity.system.SysRolePerm;
+import com.vienna.jaray.entity.system.SysUser;
 import com.vienna.jaray.mapper.SysMenuMapper;
 import com.vienna.jaray.mapper.SysRolePermMapper;
 import com.vienna.jaray.mapper.SysUserMapper;

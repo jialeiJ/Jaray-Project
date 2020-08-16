@@ -2,8 +2,8 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysDict;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysDict;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.SysDictService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class SysDictController {
 
     @ILogAnnotation(value = "更新字典")
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('sys:dict:update')")
+    @PreAuthorize("hasAuthority('sys:dict:edit')")
     public ResponseResult updateById(SysDict sysDictEntity) {
         ResponseResult resultMsg = null;
         try {

@@ -78,14 +78,14 @@
     <update id="updateById">
         update sys_dept
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.name != null">`name` = #{entity.name},</if>
-            <if test="entity.parent_id != null">`parent_id` = #{entity.parent_id},</if>
-            <if test="entity.order_num != null">`order_num` = #{entity.order_num},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
-            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+            <if test="entity.name != null and entity.name != ''">`name` = #{entity.name},</if>
+            <if test="entity.parent_id != null and entity.parent_id != ''">`parent_id` = #{entity.parent_id},</if>
+            <if test="entity.order_num != null and entity.order_num != ''">`order_num` = #{entity.order_num},</if>
+            <if test="entity.create_by != null and entity.create_by != ''">`create_by` = #{entity.create_by},</if>
+            <if test="entity.create_time != null and entity.create_time != ''">`create_time` = #{entity.create_time},</if>
+            <if test="entity.last_update_by != null and entity.last_update_by != ''">`last_update_by` = #{entity.last_update_by},</if>
+            <if test="entity.last_update_time != null and entity.last_update_time != ''">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.del_flag != null and entity.del_flag != ''">`del_flag` = #{entity.del_flag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>

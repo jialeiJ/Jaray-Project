@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.Complaint;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.complaint.Complaint;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.ComplaintService;
 
 import lombok.extern.slf4j.Slf4j;

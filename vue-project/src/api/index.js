@@ -1,4 +1,3 @@
-
 import Env from './env';
 import axios from 'axios'
 import Qs from 'qs'
@@ -87,21 +86,9 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(error);
 })
 
-function getrefreshToken(expiredToken) {
-    let params = {
-        token: expiredToken
-    }
-    // 调用接口
-    API.refreshToken(params).then(function (result) {
-        if (result.code === 200 && result.map.refreshToken) {
-            // localStorage.setItem('access-token', result.map.refreshToken)
-            sessionStorage.setItem('access-token', result.map.refreshToken)
-        }
-    });
-}
-
 //基地址
-let base = Env.baseURL;
+// let base = 'Env.baseURL';
+let base = process.env.NODE_ENV === 'production'?'':'api';
 
 //测试使用
 export const ISDEV = Env.isDev;

@@ -222,7 +222,7 @@ export default {
                 {prop: 'last_update_by', label: '更新人'},
                 {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
-                {prop: 'operation', label: '操作', fixed: 'right',width: 175,
+                {prop: 'operation', label: '操作', fixed: 'right',width: 143,
                     operation: [
                         {name: '查看', style: 'primary', clickFun: this.viewSysDict, disabled: this.hasPermission('sys:dict:view')},
                         {name: '修改', style: 'primary', clickFun: this.editViewSysDict, disabled: this.hasPermission('sys:dict:edit')},

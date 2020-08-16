@@ -1,22 +1,19 @@
-package com.vienna.jaray.entity;
+package com.vienna.jaray.entity.system;
 
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class SysDept {
+public class SysDict {
     private String id;
     private String value;
-    private String name;
     private String label;
-    private String parent_id;
-    private int order_num;
+    private String type;
+    private String description;
+    private int sort;
+    private String remarks;
     private String create_by;
     private String create_time;
     private String last_update_by;
     private String last_update_time;
     private int del_flag;
-
-    private List<SysDept> children;
 }

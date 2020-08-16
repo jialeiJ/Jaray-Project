@@ -1,7 +1,7 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysUser;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysUser;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

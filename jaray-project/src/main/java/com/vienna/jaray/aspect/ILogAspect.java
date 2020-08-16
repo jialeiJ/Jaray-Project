@@ -2,7 +2,7 @@ package com.vienna.jaray.aspect;
 
 import java.lang.reflect.Method;
 
-import com.vienna.jaray.entity.SysLog;
+import com.vienna.jaray.entity.system.SysLog;
 import com.vienna.jaray.service.SysLogService;
 import com.vienna.jaray.utils.DateTimeUtil;
 import org.aspectj.lang.JoinPoint;

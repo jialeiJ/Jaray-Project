@@ -2,11 +2,10 @@ package com.vienna.jaray.mapper;
 
 import java.util.List;
 
-import com.vienna.jaray.model.SelectOptionsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.vienna.jaray.entity.SysMenu;
+import com.vienna.jaray.entity.system.SysMenu;
 import org.springframework.stereotype.Repository;
 
 @Mapper

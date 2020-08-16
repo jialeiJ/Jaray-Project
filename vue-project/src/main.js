@@ -19,7 +19,7 @@ import '@/assets/iconfont/iconfont.css'
 
 Vue.config.productionTip = false
 
-Vue.use(ElementUI, { size: 'medium', zIndex: 3000 });
+Vue.use(ElementUI, { size: 'mini', zIndex: 3000 });
 Vue.use(Fragment.Plugin)
 Vue.use(hasPermissionFun)
 

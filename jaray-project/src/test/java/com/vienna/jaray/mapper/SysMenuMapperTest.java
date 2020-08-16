@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.vienna.jaray.entity.SysMenu;
+import com.vienna.jaray.entity.system.SysMenu;
 
 @Slf4j
 @SpringBootTest

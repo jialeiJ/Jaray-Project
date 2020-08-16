@@ -2,8 +2,8 @@ package com.vienna.jaray.controller;
 
 import com.vienna.jaray.annotation.ILogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUser;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysUser;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class SysUserController {
 
     @ILogAnnotation(value = "更新用户")
     @PostMapping("/updateById")
-    @PreAuthorize("hasAuthority('sys:user:update')")
+    @PreAuthorize("hasAuthority('sys:user:edit')")
     public ResponseResult updateById(SysUser sysUserEntity) {
         ResponseResult resultMsg = null;
         try {

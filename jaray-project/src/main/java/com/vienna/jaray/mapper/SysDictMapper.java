@@ -1,7 +1,7 @@
 package com.vienna.jaray.mapper;
 
-import com.vienna.jaray.entity.SysDict;
-import com.vienna.jaray.model.SelectOptionsModel;
+import com.vienna.jaray.entity.system.SysDict;
+import com.vienna.jaray.model.system.SelectOptionsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

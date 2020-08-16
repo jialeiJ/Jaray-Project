@@ -1,17 +1,17 @@
 <template>
-    <div>
+    <div class="login">
         <el-form ref="loginForm" :model="loginForm" :rules="rules" label-width="80px" class="login-box">
             <h2 class="login-title">系统登录</h2>
             <el-form-item label="" prop="username">
-                <el-input type="text" placeholder="账号" v-model="loginForm.username"/>
+                <el-input type="text" size="arge" placeholder="账号" v-model="loginForm.username"/>
             </el-form-item>
             <el-form-item label="" prop="password">
-                <el-input type="password" placeholder="密码" v-model="loginForm.password"/>
+                <el-input type="password" size="arge" placeholder="密码" v-model="loginForm.password"/>
             </el-form-item>
             <el-form-item label="" prop="captcha">
                 <el-row :gutter="20">
                     <el-col :span="14">
-                        <el-input id="captcha" type="text" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
+                        <el-input id="captcha" type="text" size="arge" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
                     </el-col>
                     <el-col :span="10">
                         <el-image id="imagecode" :src="checkCodeSrc" @click="reloadCode()"></el-image>
@@ -19,8 +19,8 @@
                 </el-row>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="resetForm('loginForm')">重置</el-button>
-                <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
+                <el-button type="primary" size="arge" @click="resetForm('loginForm')">重置</el-button>
+                <el-button type="primary" size="arge" @click="submitForm('loginForm')">登录</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -80,6 +80,11 @@ export default {
                             //localStorage.setItem('access-user', JSON.stringify(result.map.sysUserToken)); // 将用户信息存到localStorage中
                             //localStorage.setItem('access-token', result.map.sysUserToken.token); // 将token信息存到localStorage中
                             that.$router.push({path: "main"});
+                        }else{
+                            that.$message({
+                                type: 'error',
+                                message: result.msg
+                            })
                         }
                     });
                 } else {
@@ -114,11 +119,21 @@ export default {
     margin-left:0!important;
 } 
 
-.el-button--primary {
-    width: 48%;
-    color: #FFF;
-    background-color: #14889A;
-    border-color: #14889A;
+.login {
+    .el-button--primary {
+        width: 48%;
+        color: #FFF;
+        background-color: #14889A;
+        border-color: #14889A;
+    }
+    .el-button–primary:hover{
+        background-color: #14889A;
+        border-color: #14889A;
+    }
+    .el-button–primary:focus{
+        background-color: #14889A;
+        border-color: #14889A;
+    }
 }
 
 .login-box {

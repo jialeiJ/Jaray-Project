@@ -11,7 +11,13 @@
                     :label="item.title" 
                     :name="item.name">
                     <span slot="label"><i class="el-icon-date"></i> {{item.title}}</span>
-                    <tab-component :index="index" :name="index" class="tabComponent"></tab-component>
+                    <!-- 若是Iframe，则不重复渲染，否则渲染 -->
+                    <template v-if="item.path.indexOf('http') > -1">
+                        <tab-component :is="item.content" :index="index" :name="index" class="tabComponent"></tab-component>
+                    </template>
+                    <template v-else>
+                        <tab-component :index="index" :name="index" class="tabComponent"></tab-component>
+                    </template>
                 </el-tab-pane>
             </el-tabs>
         </el-col>
@@ -53,26 +59,12 @@ export default {
             that.tabs.push({
                 title: menu.name,
                 name: menu.name,
-                content: menu.component
-            });
-            
-            that.tabComponent = Vue.component('tab-component', {
-                render: function (h) {
-                    // 每次只渲染当前tab
-                    if(this.index === that.index) {
-                        var comp = that.tabs[this.index].content;
-                        return h(comp)
-                    }
-                    
-                },
-                props: {
-                    index: {
-                        type: Number,
-                        required: true
-                    }
-                }
+                content: menu.component,
+                path: menu.path
             });
             that.tabsValue = menu.name
+
+            that.render()
         },
         addTab(params) {
             let that = this
@@ -83,6 +75,7 @@ export default {
                     let menu = {};
                     menu.name = temp.title;
                     menu.component = temp.component;
+                    menu.path = params.path;
                     that.addOneTab(menu);
                 }
             }
@@ -95,6 +88,7 @@ export default {
                 let menu = {};
                 menu.name = params.title;
                 menu.component = that.iframeComponent.options;
+                menu.path = params.path;
                 that.index++
                 that.addOneTab(menu);
             }
@@ -116,16 +110,35 @@ export default {
             that.index--
             that.tabsValue = activeName;
             that.tabs = tabs.filter(tab => tab.name !== targetName);
+        },
+        render: function() {
+            let that = this
+            that.tabComponent = Vue.component('tab-component', {
+                render: function (h) {
+                    // 每次只渲染当前tab
+                    if(this.index === that.index) {
+                        var comp = that.tabs[this.index].content;
+                        return h(comp)
+                    }
+                },
+                props: {
+                    index: {
+                        type: Number,
+                        required: true
+                    }
+                }
+            }); 
         }
     },
     created: function(){
         let tempRoutes = this.$router.options.routes;
         for (let i = 0; i < tempRoutes.length; i++) {
             let temp = tempRoutes[i];
-            if(temp.name == 'introduction'){
+            if(temp.path == '/introduction'){
                 let menu = {};
                 menu.name = temp.title;
                 menu.component = temp.component;
+                menu.path = temp.path;
                 this.addOneTab(menu);
             }
         }

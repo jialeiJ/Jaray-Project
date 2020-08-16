@@ -3,8 +3,8 @@ package com.vienna.jaray.service;
 import java.util.concurrent.ExecutionException;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.Complaint;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.complaint.Complaint;
+import com.vienna.jaray.model.system.CommonParamsModel;
 
 public interface ComplaintService {
 	/**

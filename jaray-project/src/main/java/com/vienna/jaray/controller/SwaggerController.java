@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SwaggerController {
 
-    @GetMapping("/")
+    @GetMapping("/swagger")
     public String index() {
         return "swagger2";
     }

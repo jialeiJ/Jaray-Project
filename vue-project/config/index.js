@@ -10,7 +10,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {
+        target: 'http://127.0.0.1:8090',  //目标接口域名
+        changeOrigin: true,  //是否跨域
+        pathRewrite: {
+          '^/api': '/'   //重写接口
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
@@ -43,7 +51,14 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // assetsPublicPath: '/', 改成
+    assetsPublicPath: '/dist/',
+    /**
+     * 如果想修改打包文件夹，需要改两个地方
+     * assetsRoot: path.resolve(__dirname, '../xx'),
+     * assetsPublicPath: 'xx',
+     */
+
 
     /**
      * Source Maps

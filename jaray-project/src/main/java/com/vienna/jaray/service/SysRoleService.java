@@ -1,8 +1,8 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysRole;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysRole;
+import com.vienna.jaray.model.system.CommonParamsModel;
 
 public interface SysRoleService {
 

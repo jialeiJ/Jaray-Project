@@ -1,13 +1,12 @@
 package com.vienna.jaray.controller;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysUserToken;
+import com.vienna.jaray.entity.system.SysUserToken;
 import com.vienna.jaray.service.KaptchaService;
 import com.vienna.jaray.service.SystemService;
 import com.vienna.jaray.service.SysMenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

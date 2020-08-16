@@ -1,4 +1,4 @@
-package com.vienna.jaray.model;
+package com.vienna.jaray.model.system;
 
 import lombok.Data;
 

@@ -30,6 +30,8 @@
         <bootstrap.version>4.5.0</bootstrap.version>
         <jquery.version>3.5.1</jquery.version>
         <kcaptcha.version>2.3.2</kcaptcha.version>
+        <session-redis>2.3.0.RELEASE</session-redis>
+        <lettuce.version>5.3.1.RELEASE</lettuce.version>
         <jjwt.version>0.9.0</jjwt.version>
     </properties>
 
@@ -42,6 +44,23 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <!-- spring-session-data-redis -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+            <version>${session-redis}</version>
+        </dependency>
+        <!-- lettuce作为redis客户端 -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>${lettuce.version}</version>
+        </dependency>
+        <!-- redis依赖commons-pool -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
         </dependency>
         <!-- jjwt -->
         <dependency>
@@ -201,6 +220,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

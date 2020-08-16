@@ -18,9 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.vienna.jaray.security.JwtAuthenticationFilter;
 import com.vienna.jaray.security.UserDetailsServiceImpl;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 /**
  * 添加安全配置类， 继承 WebSecurityConfigurerAdapter，
@@ -39,9 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 跨域预检请求
+			.antMatchers("/**/*.html", "/**/*.js", "/**/*.css", "/**/*.woff", "/**/*.ttf", "**/favicon.ico").permitAll() // 静态资源
             .antMatchers("/webjars/**").permitAll() // web jars
             .antMatchers("/druid/**").permitAll() // SQL监控（druid）
             .antMatchers("/").permitAll() // 登录页面
+			.antMatchers("/index.html").permitAll() // vue打包文件
+			.antMatchers("/main").permitAll() // vue打包文件
             .antMatchers("/system/login").permitAll() // 登录请求
 			.antMatchers("/system/refreshToken").permitAll() // 刷新token
 			.antMatchers("/system/captcha.jpg**").permitAll() // 验证码
@@ -96,6 +96,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers(
 				"/",
+				"/dist/**",
+				"/main",
 				"/system/captcha.jpg**",
 				"/system/login",
 				"/system/refreshToken",

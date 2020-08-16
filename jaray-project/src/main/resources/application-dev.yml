@@ -37,7 +37,7 @@ spring:
         reset-enable: false
         url-pattern: /druid/*
         # 添加IP白名单
-        #allow: 127.0.0.1
+        allow: 127.0.0.1
         # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
         #deny:
       web-stat-filter:
@@ -49,9 +49,29 @@ spring:
         session-stat-max-count: 1000
         session-stat-enable: true
         profile-enable: true
+  session:
+    store-type: redis
+    timeout: 600
+    redis:
+      flush-mode: on_save
+      namespace: session
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+    # 如果使用的jedis 则将lettuce改成jedis即可
+    lettuce:
+      pool:
+        # 最大活跃链接数 默认8
+        max-active: 8
+        # 最大空闲连接数 默认8
+        max-idle: 8
+        # 最小空闲连接数 默认0
+        min-idle: 0
 
 swagger:
   enabled: true
+
 
 
 

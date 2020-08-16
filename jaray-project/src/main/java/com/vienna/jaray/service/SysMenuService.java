@@ -1,8 +1,8 @@
 package com.vienna.jaray.service;
 
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.SysMenu;
-import com.vienna.jaray.model.CommonParamsModel;
+import com.vienna.jaray.entity.system.SysMenu;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import org.apache.ibatis.annotations.Param;
 
 public interface SysMenuService {

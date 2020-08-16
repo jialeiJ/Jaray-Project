@@ -36,6 +36,7 @@
                             <template v-for="(it, index) in item.operation">
                             <el-button 
                                     v-if="it.disabled"
+                                    size="mini"
                                     :key="index" 
                                     @click.stop="it.clickFun(scope.row)"
                                     :type="it.style"

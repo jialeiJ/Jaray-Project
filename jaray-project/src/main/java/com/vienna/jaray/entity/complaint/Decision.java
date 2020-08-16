@@ -1,4 +1,4 @@
-package com.vienna.jaray.entity;
+package com.vienna.jaray.entity.complaint;
 
 import lombok.Data;
 

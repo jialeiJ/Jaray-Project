@@ -1,12 +1,28 @@
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    # 关闭 Thymeleaf 的缓存开发过程中无需重启
+    cache: false
+    # 设置thymeleaf页面的编码
+    encoding: UTF-8
+    mode: HTML5
+    # 设置thymeleaf页面的后缀
+    suffix: .html
+    # 设置thymeleaf页面的存储路径
+    prefix: classpath:/dist/
+  # 静态文件请求匹配方式
+  mvc:
+    static-path-pattern: /**
+  # 修改默认的静态寻址资源目录 多个使用逗号分隔
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/dist/
 
 #mybatis配置
 mybatis:
-  type-aliases-package: com.vienna.jaray.entity,com.vienna.jaray.model
+  type-aliases-package: com.vienna.jaray.entity.**,com.vienna.jaray.model.**
   config-location: classpath:mybatis/mybatis-config.xml
-  mapper-locations: classpath:mybatis/mapper/*.xml
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
 
 # 配置sql打印日志
 logging:

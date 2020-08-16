@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Druid登录</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<script type="text/javascript" src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajax({
+            type: 'get',
+            url: 'url',
+            dataType: 'text',
+            data: {},
+            success: function(data) {
+                if(data == "success") {
+
+                }else{
+                    // 其他逻辑省略
+                }
+            },
+            error: function(){
+                // 其他逻辑省略
+            }
+        })
+    });
+</script>
+</body>
+</html>

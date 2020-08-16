@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.vienna.jaray.entity.Complaint;
+import com.vienna.jaray.entity.complaint.Complaint;
 import org.springframework.stereotype.Repository;
 
 @Mapper
