@@ -6,7 +6,7 @@ spring:
     cache: false
     # 设置thymeleaf页面的编码
     encoding: UTF-8
-    mode: HTML5
+    mode: HTML
     # 设置thymeleaf页面的后缀
     suffix: .html
     # 设置thymeleaf页面的存储路径
@@ -17,6 +17,55 @@ spring:
   # 修改默认的静态寻址资源目录 多个使用逗号分隔
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/dist/
+  quartz:
+    # 持久化到数据库
+    job-store-type: jdbc
+    # 相关属性配置
+    properties:
+      org:
+        quartz:
+          scheduler:
+            # 调度器实例名称
+            instanceName: clusteredScheduler
+            # 调度器编号自动生成，集群中编号不可以重复，所以最好设成auto
+            instanceId: AUTO
+            skipUpdateCheck: true
+            wrapJobExecutionInUserTransaction: false
+          jobStore:
+            misfireThreshold: 60000
+            acquireTriggersWithinLock: true
+            # 持久化方式配置
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            # 持久化方式配置数据驱动，MySQL数据库，支持集群
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            # quartz相关数据表前缀名
+            tablePrefix: QRTZ_
+            # 开启分布式部署
+            isClustered: true
+            # 分布式节点有效性检查时间间隔，单位：毫秒
+            clusterCheckinInterval: 10000
+            # 配置是否使用,防止数据库出现blob等字段时可能会出现问题
+            useProperties: true
+          threadPool:
+            # 线程池实现类
+            class: org.quartz.simpl.SimpleThreadPool
+            # 执行最大并发线程数量
+            threadCount: 100
+            # 线程优先级
+            threadPriority: 5
+            # 配置是否启动自动加载数据库内的定时任务，默认true
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    # 初始化表结构.初次使用的时候会在库中生成表格,后期注释掉即可.或者初始使用值为 always,然后将值改为 never
+    jdbc:
+      initialize-schema: never
+    # 每次启动后都会覆盖之前的job信息，默认false,这时配置的cron expression 不会同步到数据库
+    overwrite-existing-jobs: true
+    auto-startup: true
+    wait-for-jobs-to-complete-on-shutdown: true
+    scheduler-name: quartzScheduler
+    startup-delay: 10
+
+
 
 #mybatis配置
 mybatis:

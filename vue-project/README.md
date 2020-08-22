@@ -49,11 +49,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         npm install sass-loader --g
         npm install sass-loader@7.3.1 --g -dev
         npm install node-sass --g
-        
-    
+
+
 
 二、监听某个div宽度的变化
-    1、安装 element-resize-detector 
+    1、安装 element-resize-detector
         npm install element-resize-detector -g
 
 三、解决菜单折叠文字不隐藏问题
@@ -71,7 +71,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
             // 引入JavaScript 日期处理类库（格式化）
             import moment from "moment";
             // moment.locale('zh-cn') // 汉化
-            
+
             /**
             * 全局挂载（适用于script标签中的js代码格式化时间）
             * 使用方式：this.$moment(时间).format('时间格式')
@@ -85,7 +85,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
             * @parms { String } formatStr  时间格式："Y-M-D h:m:s"
             * @parms { any } data 时间：可以是时间戳，也可以是其他形式的时间，比如2019/8/14
             * 时间戳要求是毫秒值，如果是秒值，需要在过滤前 * 1000变为毫秒值
-            *  <span> {{ 1111111111 * 1000 | formatDate('Y-M-D h:m:s') }} </span> 
+            *  <span> {{ 1111111111 * 1000 | formatDate('Y-M-D h:m:s') }} </span>
             * 'hh:mm:ss'是十二小时制时间，'HH:mm:ss'是二十四小时制时间
             */
             Vue.filter('formatDate', function (date: any, formatStr: string) {
@@ -114,3 +114,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         import $ from jquery
 
 七、配置代理，避免跨域
+
+八、打包集成SpringBoot
+    1、npm run build
+    2、将生成的dist文件夹全部放在resources目录下

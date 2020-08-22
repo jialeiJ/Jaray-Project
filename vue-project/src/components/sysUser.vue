@@ -11,6 +11,9 @@
                     <el-button type="success" @click="initTable" plain>查询</el-button>
                     <el-button type="success" v-if="hasPermission('sys:user:add')" @click="addDialogFormVisible = true;" plain>增加</el-button>
                     <el-button type="danger" v-if="hasPermission('sys:user:delete')" @click="deleteSysUser" plain>删除</el-button>
+                    <el-button type="danger" @click="addTask" plain>添加任务</el-button>
+                    <el-button type="danger" @click="pauseJob" plain>暂停任务</el-button>
+                    <el-button type="danger" @click="deleteJob" plain>删除任务</el-button>
                 </div>
 
                 <i-table ref="iTable"
@@ -299,11 +302,11 @@
 </template>
 
 <script>
-import USER_API from '../api/api_sys_user'
-import DICT_API from '../api/api_sys_dict'
-import DEPT_API from '../api/api_sys_dept'
-import iTable from '../components/common/iTable'
-import iPagination from '../components/common/iPagination'
+import USER_API from '@api/api_sys_user'
+import DICT_API from '@api/api_sys_dict'
+import DEPT_API from '@api/api_sys_dept'
+import iTable from '@components/common/iTable'
+import iPagination from '@components/common/iPagination'
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
@@ -671,6 +674,39 @@ export default {
                     that.tileDeptList(item.children)
                 }
             })
+        },
+        addTask: function() {
+            let that = this
+            // 定义请求参数
+            let params = {}
+            // 调用接口
+            USER_API.addTask(params).then(function (result) {
+                if (result.code === 200) {
+                    
+                }
+            });
+        },
+        pauseJob: function(){
+            let that = this
+            // 定义请求参数
+            let params = {}
+            // 调用接口
+            USER_API.pauseJob(params).then(function (result) {
+                if (result.code === 200) {
+                    
+                }
+            });
+        },
+        deleteJob: function(){
+            let that = this
+            // 定义请求参数
+            let params = {}
+            // 调用接口
+            USER_API.deleteJob(params).then(function (result) {
+                if (result.code === 200) {
+                    
+                }
+            });
         }
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vienna.jaray.mapper.SysMenuMapper">
+<mapper namespace="com.vienna.jaray.mapper.system.SysMenuMapper">
 	
 	<sql id="Base_Column_List" >
         m.id,m.id as value,m.name,m.name as label,m.parent_id,m.url,m.perm,m.type,m.icon,m.order_num,m.create_by,

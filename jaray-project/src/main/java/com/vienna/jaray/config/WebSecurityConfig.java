@@ -1,7 +1,7 @@
 package com.vienna.jaray.config;
 
-import com.vienna.jaray.security.JwtAuthenticationAccessDeniedHandler;
-import com.vienna.jaray.security.JwtAuthenticationEntryPoint;
+import com.vienna.jaray.security.JwtAuthAccessDeniedHandler;
+import com.vienna.jaray.security.JwtAuthEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -64,8 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		//添加自定义未授权和未登录结果返回
 		http.exceptionHandling()
-			.accessDeniedHandler(new JwtAuthenticationAccessDeniedHandler())
-			.authenticationEntryPoint(new JwtAuthenticationEntryPoint());
+			.accessDeniedHandler(new JwtAuthAccessDeniedHandler())
+			.authenticationEntryPoint(new JwtAuthEntryPoint());
 	}
 	
 	/**

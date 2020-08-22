@@ -48,8 +48,11 @@ export default {
     color: #46515c;
 }
 
-/*修复谷歌浏览器下table组件border错位问题*/
+/** 修复谷歌浏览器下table组件border错位问题 */
 body .el-table th.gutter{
     display: table-cell!important;
 }
+
+/** 表示手指头可以垂直移动，解决滚动警告：Unable to preventDefault inside passive event listener */
+* { touch-action: pan-y; } 
 </style>

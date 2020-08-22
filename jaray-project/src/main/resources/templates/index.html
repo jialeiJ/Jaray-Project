@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户登录界面</title>
+</head>
+<body>
+	<form method="post" action="/login">
+    	<p>用户名<input id="username" name="username"></p>
+        <p>密码<input id="password" type="password" name="password" /></p>
+        <p><input  type="button"  value="登 录"/></p>
+    </form>
+</body>
+<script type="text/javascript" src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+$('input[type=button]').click(function(){
+	$.ajax({
+		type:'POST',
+		url:'/login',
+		cache: true,
+		data:{
+			username: $('#username').val(),
+			password: $('#password').val()
+		},
+		/* beforeSend: function(request) {
+			request.setRequestHeader('token', "123" + 'token'); 
+		}, */
+		success:function(response,status,xhr){
+			console.log(response);
+			console.log('login success');
+		}
+	});
+});
+</script>
+</html>

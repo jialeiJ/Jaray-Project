@@ -21,4 +21,15 @@ export default {
     viewSysUserById: params => {
         return API.POST('/sys/user/findById', params);
     },
+    //添加任务
+    addTask: params => {
+        return API.POST('/quartz/task/addjob', params);
+    },
+    //添加任务
+    pauseJob: params => {
+        return API.POST('/quartz/task/pauseJob', params);
+    },
+    deleteJob: params => {
+        return API.POST('/quartz/task/deletejob', params);
+    },
 }

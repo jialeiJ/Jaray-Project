@@ -1,10 +1,10 @@
 <template>
     <el-tree
+        ref="tree"
         size="mini"
         :data="treeData"
         show-checkbox
         node-key="id"
-        ref="tree"
         highlight-current
         @check="handleCheck"
         :props="defaultProps"
@@ -100,7 +100,7 @@ export default {
         // 清空
         clearChecked() {
             let that = this
-            that.$refs.tree.setCheckedKeys([]);
+            that.$refs['tree'].setCheckedKeys([]);
             that.handleCheck()
         },
         // 平铺数据
