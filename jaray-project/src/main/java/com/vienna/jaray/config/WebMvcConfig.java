@@ -23,6 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .excludePathPatterns("/dist/**") // 配置不拦截
             .excludePathPatterns("/main") // 配置不拦截
             .excludePathPatterns("/system/login") // 配置不拦截
+            .excludePathPatterns("/druid/**") // 配置不拦截
             .excludePathPatterns("/**/*.html") // 配置不拦截
             .excludePathPatterns("/**/*.js") // 配置不拦截
             .excludePathPatterns("/**/*.css") // 配置不拦截

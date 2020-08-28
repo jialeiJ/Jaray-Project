@@ -147,20 +147,6 @@ export default {
             sessionStorage.clear()
             that.$router.push({path: "/"});
         },
-
-        findLeftNav: function(){
-            let that = this;
-            // 定义请求参数
-            let accessUser = JSON.parse(sessionStorage.getItem('access-user'))
-
-            let params = {user_id: accessUser.user_id}
-            // 调用接口
-            API.findLeftNav(params).then(function (result) {
-                if (result.code === 200) {
-                    that.leftMenus =result.map.leftMenu
-                }
-            })
-        },
         handleOpen: function(key, keyPath) {
             // console.log(key, keyPath);
         },
@@ -231,7 +217,6 @@ export default {
     },
     created: function(){
         let that = this
-        that.findLeftNav()
     },
     watch: {
         // 使用监听

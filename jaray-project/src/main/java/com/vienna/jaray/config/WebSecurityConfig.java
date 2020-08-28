@@ -32,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().disable(); // 解决SpringSecurity不能加载iframe
+		http.csrf().ignoringAntMatchers("/druid/**");
 		// 禁用 csrf, 由于使用的是JWT，我们这里不需要csrf
         http.cors().and().csrf().disable()
             .authorizeRequests()

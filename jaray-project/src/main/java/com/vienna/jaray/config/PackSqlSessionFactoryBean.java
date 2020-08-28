@@ -4,6 +4,7 @@ import com.vienna.jaray.common.Separator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 数据源使用
  * 适配mybatis实体类别名使用通配符
  */
 @Slf4j

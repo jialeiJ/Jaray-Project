@@ -5,6 +5,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.quartz.QuartzDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -17,6 +18,8 @@ import javax.sql.DataSource;
 
 @Configuration//注解到spring容器中
 public class SlaveDataSourceConfig {
+    @Value("${spring.datasource.slave.type}")
+    private Class<? extends DataSource> dataSourceType;
 
     /**
      * @QuartzDataSource 注解则是配置Quartz独立数据源的配置
@@ -27,7 +30,7 @@ public class SlaveDataSourceConfig {
     @Bean(name="slaveDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.slave")
     public DataSource dataSource(){
-        return DataSourceBuilder.create().build();
+        return DataSourceBuilder.create().type(dataSourceType).build();
     }
 
     /**
