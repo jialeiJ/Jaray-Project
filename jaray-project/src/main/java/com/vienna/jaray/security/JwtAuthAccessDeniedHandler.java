@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 权限不足处理类
+ */
 @Slf4j
 @Component
 public class JwtAuthAccessDeniedHandler implements AccessDeniedHandler {

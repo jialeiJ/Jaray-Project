@@ -1,6 +1,6 @@
 package com.vienna.jaray.controller.system;
 
-import com.vienna.jaray.annotation.ILogAnnotation;
+import com.vienna.jaray.annotation.LogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysRolePerm;
 import com.vienna.jaray.model.system.CommonParamsModel;
@@ -9,6 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统角色权限控制器
+ */
 @Slf4j
 @CrossOrigin
 @RestController
@@ -17,7 +22,7 @@ public class SysRolePermController {
     @Autowired
     private SysRolePermService sysRolePermService;
 
-    @ILogAnnotation(value = "查询角色权限列表")
+    @LogAnnotation(value = "查询角色权限列表")
     @PostMapping("/find/all")
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         ResponseResult resultMsg = null;
@@ -29,7 +34,7 @@ public class SysRolePermController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "添加角色权限")
+    @LogAnnotation(value = "添加角色权限")
     @PostMapping("/add")
     public ResponseResult add(SysRolePerm sysRolePermEntity) {
         ResponseResult resultMsg = null;
@@ -41,7 +46,7 @@ public class SysRolePermController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "删除角色权限")
+    @LogAnnotation(value = "删除角色权限")
     @PostMapping("/delete")
     public ResponseResult deleteByIds(String ids) {
         ResponseResult resultMsg = null;
@@ -53,7 +58,7 @@ public class SysRolePermController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "更新角色权限")
+    @LogAnnotation(value = "更新角色权限")
     @PostMapping("/update")
     public ResponseResult updateByRid(SysRolePerm sysRolePermEntity) {
         ResponseResult resultMsg = null;
@@ -65,12 +70,12 @@ public class SysRolePermController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "查询角色权限")
+    @LogAnnotation(value = "查询角色权限")
     @PostMapping("/findByRid")
-    public ResponseResult findByRid(String role_id) {
+    public ResponseResult findByRid(String roleId) {
         ResponseResult resultMsg = null;
         try {
-            resultMsg = sysRolePermService.findByRid(role_id);
+            resultMsg = sysRolePermService.findByRid(roleId);
         } catch (Exception e) {
             log.error("findByRid Method Exception", e);
         }

@@ -61,15 +61,15 @@ export default {
             search: '',
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
-                {prop: 'user_name', label: '用户姓名', sort: true, filters: []},
+                {prop: 'userName', label: '用户姓名', sort: true, filters: []},
                 {prop: 'operation', label: '用户操作'},
                 {prop: 'method', label: '方法'},
                 {prop: 'params', label: '参数'},
                 {prop: 'ip', label: 'IP地址'},
-                {prop: 'create_by', label: '创建人'},
-                {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
-                {prop: 'last_update_by', label: '更新人'},
-                {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                {prop: 'createBy', label: '创建人'},
+                {prop: 'createTime', label: '创建时间', formatter: this.dateTimeFormatter},
+                {prop: 'lastUpdateBy', label: '更新人'},
+                {prop: 'lastUpdateTime', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 143,
                     operation: [

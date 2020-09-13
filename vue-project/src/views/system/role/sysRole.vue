@@ -85,10 +85,10 @@ export default {
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
                 {prop: 'name', label: '名称', sort: true, filters: []},
                 {prop: 'remark', label: '备注'},
-                {prop: 'create_by', label: '创建人'},
-                {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
-                {prop: 'last_update_by', label: '更新人'},
-                {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                {prop: 'createBy', label: '创建人'},
+                {prop: 'createTime', label: '创建时间', formatter: this.dateTimeFormatter},
+                {prop: 'lastUpdateBy', label: '更新人'},
+                {prop: 'lastUpdateTime', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 143,
                     operation: [
@@ -125,11 +125,11 @@ export default {
                 }]
             },
             treeData: [],
-            menu_perm : {
-                role_id: '',
-                menu_perm_id: '',
-                menu_id: '',
-                perm_id: '',
+            menuPerm : {
+                roleId: '',
+                menuPermId: '',
+                menuId: '',
+                permId: '',
                 keys: []
             },
         }
@@ -165,36 +165,36 @@ export default {
         },
         rowClick: function(row) {
             let that = this
-            that.menu_perm.role_id = row.id
+            that.menuPerm.roleId = row.id
 
             // 定义请求参数
             let params = {
-                role_id: that.menu_perm.role_id
+                roleId: that.menuPerm.roleId
             }
             // 调用接口
             ROLE_MENU_PERM_API.viewSysRoleMenuPermByRid(params).then(function (result) {
                 if (result.code === 200) {
                     let menuPermId = []
                     if (result.map.sysRoleMenu) {
-                        that.menu_perm.menu_id = result.map.sysRoleMenu.menu_id
-                        menuPermId.push(result.map.sysRoleMenu.menu_id)
+                        that.menuPerm.menuId = result.map.sysRoleMenu.menuId
+                        menuPermId.push(result.map.sysRoleMenu.menuId)
                     }
                     if (result.map.sysRolePerm) {
-                        that.menu_perm.perm_id = result.map.sysRolePerm.perm_id
-                        menuPermId.push(result.map.sysRolePerm.perm_id)
+                        that.menuPerm.permId = result.map.sysRolePerm.permId
+                        menuPermId.push(result.map.sysRolePerm.permId)
                     }
                     
                     if (menuPermId && menuPermId.length) {
-                        that.menu_perm.menu_perm_id = menuPermId.join(',')
+                        that.menuPerm.menuPermId = menuPermId.join(',')
                     } else {
-                        that.menu_perm.menu_perm_id = ''
-                        that.menu_perm.perm_id = ''
-                        that.menu_perm.menu_id = ''
+                        that.menuPerm.menuPermId = ''
+                        that.menuPerm.permId = ''
+                        that.menuPerm.menuId = ''
                     }
                 } else {
-                    that.menu_perm.menu_perm_id = ''
-                        that.menu_perm.perm_id = ''
-                        that.menu_perm.menu_id = ''
+                    that.menuPerm.menuPermId = ''
+                        that.menuPerm.permId = ''
+                        that.menuPerm.menuId = ''
                 }
                 that.resetTreeChecked()
             });
@@ -206,8 +206,8 @@ export default {
         },
         receiveKeys: function(keys){
             let that = this
-            that.menu_perm.keys = keys
-            console.log("树形组件接收子组件的数据", that.menu_perm.keys)
+            that.menuPerm.keys = keys
+            console.log("树形组件接收子组件的数据", that.menuPerm.keys)
         },
         allChecked: function(){
             let that = this
@@ -215,8 +215,8 @@ export default {
         },
         resetTreeChecked: function(row){
             let that = this
-            let permKeys = that.menu_perm.perm_id.split(",")
-            let menuKeys = that.menu_perm.menu_id.split(",")
+            let permKeys = that.menuPerm.permId.split(",")
+            let menuKeys = that.menuPerm.menuId.split(",")
             
             for(var i=0;i<menuKeys.length;i++){
                 for(var j=0;j<permKeys.length;j++){
@@ -235,7 +235,7 @@ export default {
         },
         editSysRoleMenuPerm :function(){
             let that = this
-            if(that.menu_perm.role_id == '1'){
+            if(that.menuPerm.roleId == '1'){
                 that.$message({
                         message: '管理员不允许编辑',
                         type: 'warning'
@@ -245,8 +245,8 @@ export default {
 
             // 定义请求参数
             let params = {
-                role_id: that.menu_perm.role_id,
-                menu_perm_id: that.menu_perm.keys.join(',')
+                roleId: that.menuPerm.roleId,
+                menuPermId: that.menuPerm.keys.join(',')
             }
             // 调用接口
             ROLE_MENU_PERM_API.updateSysRoleMenuPerm(params).then(function (result) {
@@ -351,7 +351,7 @@ export default {
             // 定义请求参数
             let accessUser = JSON.parse(sessionStorage.getItem('access-user'))
 
-            let params = {user_id: accessUser.user_id}
+            let params = {userId: accessUser.userId}
             // 调用接口
             SYS_API.findLeftNav(params).then(function (result) {
                 if (result.code === 200) {

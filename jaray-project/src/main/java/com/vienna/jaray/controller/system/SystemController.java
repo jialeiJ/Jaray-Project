@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统控制器
+ */
 @Slf4j
 @CrossOrigin
 @RestController
@@ -36,9 +41,8 @@ public class SystemController {
     }
 
     @PostMapping("/findLeftNav")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseResult findLeftNav(String user_id){
-        return sysMenuService.findLeftNav(user_id);
+    public ResponseResult findLeftNav(String userId){
+        return sysMenuService.findLeftNav(userId);
     }
 
     @PostMapping("/refreshToken")

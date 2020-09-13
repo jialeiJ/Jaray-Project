@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统用户角色Mapper
+ */
 @Mapper
 @Repository
 public interface SysUserRoleMapper {
@@ -25,22 +30,22 @@ public interface SysUserRoleMapper {
 
     /**
      * 查询用户角色
-     * @param user_id 用户id
-     * @return
+     * @param userId 用户id
+     * @return 用户角色
      */
-    public SysUserRole findByUserId(@Param("user_id")String user_id);
+    public SysUserRole findByUserId(@Param("userId")String userId);
 
     /**
      * 删除用户角色
-     * @param ids
-     * @return
+     * @param ids 用户id数组
+     * @return 删除结果
      */
     public int deleteByIds(@Param("ids")String[] ids);
 
     /**
-     * 更新用户角色 用户角色id
-     * @param id
-     * @return
+     * 更新用户角色
+     * @param id 用户角色id
+     * @return 更新结果
      */
     public SysUserRole updateById(@Param("id")String id);
 }

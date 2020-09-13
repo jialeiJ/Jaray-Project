@@ -20,6 +20,11 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统服务实现类
+ */
 @Slf4j
 @Service
 public class SystemServiceImpl implements SystemService {
@@ -37,8 +42,6 @@ public class SystemServiceImpl implements SystemService {
     public ResponseResult login(HttpServletRequest request, String username, String password, String captcha, HttpSession session) {
         ResponseResult result = ResponseResult.fail();
         String sessionCaptcha = session.getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
-        log.info("Captcha[{}]", sessionCaptcha);
-
         log.info("用户名[{}], session验证码[{}], 输入验证码[{}]",username, captcha, sessionCaptcha);
 
         if(!sessionCaptcha.equalsIgnoreCase(captcha)){
@@ -50,14 +53,13 @@ public class SystemServiceImpl implements SystemService {
         SysUser sysUser = sysUserMapper.findByName(username);
         SysUserToken sysUserToken = new SysUserToken();
         if(sysUser != null){
-            sysUserToken.setUser_id(sysUser.getId());
+            sysUserToken.setUserId(sysUser.getId());
             sysUserToken.setName(sysUser.getName());
             sysUserToken.setToken(token.getToken());
-            sysUserToken.setExpire_time(token.getExpireTime());
-            sysUserToken.setCreate_by(sysUser.getCreate_by());
-            sysUserToken.setCreate_time(sysUser.getCreate_time());
+            sysUserToken.setExpireTime(token.getExpireTime());
+            sysUserToken.setCreateBy(sysUser.getCreateBy());
+            sysUserToken.setCreateTime(sysUser.getCreateTime());
         }
-
         if(token.getToken() != null){
             result = ResponseResult.success().add("sysUserToken",sysUserToken);
         }else{
@@ -72,7 +74,7 @@ public class SystemServiceImpl implements SystemService {
         // 生成令牌并返回给客户端
         String token = JwtTokenUtil.refreshToken(sysUserToken.getToken());
         sysUserToken.setToken(token);
-        sysUserToken.setExpire_time(JwtTokenUtil.tokenExpireTime(token));
+        sysUserToken.setExpireTime(JwtTokenUtil.tokenExpireTime(token));
 
         return ResponseResult.success().add("sysUserToken",sysUserToken);
     }

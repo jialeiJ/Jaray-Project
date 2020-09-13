@@ -10,6 +10,11 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 
 import com.vienna.jaray.security.JwtAuthenticatioToken;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 安全工具类
+ */
 public class SecurityUtil {
 	
 	/**

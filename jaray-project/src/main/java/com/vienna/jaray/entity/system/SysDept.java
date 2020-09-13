@@ -4,19 +4,24 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统部门实体类
+ */
 @Data
 public class SysDept {
     private String id;
     private String value;
     private String name;
     private String label;
-    private String parent_id;
-    private int order_num;
-    private String create_by;
-    private String create_time;
-    private String last_update_by;
-    private String last_update_time;
-    private int del_flag;
+    private String parentId;
+    private int orderNum;
+    private String createBy;
+    private String createTime;
+    private String lastUpdateBy;
+    private String lastUpdateTime;
+    private int delFlag;
 
     private List<SysDept> children;
 }

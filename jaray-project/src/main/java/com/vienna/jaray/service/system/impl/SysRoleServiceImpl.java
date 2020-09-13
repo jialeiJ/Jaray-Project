@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统角色服务实现类
+ */
 @Service
 public class SysRoleServiceImpl implements SysRoleService {
     @Autowired

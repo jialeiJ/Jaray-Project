@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vienna.jaray.mapper.system.SysMenuMapper">
+
+    <resultMap id="CommonResultMap" type="sysMenu">
+        <id property="id" column="id"/>
+        <result property="value" column="value"/>
+        <result property="name" column="name"/>
+        <result property="label" column="label"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="url" column="url"/>
+        <result property="perm" column="perm"/>
+        <result property="type" column="type"/>
+        <result property="icon" column="icon"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="delFlag" column="del_flag"/>
+    </resultMap>
 	
 	<sql id="Base_Column_List" >
         m.id,m.id as value,m.name,m.name as label,m.parent_id,m.url,m.perm,m.type,m.icon,m.order_num,m.create_by,
@@ -9,28 +27,28 @@
     </sql>
 
     <!-- 查询顶级目录列表 -->
-    <select id="findAllTopDir" resultType="sysMenu">
+    <select id="findAllTopDir" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.parent_id is null
     </select>
 
     <!-- 查询子目录列表 -->
-    <select id="findAllSubDir" resultType="sysMenu">
+    <select id="findAllSubDir" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.parent_id is not null and type = 0
     </select>
 
     <!-- 查询子菜单列表 -->
-    <select id="findAllMenu" resultType="sysMenu">
+    <select id="findAllMenu" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where type = 1
     </select>
 
     <!-- 查询菜单列表 -->
-    <select id="findAll" resultType="sysMenu">
+    <select id="findAll" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where type = 0
@@ -41,7 +59,7 @@
     </select>
 
     <!-- 查询菜单按钮列表 -->
-    <select id="findBtnAll" resultType="sysMenu">
+    <select id="findBtnAll" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.type = 2
@@ -50,8 +68,8 @@
     <!-- 添加菜单 -->
     <insert id="add">
         insert into sys_menu (`id`, `name`, `parent_id`, `url`, `type`, `icon`, `order_num`, `create_by`, `create_time`, `last_update_by`, `last_update_time`, `del_flag`)
-    	values (findNextFormatSeqVal('M','s_sys_menu_id'), #{entity.name}, #{entity.parent_id}, #{entity.url}, #{entity.type}, #{entity.icon}, #{entity.order_num},
-    	#{entity.create_by}, #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time}, #{entity.del_flag})
+    	values (findNextFormatSeqVal('M','s_sys_menu_id'), #{entity.name}, #{entity.parentId}, #{entity.url}, #{entity.type}, #{entity.icon}, #{entity.orderNum},
+    	#{entity.createBy}, #{entity.createTime}, #{entity.lastUpdateBy}, #{entity.lastUpdateTime}, #{entity.delFlag})
     </insert>
 
     <!-- 删除菜单 -->
@@ -67,29 +85,29 @@
         update sys_menu
         <trim prefix="set" suffixOverrides=",">
             <if test="entity.name != null">`name` = #{entity.name},</if>
-            <if test="entity.parent_id != null">`parent_id` = #{entity.parent_id},</if>
+            <if test="entity.parentId != null">`parent_id` = #{entity.parentId},</if>
             <if test="entity.url != null">`url` = #{entity.url},</if>
             <if test="entity.type != null">`type` = #{entity.type},</if>
             <if test="entity.icon != null">`icon` = #{entity.icon},</if>
-            <if test="entity.order_num != null">`order_num` = #{entity.order_num},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
-            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+            <if test="entity.orderNum != null">`order_num` = #{entity.orderNum},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
+            <if test="entity.delFlag != null">`del_flag` = #{entity.delFlag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>
 
     <!-- 查询菜单 -->
-    <select id="findById" resultType="sysMenu">
+    <select id="findById" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id = #{id}
     </select>
 
     <!-- 查询菜单 -->
-    <select id="findByIds" resultType="sysMenu">
+    <select id="findByIds" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id in
@@ -99,21 +117,21 @@
     </select>
 
     <!-- 查询无权限菜单列表 -->
-    <select id="findNoPermByIds" resultType="sysMenu">
+    <select id="findNoPermByIds" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id not in
-        <foreach collection="menu_perms" index="index" item="item" open="(" separator="," close=")">
+        <foreach collection="menuPerms" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>
 
     <!-- 查询菜单权限列表 -->
-    <select id="findPermByIds" resultType="sysMenu">
+    <select id="findPermByIds" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
         from sys_menu m where m.id in
-        <foreach collection="menu_perms" index="index" item="item" open="(" separator="," close=")">
+        <foreach collection="menuPerms" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
     </select>

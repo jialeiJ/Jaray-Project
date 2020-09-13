@@ -7,6 +7,11 @@ import lombok.Data;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: token认证
+ */
 public class JwtAuthenticatioToken extends UsernamePasswordAuthenticationToken {
 
 private static final long serialVersionUID = 1L;

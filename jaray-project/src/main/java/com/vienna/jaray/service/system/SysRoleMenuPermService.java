@@ -4,40 +4,45 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysRoleMenu;
 import com.vienna.jaray.model.system.CommonParamsModel;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统角色菜单权限接口类
+ */
 public interface SysRoleMenuPermService {
-
     /**
      * 查询角色菜单权限列表
-     * @return
+     * @param commonParams 表格数据通用参数对象
+     * @return 角色菜单权限列表
      */
-    public ResponseResult findAll(CommonParamsModel commonParamsModel);
+    ResponseResult findAll(CommonParamsModel commonParams);
 
     /**
      * 查询角色菜单权限
-     * @param role_id
+     * @param roleId
      * @return
      */
-    public ResponseResult findByRid(String role_id);
+    ResponseResult findByRid(String roleId);
 
     /**
      * 添加角色菜单权限
-     * @param sysRoleMenuEntity
-     * @return
+     * @param sysRoleMenu 角色菜单对象
+     * @return 添加结果
      */
-    public ResponseResult add(SysRoleMenu sysRoleMenuEntity);
+    ResponseResult add(SysRoleMenu sysRoleMenu);
 
     /**
      * 删除角色菜单权限
-     * @param ids
-     * @return
+     * @param ids 角色id数组
+     * @return 删除结果
      */
-    public ResponseResult deleteByIds(String[] ids);
+    ResponseResult deleteByIds(String[] ids);
 
     /**
      * 更新角色菜单权限
-     * @param role_id
-     * @param menu_perm_id
-     * @return
+     * @param roleId 角色id
+     * @param menuPermId 菜单权限id
+     * @return 更新结果
      */
-    public ResponseResult updateByRid(String role_id, String menu_perm_id);
+    ResponseResult updateByRid(String roleId, String menuPermId);
 }

@@ -4,39 +4,44 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysRolePerm;
 import com.vienna.jaray.model.system.CommonParamsModel;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统角色权限接口类
+ */
 public interface SysRolePermService {
-
     /**
      * 查询角色权限列表
-     * @return
+     * @param commonParams 表格数据通用参数对象
+     * @return 角色权限列表
      */
-    public ResponseResult findAll(CommonParamsModel commonParamsModel);
+    ResponseResult findAll(CommonParamsModel commonParams);
 
     /**
      * 查询角色权限
-     * @param role_id
-     * @return
+     * @param roleId 角色id
+     * @return 角色权限信息
      */
-    public ResponseResult findByRid(String role_id);
+    ResponseResult findByRid(String roleId);
 
     /**
      * 添加角色权限
-     * @param sysRolePermEntity
-     * @return
+     * @param sysRolePerm 角色权限对象
+     * @return 添加结果
      */
-    public ResponseResult add(SysRolePerm sysRolePermEntity);
+    ResponseResult add(SysRolePerm sysRolePerm);
 
     /**
      * 删除角色权限
-     * @param ids
-     * @return
+     * @param ids id数组
+     * @return 删除结果
      */
-    public ResponseResult deleteByIds(String[] ids);
+    ResponseResult deleteByIds(String[] ids);
 
     /**
      * 更新角色权限
-     * @param sysRolePermEntity
-     * @return
+     * @param sysRolePerm 角色权限对象
+     * @return 更新结果
      */
-    public ResponseResult updateByRid(SysRolePerm sysRolePermEntity);
+    ResponseResult updateByRid(SysRolePerm sysRolePerm);
 }

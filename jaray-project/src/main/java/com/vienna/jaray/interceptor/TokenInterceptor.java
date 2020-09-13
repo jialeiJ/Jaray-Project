@@ -5,7 +5,6 @@ import com.vienna.jaray.common.HttpStatus;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.utils.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,16 +15,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Token拦截器
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: Token拦截器
  */
 @Slf4j
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
+    private static final String METHOD_TYPE_OPTIONS = "OPTIONS";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // OPTIONS请求类型直接返回不处理
-        if ("OPTIONS".equals(request.getMethod())){
+        if (METHOD_TYPE_OPTIONS.equals(request.getMethod())){
             return false;
         }
 

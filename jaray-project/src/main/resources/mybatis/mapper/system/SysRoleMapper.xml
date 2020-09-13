@@ -9,11 +9,11 @@
         <result property="name" column="name"/>
         <result property="label" column="label"/>
         <result property="remark" column="remark"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
-        <result property="del_flag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="delFlag" column="del_flag"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -30,8 +30,8 @@
     <!-- 添加角色 -->
     <insert id="add">
     	insert into sys_role (`id`, `name`, `remark`, `create_by`, `create_time`, `last_update_by`, `last_update_time`, `del_flag`)
-    	values (findNextFormatSeqVal('U','s_sys_role_id'), #{entity.name}, #{entity.remark}, #{entity.create_by},
-    	#{entity.create_time}, #{entity.create_by}, #{entity.create_time}, 0)
+    	values (findNextFormatSeqVal('U','s_sys_role_id'), #{entity.name}, #{entity.remark}, #{entity.createBy},
+    	#{entity.createTime}, #{entity.createBy}, #{entity.createTime}, 0)
     </insert>
 
     <!-- 查询角色 -->
@@ -72,11 +72,11 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="entity.name != null">`name` = #{entity.name},</if>
             <if test="entity.remark != null">`remark` = #{entity.remark},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
-            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
+            <if test="entity.delFlag != null">`del_flag` = #{entity.delFlag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>

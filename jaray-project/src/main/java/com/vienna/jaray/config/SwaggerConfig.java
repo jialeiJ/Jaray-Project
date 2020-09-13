@@ -20,7 +20,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * Swagger2 API文档
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: Swagger2 API文档
  */
 @Configuration
 @EnableSwagger2

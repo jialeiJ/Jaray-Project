@@ -68,12 +68,12 @@ export default {
                 {prop: 'email', label: '邮箱'},
                 {prop: 'mobile', label: '手机号'},
                 {prop: 'status', label: '状态', formatter: this.statusFormatter},
-                {prop: 'dept_id', label: '部门', formatter: this.deptFormatter},
-                {prop: 'role_id', label: '角色', formatter: this.roleFormatter},
-                {prop: 'create_by', label: '创建人'},
-                {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
-                {prop: 'last_update_by', label: '更新人'},
-                {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                {prop: 'deptId', label: '部门', formatter: this.deptFormatter},
+                {prop: 'roleId', label: '角色', formatter: this.roleFormatter},
+                {prop: 'createBy', label: '创建人'},
+                {prop: 'createTime', label: '创建时间', formatter: this.dateTimeFormatter},
+                {prop: 'lastUpdateBy', label: '更新人'},
+                {prop: 'lastUpdateTime', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 143,
                     operation: [

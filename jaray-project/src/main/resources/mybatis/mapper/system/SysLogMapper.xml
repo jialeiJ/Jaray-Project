@@ -5,16 +5,16 @@
 
     <resultMap id="CommonResultMap" type="sysLog">
         <id property="id" column="id"/>
-        <result property="user_name" column="user_name"/>
+        <result property="userName" column="user_name"/>
         <result property="operation" column="operation"/>
         <result property="method" column="method"/>
         <result property="params" column="params"/>
         <result property="time" column="time"/>
         <result property="ip" column="ip"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -38,8 +38,8 @@
     <!-- 添加字典 -->
     <insert id="add">
     	insert into sys_log (`id`, `user_name`, `operation`, `method`, `params`, `time`, `ip`, `create_by`, `create_time`)
-    	values (findNextFormatSeqVal('U','s_sys_log_id'), #{entity.user_name}, #{entity.operation}, #{entity.method},
-    	 #{entity.params}, #{entity.time}, #{entity.ip}, #{entity.create_by}, #{entity.create_time})
+    	values (findNextFormatSeqVal('U','s_sys_log_id'), #{entity.userName}, #{entity.operation}, #{entity.method},
+    	 #{entity.params}, #{entity.time}, #{entity.ip}, #{entity.createBy}, #{entity.createTime})
     </insert>
 
     <!-- 查询字典 -->
@@ -68,18 +68,17 @@
     <update id="updateById">
         update sys_log
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.user_name != null">`user_name` = #{entity.user_name},</if>
+            <if test="entity.user_name != null">`user_name` = #{entity.userName},</if>
             <if test="entity.operation != null">`operation` = #{entity.operation},</if>
             <if test="entity.method != null">`method` = #{entity.method},</if>
             <if test="entity.params != null">`params` = #{entity.params},</if>
             <if test="entity.time != null">`time` = #{entity.time},</if>
             <if test="entity.ip != null">`ip` = #{entity.ip},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
         </trim>
         where `id` = #{entity.id}
     </update>
-
 </mapper>

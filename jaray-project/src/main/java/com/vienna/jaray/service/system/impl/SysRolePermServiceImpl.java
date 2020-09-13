@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统角色权限服务实现类
+ */
 @Service
 public class SysRolePermServiceImpl implements SysRolePermService {
     @Autowired
@@ -28,17 +33,17 @@ public class SysRolePermServiceImpl implements SysRolePermService {
     }
 
     @Override
-    public ResponseResult findByRid(String role_id) {
-        SysRolePerm sysRolePerm = sysRolePermMapper.findByRid(role_id);
+    public ResponseResult findByRid(String roleId) {
+        SysRolePerm sysRolePerm = sysRolePermMapper.findByRid(roleId);
         return ResponseResult.success().add("sysRolePerm", sysRolePerm);
     }
 
     @Override
-    public ResponseResult add(SysRolePerm sysRolePermEntity) {
+    public ResponseResult add(SysRolePerm sysRolePerm) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysRolePermMapper.add(sysRolePermEntity);
+        int result = sysRolePermMapper.add(sysRolePerm);
         if(result > 0){
-            responseResult = ResponseResult.success().add("sysRolePerm", sysRolePermEntity);
+            responseResult = ResponseResult.success().add("sysRolePerm", sysRolePerm);
         }
         return responseResult;
     }
@@ -54,9 +59,9 @@ public class SysRolePermServiceImpl implements SysRolePermService {
     }
 
     @Override
-    public ResponseResult updateByRid(SysRolePerm sysRolePermEntity) {
+    public ResponseResult updateByRid(SysRolePerm sysRolePerm) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysRolePermMapper.updateByRid(sysRolePermEntity);
+        int result = sysRolePermMapper.updateByRid(sysRolePerm);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }

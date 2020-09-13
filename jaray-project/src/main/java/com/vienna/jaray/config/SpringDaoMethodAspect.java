@@ -1,15 +1,10 @@
 package com.vienna.jaray.config;
 
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
-import com.vienna.jaray.common.Separator;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.aop.support.AbstractRegexpMethodPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -22,13 +17,13 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * druid的spring监控配置
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: druid的spring监控配置
  */
 @Slf4j
 @Configuration
@@ -90,7 +85,6 @@ public class SpringDaoMethodAspect {
             }else{
                 log.warn("参数patterns:"+pattern+"，未找到任何包");
             }
-            //logger.info("d");
         } catch (IOException e) {
             e.printStackTrace();
         }

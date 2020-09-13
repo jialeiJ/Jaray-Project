@@ -16,7 +16,12 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
-@Configuration//注解到spring容器中
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 从数据源配置类
+ */
+@Configuration
 public class SlaveDataSourceConfig {
     @Value("${spring.datasource.slave.type}")
     private Class<? extends DataSource> dataSourceType;

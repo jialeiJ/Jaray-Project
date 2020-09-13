@@ -4,46 +4,51 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysLog;
 import com.vienna.jaray.model.system.CommonParamsModel;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统日志接口类
+ */
 public interface SysLogService {
-
     /**
      * 查询日志列表
-     * @return
+     * @param commonParams 表格数据通用参数对象
+     * @return 日志列表
      */
-    public ResponseResult findAll(CommonParamsModel commonParamsModel);
+    ResponseResult findAll(CommonParamsModel commonParams);
 
     /**
      * 查询日志
-     * @param id
-     * @return
+     * @param id id
+     * @return 日志信息
      */
-    public ResponseResult findById(String id);
+    ResponseResult findById(String id);
 
     /**
      * 查询日志
-     * @param user_name
-     * @return
+     * @param userName 用户名
+     * @return 日志信息
      */
-    public ResponseResult findByName(String user_name);
+    ResponseResult findByName(String userName);
 
     /**
      * 添加日志
-     * @param sysLogEntity
-     * @return
+     * @param sysLog 日志对象
+     * @return 添加结果
      */
-    public ResponseResult add(SysLog sysLogEntity);
+    ResponseResult add(SysLog sysLog);
 
     /**
      * 删除日志
-     * @param ids
-     * @return
+     * @param ids id数组
+     * @return 删除结果
      */
-    public ResponseResult deleteByIds(String[] ids);
+    ResponseResult deleteByIds(String[] ids);
 
     /**
      * 更新日志
-     * @param sysLogEntity
-     * @return
+     * @param sysLog 日志对象
+     * @return 更新结果
      */
-    public ResponseResult updateById(SysLog sysLogEntity);
+    ResponseResult updateById(SysLog sysLog);
 }

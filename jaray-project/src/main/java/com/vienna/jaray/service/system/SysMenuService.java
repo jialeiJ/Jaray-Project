@@ -5,51 +5,58 @@ import com.vienna.jaray.entity.system.SysMenu;
 import com.vienna.jaray.model.system.CommonParamsModel;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统菜单接口类
+ */
 public interface SysMenuService {
     /**
      * 查询左侧菜单信息
-     * @param user_id 用户id
-     * @return
+     * @param userId 用户id
+     * @return 左侧菜单信息
      */
-    public ResponseResult findLeftNav(String user_id);
+    ResponseResult findLeftNav(String userId);
 
     /**
      * 查询菜单Tree列表
-     * @return
+     * @param commonParams 表格数据通用参数对象
+     * @return 菜单Tree列表
      */
-    public ResponseResult findTreeAll(CommonParamsModel commonParamsModel);
+    ResponseResult findTreeAll(CommonParamsModel commonParams);
 
     /**
      * 查询菜单平铺列表
-     * @return
+     * @param commonParams 表格数据通用参数对象
+     * @return 菜单平铺列表
      */
-    public ResponseResult findAll(CommonParamsModel commonParamsModel);
+    ResponseResult findAll(CommonParamsModel commonParams);
 
     /**
      * 添加菜单
-     * @param sysMenuEntity 菜单对象
-     * @return
+     * @param sysMenu 菜单对象
+     * @return 添加结果
      */
-    public ResponseResult add(@Param("entity") SysMenu sysMenuEntity);
+    ResponseResult add(@Param("entity") SysMenu sysMenu);
 
     /**
      * 删除菜单
      * @param ids 菜单ids
-     * @return
+     * @return 删除结果
      */
-    public ResponseResult deleteByIds(@Param("ids")String[] ids);
+    ResponseResult deleteByIds(@Param("ids")String[] ids);
 
     /**
      * 更新菜单
-     * @param sysMenuEntity 菜单对象
-     * @return
+     * @param sysMenu 菜单对象
+     * @return 更新结果
      */
-    public ResponseResult updateById(@Param("entity") SysMenu sysMenuEntity);
+    ResponseResult updateById(@Param("entity") SysMenu sysMenu);
 
     /**
      * 查询菜单
      * @param id 菜单id
-     * @return
+     * @return 菜单信息
      */
-    public ResponseResult findById(@Param("id")String id);
+    ResponseResult findById(@Param("id")String id);
 }

@@ -1,49 +1,47 @@
 package com.vienna.jaray.service.complaint;
 
-import java.util.concurrent.ExecutionException;
-
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.complaint.Complaint;
 import com.vienna.jaray.model.system.CommonParamsModel;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 投诉接口类
+ */
 public interface ComplaintService {
 	/**
 	 * 查询投诉信息
 	 * @param commonParamsModel 通用参数
-	 * @return
+	 * @return 投诉信息
 	 */
-	public ResponseResult findAll(CommonParamsModel commonParamsModel);
+	ResponseResult findAll(CommonParamsModel commonParamsModel);
 
 	/**
 	 * 新增投诉信息
-	 * @param complaintEntity 投诉实体
-	 * @return
-	 * @throws InterruptedException
-	 * @throws ExecutionException
+	 * @param complaint 投诉实体
+	 * @return 新增结果
 	 */
-	public ResponseResult add(Complaint complaintEntity);
+	ResponseResult add(Complaint complaint);
 
 	/**
-	 * 新增投诉信息
-	 * @param complaintEntity 投诉实体
-	 * @return
-	 * @throws InterruptedException
-	 * @throws ExecutionException
+	 * 更新投诉信息
+	 * @param complaint 投诉实体
+	 * @return 更新结果
 	 */
-	public ResponseResult updateByCid(Complaint complaintEntity);
+	ResponseResult updateByCid(Complaint complaint);
 
 	/**
 	 * 查询投诉信息
 	 * @param cid 投诉id
-	 * @return
+	 * @return 投诉信息
 	 */
-	public ResponseResult findByCid(String cid);
+	ResponseResult findByCid(String cid);
 
 	/**
 	 * 删除投诉信息
 	 * @param cids cid数组
-	 * @return
+	 * @return 删除结果
 	 */
-	public ResponseResult deleteByCids(String[] cids);
-
+	ResponseResult deleteByCids(String[] cids);
 }

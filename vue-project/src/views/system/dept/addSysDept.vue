@@ -7,7 +7,7 @@
                 </el-form-item>
                 <el-form-item label="上级机构" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="addForm.dept_ids"
+                        v-model="addForm.deptIds"
                         :options="deptOptions"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"></el-cascader>
@@ -16,11 +16,11 @@
                     <el-input v-model="addForm.name" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.create_time"
+                        v-model="addForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -30,11 +30,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.last_update_time"
+                        v-model="addForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -100,14 +100,14 @@ export default {
         handleChange(value) {
             let that = this
             if (value) {
-                that.addForm.dept_id = value[value.length - 1]
+                that.addForm.deptId = value[value.length - 1]
             }
             console.log(value);
         },
         addSysDept: function(){
             let that = this
-            if(that.addForm.dept_ids && that.addForm.dept_ids.length > 0){
-                that.addForm.parent_id = that.addForm.dept_ids[0]
+            if(that.addForm.deptIds && that.addForm.deptIds.length > 0){
+                that.addForm.parentId = that.addForm.deptIds[0]
             }
             // 定义请求参数
             let params = that.addForm

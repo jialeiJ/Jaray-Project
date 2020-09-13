@@ -12,11 +12,11 @@
                     <el-input v-model="addForm.remark" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.create_time"
+                        v-model="addForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -26,11 +26,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.last_update_time"
+                        v-model="addForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"

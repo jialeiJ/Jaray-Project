@@ -1,5 +1,10 @@
 package com.vienna.jaray.common;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统菜单配置常量
+ */
 public class SysMenuConfig {
     /**
      * 目录标志

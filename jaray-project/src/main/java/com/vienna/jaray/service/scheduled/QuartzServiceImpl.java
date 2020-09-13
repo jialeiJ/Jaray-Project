@@ -1,23 +1,24 @@
 package com.vienna.jaray.service.scheduled;
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vienna.jaray.common.ResponseResult;
-import com.vienna.jaray.entity.complaint.Complaint;
 import com.vienna.jaray.model.system.CommonParamsModel;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 定时任务实现类
+ */
 @Slf4j
 @Service
 public class QuartzServiceImpl {
@@ -37,10 +38,12 @@ public class QuartzServiceImpl {
     public ResponseResult addJob(Class<? extends QuartzJobBean> jobClass, String jobName, String jobGroupName, int jobTime,
                                  int jobTimes) {
         try {
-            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName)// 任务名称和组构成任务key
+            // 任务名称和组构成任务key
+            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName)
                     .build();
+
             // 使用simpleTrigger规则
-            Trigger trigger = null;
+            Trigger trigger;
             if (jobTimes < 0) {
                 trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroupName)
                         .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(1).withIntervalInSeconds(jobTime))
@@ -69,15 +72,15 @@ public class QuartzServiceImpl {
      */
     public ResponseResult addJob(Class<? extends QuartzJobBean> jobClass, String jobName, String jobGroupName, String jobTime) {
         try {
-            // 创建jobDetail实例，绑定Job实现类
-            // 指明job的名称，所在组的名称，以及绑定job类
-            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName)// 任务名称和组构成任务key
+            // 创建jobDetail实例，绑定Job实现类,指明job的名称，所在组的名称，以及绑定job类,任务名称和组构成任务key
+            JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroupName)
                     .build();
-            // 定义调度触发规则
-            // 使用cornTrigger规则
-            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroupName)// 触发器key
+
+            // 使用cornTrigger规则,定义调度触发规则,触发器key
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroupName)
                     .startAt(DateBuilder.futureDate(1, DateBuilder.IntervalUnit.SECOND))
                     .withSchedule(CronScheduleBuilder.cronSchedule(jobTime)).startNow().build();
+
             // 把作业和触发器注册到任务调度中
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (Exception e) {
@@ -193,12 +196,12 @@ public class QuartzServiceImpl {
      * @param jobGroupName 任务组名
      * @return 立即执行结果
      */
-    public ResponseResult runAJobNow(String jobName, String jobGroupName) {
+    public ResponseResult runAjobNow(String jobName, String jobGroupName) {
         try {
             JobKey jobKey = JobKey.jobKey(jobName, jobGroupName);
             scheduler.triggerJob(jobKey);
         } catch (SchedulerException e) {
-            log.error("runAJobNow Method Error", e);
+            log.error("runAjobNow Method Error", e);
         }
         return ResponseResult.success();
     }
@@ -213,24 +216,14 @@ public class QuartzServiceImpl {
         try {
             GroupMatcher<JobKey> matcher = GroupMatcher.anyJobGroup();
             Set<JobKey> jobKeys = scheduler.getJobKeys(matcher);
-            jobList = new ArrayList<Map<String, Object>>();
+            jobList = new ArrayList<>(16);
+            Map<String, Object> map;
             for (JobKey jobKey : jobKeys) {
                 List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
                 for (Trigger trigger : triggers) {
-                    Map<String, Object> map = new HashMap<>();
+                    map = new HashMap<>(16);
                     JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-                    map.put("jobClass", jobDetail.getJobClass());
-                    map.put("jobName", jobKey.getName());
-                    map.put("jobGroupName", jobKey.getGroup());
-                    map.put("description", "触发器:" + trigger.getKey());
-                    Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
-                    map.put("jobStatus", triggerState.name());
-                    if (trigger instanceof CronTrigger) {
-                        CronTrigger cronTrigger = (CronTrigger) trigger;
-                        String cronExpression = cronTrigger.getCronExpression();
-                        map.put("jobTime", cronExpression);
-                    }
-                    jobList.add(map);
+                    packageJobMapData(jobList, map, jobKey, trigger, jobDetail);
                 }
             }
 
@@ -238,29 +231,49 @@ public class QuartzServiceImpl {
             log.error("findAllJob Method Error", e);
         }
 
-        int pages = 0;
-        int total = 0;
+        return getResponseResult(commonParamsModel, jobList);
+    }
+
+    private ResponseResult getResponseResult(CommonParamsModel commonParamsModel, List<Map<String, Object>> jobList) {
+        int pages, total;
         if(CollectionUtils.isNotEmpty(jobList)){
             pages = jobList.size()/commonParamsModel.getPageSize();
             total = jobList.size();
             jobList = jobList.stream().skip((commonParamsModel.getPageNum()-1) * commonParamsModel.getPageSize())
                     .limit(commonParamsModel.getPageSize()).collect(Collectors.toList());
-        }
 
-        //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(jobList);
-        /**
-         * 封装pageInfo数据 :
-         * setPageNum：当前页码
-         * setPageSize： 每页显示数据条数
-         * setPages：设置总页数
-         * setTotal：设置总条数
-         */
-        pageInfo.setPageNum(commonParamsModel.getPageNum());
-        pageInfo.setPageSize(commonParamsModel.getPageSize());
-        pageInfo.setPages(pages);
-        pageInfo.setTotal(total);
-        return ResponseResult.success().add("jobList", pageInfo);
+            //取记录总条数
+            PageInfo<?> pageInfo = new PageInfo<>(jobList);
+
+            // setPageNum：当前页码
+            pageInfo.setPageNum(commonParamsModel.getPageNum());
+
+            // setPageSize： 每页显示数据条数
+            pageInfo.setPageSize(commonParamsModel.getPageSize());
+
+            // setPages：设置总页数
+            pageInfo.setPages(pages);
+
+            // setTotal：设置总条数
+            pageInfo.setTotal(total);
+            return ResponseResult.success().add("jobList", pageInfo);
+        }
+        return ResponseResult.success();
+    }
+
+    private void packageJobMapData(List<Map<String, Object>> jobList, Map<String, Object> map, JobKey jobKey, Trigger trigger, JobDetail jobDetail) throws SchedulerException {
+        map.put("jobClass", jobDetail.getJobClass());
+        map.put("jobName", jobKey.getName());
+        map.put("jobGroupName", jobKey.getGroup());
+        map.put("description", "触发器:" + trigger.getKey());
+        Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
+        map.put("jobStatus", triggerState.name());
+        if (trigger instanceof CronTrigger) {
+            CronTrigger cronTrigger = (CronTrigger) trigger;
+            String cronExpression = cronTrigger.getCronExpression();
+            map.put("jobTime", cronExpression);
+        }
+        jobList.add(map);
     }
 
     /**
@@ -272,51 +285,18 @@ public class QuartzServiceImpl {
         List<Map<String, Object>> jobList = null;
         try {
             List<JobExecutionContext> executingJobs = scheduler.getCurrentlyExecutingJobs();
-            jobList = new ArrayList<Map<String, Object>>(executingJobs.size());
+            jobList = new ArrayList<>(executingJobs.size());
             for (JobExecutionContext executingJob : executingJobs) {
-                Map<String, Object> map = new HashMap<String, Object>();
+                Map<String, Object> map = new HashMap<>(16);
                 JobDetail jobDetail = executingJob.getJobDetail();
                 JobKey jobKey = jobDetail.getKey();
                 Trigger trigger = executingJob.getTrigger();
-                map.put("jobClass", jobDetail.getJobClass());
-                map.put("jobName", jobKey.getName());
-                map.put("jobGroupName", jobKey.getGroup());
-                map.put("description", "触发器:" + trigger.getKey());
-                Trigger.TriggerState triggerState = scheduler.getTriggerState(trigger.getKey());
-                map.put("jobStatus", triggerState.name());
-                if (trigger instanceof CronTrigger) {
-                    CronTrigger cronTrigger = (CronTrigger) trigger;
-                    String cronExpression = cronTrigger.getCronExpression();
-                    map.put("jobTime", cronExpression);
-                }
-                jobList.add(map);
+                packageJobMapData(jobList, map, jobKey, trigger, jobDetail);
             }
         } catch (SchedulerException e) {
             log.error("findRunJob Method Error", e);
         }
 
-        int pages = 0;
-        int total = 0;
-        if(CollectionUtils.isNotEmpty(jobList)){
-            pages = jobList.size()/commonParamsModel.getPageSize();
-            total = jobList.size();
-            jobList = jobList.stream().skip((commonParamsModel.getPageNum()-1) * commonParamsModel.getPageSize())
-                    .limit(commonParamsModel.getPageSize()).collect(Collectors.toList());
-        }
-
-        //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(jobList);
-        /**
-         * 封装pageInfo数据 :
-         * setPageNum：当前页码
-         * setPageSize： 每页显示数据条数
-         * setPages：设置总页数
-         * setTotal：设置总条数
-         */
-        pageInfo.setPageNum(commonParamsModel.getPageNum());
-        pageInfo.setPageSize(commonParamsModel.getPageSize());
-        pageInfo.setPages(pages);
-        pageInfo.setTotal(total);
-        return ResponseResult.success().add("jobList", pageInfo);
+        return getResponseResult(commonParamsModel, jobList);
     }
 }

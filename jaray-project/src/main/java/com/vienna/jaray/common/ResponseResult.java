@@ -4,21 +4,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 通用的返回json格式数据的包装类
- * @author Administrator
- *
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 通用的返回json格式数据包装类
  */
 public class ResponseResult {
-	
 	public static final int SUCCESS_CODE = 200;
     public static final int FAIL_CODE = 100;
-	
-	//状态码：成功-200  失败-100
+
+	/**
+	 * 状态码：成功-200  失败-100
+	 */
 	private Integer code;
-	//提示信息
+	/**
+	 * 提示信息
+	 */
 	private String msg;
-	
-	//返回给浏览器的数据
+
+	/**
+	 * 返回给浏览器的数据
+	 */
 	private Map<String, Object> map = new HashMap<String, Object>();
 	
 	public static ResponseResult success() {

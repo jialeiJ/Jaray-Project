@@ -17,8 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 数据源使用
- * 适配mybatis实体类别名使用通配符
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 单数据源使用适配mybatis实体类别名使用通配符
  */
 @Slf4j
 public class PackSqlSessionFactoryBean extends SqlSessionFactoryBean {

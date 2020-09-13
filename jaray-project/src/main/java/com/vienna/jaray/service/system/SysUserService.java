@@ -4,46 +4,52 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysUser;
 import com.vienna.jaray.model.system.CommonParamsModel;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统用户接口类
+ */
 public interface SysUserService {
-
     /**
      * 查询用户列表
-     * @return
+     *
+     * @param commonParams 表格数据通用参数对象
+     * @return 用户列表
      */
-    public ResponseResult findAll(CommonParamsModel commonParamsModel);
+    ResponseResult findAll(CommonParamsModel commonParams);
 
     /**
      * 查询用户
-     * @param id
-     * @return
+     * @param id id
+     * @return 用户信息
      */
-    public ResponseResult findById(String id);
+    ResponseResult findById(String id);
 
     /**
      * 查询用户
-     * @param name
-     * @return
+     * @param name 用户名
+     * @return 用户信息
      */
-    public ResponseResult findByName(String name);
+    ResponseResult findByName(String name);
 
     /**
      * 添加用户
-     * @param sysUserEntity
-     * @return
+     * @param sysUser 系统用户对象
+     * @return 添加结果
      */
-    public ResponseResult add(SysUser sysUserEntity);
+    ResponseResult add(SysUser sysUser);
 
     /**
      * 删除用户
-     * @param ids
-     * @return
+     * @param ids id数组
+     * @return 删除结果
      */
-    public ResponseResult deleteByIds(String[] ids);
+    ResponseResult deleteByIds(String[] ids);
 
     /**
      * 更新用户
-     * @param sysUserEntity
-     * @return
+     * @param sysUser 系统用户对象
+     * @return 更新结果
      */
-    public ResponseResult updateById(SysUser sysUserEntity);
+    ResponseResult updateById(SysUser sysUser);
 }

@@ -14,7 +14,7 @@
                 </el-form-item>
                 <el-form-item label="部门" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="addForm.dept_ids"
+                        v-model="addForm.deptIds"
                         :options="deptOptions"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"
@@ -44,13 +44,13 @@
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
                     <el-col :span="24">
-                        <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                        <el-input v-model="addForm.createBy" autocomplete="off"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-col :span="24">
                         <el-date-picker
-                            v-model="addForm.create_time"
+                            v-model="addForm.createTime"
                             type="datetime"
                             placeholder="选择日期时间"
                             align="right"
@@ -62,13 +62,13 @@
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
                     <el-col :span="24">
-                        <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                        <el-input v-model="addForm.lastUpdateBy" autocomplete="off"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-col :span="24">
                         <el-date-picker
-                            v-model="addForm.last_update_time"
+                            v-model="addForm.lastUpdateTime"
                             type="datetime"
                             placeholder="选择日期时间"
                             align="right"
@@ -140,7 +140,7 @@ export default {
         handleChange: function(value) {
             let that = this
             if (value) {
-                that.addForm.dept_id = value[value.length - 1]
+                that.addForm.deptId = value[value.length - 1]
             }
         },
         addSysUser: function(){

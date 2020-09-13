@@ -8,6 +8,11 @@ import org.apache.ibatis.annotations.Param;
 import com.vienna.jaray.entity.system.SysMenu;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统菜单Mapper类
+ */
 @Mapper
 @Repository
 public interface SysMenuMapper {
@@ -44,10 +49,10 @@ public interface SysMenuMapper {
 
 	/**
 	 * 添加菜单
-	 * @param sysMenuEntity 菜单对象
+	 * @param sysMenu 菜单对象
 	 * @return
 	 */
-	public int add(@Param("entity") SysMenu sysMenuEntity);
+	public int add(@Param("entity") SysMenu sysMenu);
 
 	/**
 	 * 删除菜单
@@ -58,10 +63,10 @@ public interface SysMenuMapper {
 
 	/**
 	 * 更新菜单
-	 * @param sysMenuEntity 菜单对象
+	 * @param sysMenu 菜单对象
 	 * @return
 	 */
-	public int updateById(@Param("entity") SysMenu sysMenuEntity);
+	public int updateById(@Param("entity") SysMenu sysMenu);
 
 	/**
 	 * 查询菜单
@@ -79,16 +84,15 @@ public interface SysMenuMapper {
 
 	/**
 	 * 查询无权限菜单
-	 * @param menu_perms 用户菜单权限
+	 * @param menuPerms 用户菜单权限
 	 * @return
 	 */
-	public List<SysMenu> findNoPermByIds(@Param("menu_perms")String[] menu_perms);
+	public List<SysMenu> findNoPermByIds(@Param("menuPerms")String[] menuPerms);
 
 	/**
 	 * 查询菜单权限
-	 * @param menu_perms 用户菜单权限
+	 * @param menuPerms 用户菜单权限
 	 * @return
 	 */
-	public List<SysMenu> findPermByIds(@Param("menu_perms")String[] menu_perms);
-	
+	public List<SysMenu> findPermByIds(@Param("menuPerms")String[] menuPerms);
 }

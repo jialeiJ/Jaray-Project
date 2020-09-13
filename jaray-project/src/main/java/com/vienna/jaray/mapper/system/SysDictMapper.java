@@ -8,6 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统字典Mapper类
+ */
 @Mapper
 @Repository
 public interface SysDictMapper {

@@ -6,7 +6,7 @@
                     <el-input v-model="addForm.id" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
                 </el-form-item>
                 <el-form-item label="用户名" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.user_name" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.userName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="用户操作" :label-width="formLabelWidth">
                     <el-input v-model="addForm.operation" autocomplete="off"></el-input>
@@ -21,11 +21,11 @@
                     <el-input v-model="addForm.ip" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.create_time"
+                        v-model="addForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -35,11 +35,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.last_update_time"
+                        v-model="addForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"

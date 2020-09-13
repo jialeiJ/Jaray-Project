@@ -14,14 +14,14 @@
                 </el-form-item>
                 <el-form-item label="部门" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="viewForm.dept_ids"
+                        v-model="viewForm.deptIds"
                         :options="deptOptions"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"></el-cascader>
                 </el-form-item>
                 <el-form-item label="角色" :label-width="formLabelWidth">
                     <el-col :span="24">
-                        <el-select v-model="role_ids" multiple placeholder="请选择角色">
+                        <el-select v-model="roleIds" multiple placeholder="请选择角色">
                             <el-option
                             v-for="item in sysRoleList"
                             :key="item.value"
@@ -55,13 +55,13 @@
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
                     <el-col :span="24">
-                        <el-input v-model="viewForm.create_by" readonly="readonly"></el-input>
+                        <el-input v-model="viewForm.createBy" readonly="readonly"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-col :span="24">
                         <el-date-picker
-                            v-model="viewForm.create_time"
+                            v-model="viewForm.createTime"
                             type="datetime"
                             placeholder="选择日期时间"
                             align="right"
@@ -73,13 +73,13 @@
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
                     <el-col :span="24">
-                        <el-input v-model="viewForm.last_update_by" readonly="readonly"></el-input>
+                        <el-input v-model="viewForm.lastUpdateBy" readonly="readonly"></el-input>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-col :span="24">
                         <el-date-picker
-                            v-model="viewForm.last_update_time"
+                            v-model="viewForm.lastUpdateTime"
                             type="datetime"
                             placeholder="选择日期时间"
                             align="right"
@@ -133,7 +133,7 @@ export default {
                     }
                 }]
             },
-            role_ids: [],
+            roleIds: [],
             // 部门ids,用于回显
             deptIds: []
         }
@@ -145,7 +145,7 @@ export default {
         handleChange(value) {
             let that = this
             if (value) {
-                that.viewForm.dept_id = value[value.length - 1]
+                that.viewForm.deptId = value[value.length - 1]
             }
         },
         openDialog: function(row){
@@ -158,19 +158,19 @@ export default {
                     that.viewForm = result.map.sysUser
 
                     // 回显角色
-                    that.role_ids = []
-                    let role_ids = result.map.sysUser.role_id.split(',')
-                    for(var i=0;i<role_ids.length;i++){
-                        that.role_ids.push(role_ids[i])
+                    that.roleIds = []
+                    let roleIds = result.map.sysUser.roleId.split(',')
+                    for(var i=0;i<roleIds.length;i++){
+                        that.roleIds.push(roleIds[i])
                     }
 
                     // 获取部门id的父id
-                    let id = result.map.sysUser.dept_id
+                    let id = result.map.sysUser.deptId
                     that.deptIds = []
                     that.getAllPidById(id, that.tileDeptData)
                     // 回显上层机构
-                    let dept_ids = that.deptIds.reverse()
-                    that.viewForm.dept_ids = dept_ids
+                    let deptIds = that.deptIds.reverse()
+                    that.viewForm.deptIds = deptIds
                     
                     that.viewDialogFormVisible = true
                 }
@@ -183,7 +183,7 @@ export default {
             }
             tileDeptData.forEach(function(item, index){
                 if(item.id == id){
-                    that.getAllPidById(item.parent_id, tileDeptData)
+                    that.getAllPidById(item.parentId, tileDeptData)
                 }
             })
         },

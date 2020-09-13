@@ -5,23 +5,28 @@ import java.util.List;
 
 import lombok.Data;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统菜单实体类
+ */
 @Data
 public class SysMenu {
 	private String id;
 	private String value;
 	private String name;
 	private String label;
-	private String parent_id;
+	private String parentId;
 	private String url;
 	private String perm;
 	private int type;
 	private String icon;
-	private int order_num;
-	private String create_by;
-	private String create_time;
-	private String last_update_by;
-	private String last_update_time;
-	private int del_flag;
+	private int orderNum;
+	private String createBy;
+	private String createTime;
+	private String lastUpdateBy;
+	private String lastUpdateTime;
+	private int delFlag;
 
 	private List<SysMenu> perms;
 	private List<SysMenu> children = new ArrayList<>();

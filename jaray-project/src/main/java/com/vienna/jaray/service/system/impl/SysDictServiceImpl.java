@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统字典服务实现类
+ */
 @Service
 public class SysDictServiceImpl implements SysDictService {
     @Autowired

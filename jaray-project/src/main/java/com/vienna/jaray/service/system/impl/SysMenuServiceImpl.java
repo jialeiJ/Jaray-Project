@@ -24,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统菜单接口实现类
+ */
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
     @Autowired
@@ -36,66 +41,66 @@ public class SysMenuServiceImpl implements SysMenuService {
     private SysRolePermMapper sysRolePermMapper;
 
     @Override
-    public ResponseResult findLeftNav(String user_id) {
+    public ResponseResult findLeftNav(String userId) {
         // 1、查询出所有菜单及用户菜单权限、查询所有菜单按钮权限
         List<SysMenu> menuList = sysMenuMapper.findAll();
         List<SysMenu> btnList = sysMenuMapper.findBtnAll();
 
         List<SysMenu> noMenuList = new ArrayList<>();
-        List<SysMenu> permList = new ArrayList<>();
-        if(StringUtils.isNotEmpty(user_id)){
+        List<SysMenu> permList;
+        if(StringUtils.isNotEmpty(userId)){
             // 查询用户信息
-            SysUser sysUser = sysUserMapper.findById(user_id);
+            SysUser sysUser = sysUserMapper.findById(userId);
             // 获取用户角色id并转为数组
-            String roleIds = sysUser.getRole_id();
+            String roleIds = sysUser.getRoleId();
             String[] roleIdArr = roleIds.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
 
             // 查询角色菜单
             List<SysRoleMenu> sysRoleMenuList =  sysRoleMenuMapper.findByRids(roleIdArr);
-            StringBuffer menuStringBuffer = new StringBuffer("");
+            StringBuilder menuStringBuilder = new StringBuilder();
             // 遍历角色菜单集合获取菜单权限
             for(int i=0;i<sysRoleMenuList.size();i++){
                 if(i == (sysRoleMenuList.size()-1)){
-                    menuStringBuffer.append(sysRoleMenuList.get(i).getMenu_id());
+                    menuStringBuilder.append(sysRoleMenuList.get(i).getMenuId());
                 }else{
-                    menuStringBuffer.append(sysRoleMenuList.get(i).getMenu_id()).append(Separator.COMMA_SEPARATOR_EN.getSeparator());
+                    menuStringBuilder.append(sysRoleMenuList.get(i).getMenuId()).append(Separator.COMMA_SEPARATOR_EN.getSeparator());
                 }
             }
-            String menu_perm = menuStringBuffer.toString();
+            String menuPerm = menuStringBuilder.toString();
             // 获取菜单权限数组
-            String[] menu_perms = {};
-            if(StringUtils.isNotEmpty(menu_perm)){
-                menu_perms = menu_perm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
+            String[] menuPerms = {};
+            if(StringUtils.isNotEmpty(menuPerm)){
+                menuPerms = menuPerm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
             }
             // 获取无权限的菜单
-            noMenuList = sysMenuMapper.findNoPermByIds(menu_perms);
+            noMenuList = sysMenuMapper.findNoPermByIds(menuPerms);
 
             // 查询角色权限
             List<SysRolePerm> sysRolePermList = sysRolePermMapper.findByRids(roleIdArr);
-            StringBuffer permStringBuffer = new StringBuffer("");
+            StringBuilder permStringBuilder = new StringBuilder();
             // 遍历角色菜单集合获取菜单权限
             for(int i=0;i<sysRolePermList.size();i++){
                 if(i == (sysRolePermList.size()-1)){
-                    permStringBuffer.append(sysRolePermList.get(i).getPerm_id());
+                    permStringBuilder.append(sysRolePermList.get(i).getPermId());
                 }else{
-                    permStringBuffer.append(sysRolePermList.get(i).getPerm_id()).append(Separator.COMMA_SEPARATOR_EN.getSeparator());
+                    permStringBuilder.append(sysRolePermList.get(i).getPermId()).append(Separator.COMMA_SEPARATOR_EN.getSeparator());
                 }
             }
-            String role_perm = permStringBuffer.toString();
+            String rolePerm = permStringBuilder.toString();
             // 获取角色权限数组
-            String[] role_perms = {};
-            if(StringUtils.isNotEmpty(role_perm)){
-                role_perms = role_perm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
+            String[] rolePerms = {};
+            if(StringUtils.isNotEmpty(rolePerm)){
+                rolePerms = rolePerm.split(Separator.COMMA_SEPARATOR_EN.getSeparator());
             }
             // 获取角色权限的菜单
-            permList = sysMenuMapper.findPermByIds(role_perms);
+            permList = sysMenuMapper.findPermByIds(rolePerms);
         }else{
             permList = sysMenuMapper.findBtnAll();
         }
 
         // 2、获取顶层菜单
         List<SysMenu> firstLevelMenuList = menuList.stream()
-                .filter(sysMenuEntity -> sysMenuEntity.getParent_id() == null).collect(Collectors.toList());
+                .filter(sysMenuEntity -> sysMenuEntity.getParentId() == null).collect(Collectors.toList());
         // 移除无权限的顶层菜单
         firstLevelMenuList.removeAll(noMenuList);
 
@@ -105,15 +110,16 @@ public class SysMenuServiceImpl implements SysMenuService {
         firstLevelMenuList.forEach(firstLevelMenu -> {
             // 获取子菜单
             List<SysMenu> nextSubSetMenu = menuList.stream()
-                    .filter(sysMenuEntity -> firstLevelMenu.getId().equals(sysMenuEntity.getParent_id())).collect(Collectors.toList());
+                    .filter(sysMenuEntity -> firstLevelMenu.getId().equals(sysMenuEntity.getParentId())).collect(Collectors.toList());
             // 移除无权限的子菜单
             nextSubSetMenu.removeAll(finalNoMenuList);
 
             // 如果是菜单获取菜单相应的权限
             if(firstLevelMenu.getType() == SysMenuConfig.MENU_FLAG) {
-                List<SysMenu> allPerms = btnList.stream().filter(btn -> btn.getParent_id().equals(firstLevelMenu.getId())).collect(Collectors.toList());
+                List<SysMenu> allPerms = btnList.stream().filter(btn -> btn.getParentId().equals(firstLevelMenu.getId())).collect(Collectors.toList());
 
-                List<SysMenu> perms = allPerms.stream().filter(btn -> finalPermList.contains(btn)).collect(Collectors.toList());
+                // 获取包含的权限
+                List<SysMenu> perms = allPerms.stream().filter(finalPermList::contains).collect(Collectors.toList());
 
                 firstLevelMenu.setPerms(perms);
                 firstLevelMenu.setChildren(allPerms);
@@ -137,7 +143,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         List<SysMenu> sysMenuList = sysMenuMapper.findAllMenu();
 
         topSysMenuList.forEach(sysMenu -> {
-            List<SysMenu> nextSysMenus = subSysMenuList.stream().filter(subSysMenu -> sysMenu.getId().equals(subSysMenu.getParent_id())).collect(Collectors.toList());
+            List<SysMenu> nextSysMenus = subSysMenuList.stream().filter(subSysMenu -> sysMenu.getId().equals(subSysMenu.getParentId())).collect(Collectors.toList());
             sysMenu.setChildren(nextSysMenus);
 
             sysMenu.setChildren(getMenuChildren(nextSysMenus, subSysMenuList, sysMenuList));
@@ -199,21 +205,22 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     /**
      * 递归取出所有关系树
-     * @param nextSubSetMenuList
-     * @param menuList
-     * @param noMenuList
-     * @param btnList
-     * @return
+     * @param nextSubSetMenuList 下一层菜单列表
+     * @param menuList 拥有的菜单列表
+     * @param noMenuList 未拥有的菜单列表
+     * @param btnList 按钮列表
+     * @return 关系树
      */
     private List<SysMenu> getMenuTree(List<SysMenu> nextSubSetMenuList, List<SysMenu> menuList, List<SysMenu> noMenuList, List<SysMenu> finalPermList, List<SysMenu> btnList) {
         nextSubSetMenuList.forEach(nextSubSetMenuEntity -> {
             List<SysMenu> nextSubSetMenu = menuList.stream()
-                    .filter(sysMenuEntity -> nextSubSetMenuEntity.getId().equals(sysMenuEntity.getParent_id())).collect(Collectors.toList());
+                    .filter(sysMenuEntity -> nextSubSetMenuEntity.getId().equals(sysMenuEntity.getParentId())).collect(Collectors.toList());
             nextSubSetMenu.removeAll(noMenuList);
 
-            List<SysMenu> allPerms = btnList.stream().filter(btn -> btn.getParent_id().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
+            List<SysMenu> allPerms = btnList.stream().filter(btn -> btn.getParentId().equals(nextSubSetMenuEntity.getId())).collect(Collectors.toList());
 
-            List<SysMenu> perms = allPerms.stream().filter(btn -> finalPermList.contains(btn)).collect(Collectors.toList());
+            // 获取包含的权限
+            List<SysMenu> perms = allPerms.stream().filter(finalPermList::contains).collect(Collectors.toList());
 
             if(perms.size() > 0 && nextSubSetMenuEntity.getType() == SysMenuConfig.MENU_FLAG) {
                 nextSubSetMenuEntity.setPerms(perms);
@@ -231,17 +238,17 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     /**
      * 递归取出所有关系树
-     * @param nextSysMenus
-     * @param subSysMentList
-     * @param sysMenuList
-     * @return
+     * @param nextSysMenus 下一层菜单列表
+     * @param subSysMentList 子菜单列表
+     * @param sysMenuList 菜单列表
+     * @return 关系树
      */
     private List<SysMenu> getMenuChildren(List<SysMenu> nextSysMenus, List<SysMenu> subSysMentList, List<SysMenu> sysMenuList) {
         nextSysMenus.forEach(nextSysMenu -> {
-            List<SysMenu> subSysDepts = subSysMentList.stream().filter(subSysMenu -> nextSysMenu.getId().equals(subSysMenu.getParent_id())).collect(Collectors.toList());
+            List<SysMenu> subSysDepts = subSysMentList.stream().filter(subSysMenu -> nextSysMenu.getId().equals(subSysMenu.getParentId())).collect(Collectors.toList());
 
             if(CollectionUtils.isEmpty(subSysDepts)){
-                List<SysMenu> sysMenus = sysMenuList.stream().filter(sysMenu -> nextSysMenu.getId().equals(sysMenu.getParent_id())).collect(Collectors.toList());
+                List<SysMenu> sysMenus = sysMenuList.stream().filter(sysMenu -> nextSysMenu.getId().equals(sysMenu.getParentId())).collect(Collectors.toList());
                 nextSysMenu.setChildren(sysMenus);
             }else{
                 nextSysMenu.setChildren(subSysDepts);

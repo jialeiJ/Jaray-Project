@@ -10,14 +10,14 @@
                 </el-form-item>
                 <el-form-item label="部门" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="editForm.dept_ids"
+                        v-model="editForm.deptIds"
                         :options="deptOptions"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"></el-cascader>
                 </el-form-item>
                 <el-form-item label="角色" :label-width="formLabelWidth">
                     <el-col :span="24">
-                        <el-select v-model="role_ids" multiple placeholder="请选择角色">
+                        <el-select v-model="roleIds" multiple placeholder="请选择角色">
                             <el-option
                             v-for="item in sysRoleList"
                             :key="item.value"
@@ -44,11 +44,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="editForm.create_time"
+                        v-model="editForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -58,11 +58,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="editForm.last_update_time"
+                        v-model="editForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -117,7 +117,7 @@ export default {
                 }]
             },
             deptIds: [],
-            role_ids: [],
+            roleIds: [],
         }
     },
     created: function(){
@@ -127,7 +127,7 @@ export default {
         handleChange: function(value) {
             let that = this
             if (value) {
-                that.editForm.dept_id = value[value.length - 1]
+                that.editForm.deptIId = value[value.length - 1]
             }
         },
         openDialog: function(row){
@@ -140,19 +140,19 @@ export default {
                     that.editForm = result.map.sysUser
 
                     // 回显角色
-                    that.role_ids = []
-                    let role_ids = result.map.sysUser.role_id.split(',')
-                    for(var i=0;i<role_ids.length;i++){
-                        that.role_ids.push(role_ids[i])
+                    that.roleIds = []
+                    let roleIds = result.map.sysUser.roleId.split(',')
+                    for(var i=0;i<roleIds.length;i++){
+                        that.roleIds.push(roleIds[i])
                     }
 
                     // 获取部门id的父id
-                    let id = result.map.sysUser.dept_id
+                    let id = result.map.sysUser.deptId
                     that.deptIds = []
                     that.getAllPidById(id, that.tileDeptData)
                     // 回显上层机构
-                    let dept_ids = that.deptIds.reverse()
-                    that.editForm.dept_ids = dept_ids
+                    let deptIds = that.deptIds.reverse()
+                    that.editForm.deptIds = deptIds
 
                     that.editDialogFormVisible = true
                 }
@@ -165,14 +165,14 @@ export default {
             }
             tileDeptData.forEach(function(item, index){
                 if(item.id == id){
-                    that.getAllPidById(item.parent_id, tileDeptData)
+                    that.getAllPidById(item.parentId, tileDeptData)
                 }
             })
         },
         editSysUser: function(){
             let that = this
-            that.editForm.dept_id = that.editForm.dept_ids[(that.editForm.dept_ids.length - 1)]
-            that.editForm.role_id = that.role_ids.join(',')
+            that.editForm.deptId = that.editForm.deptIds[(that.editForm.deptIds.length - 1)]
+            that.editForm.roleId = that.roleIds.join(',')
             // 定义请求参数
             let params = that.editForm
             // 调用接口

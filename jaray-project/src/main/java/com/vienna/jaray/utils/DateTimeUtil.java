@@ -13,6 +13,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+/**
+ * @author Administrator
+ * @date 2020年09月12日 13:58
+ * @description: 日期时间工具类
+ */
 public class DateTimeUtil {
 	public static final String DATE_FORMAT_FULL = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT_SHORT = "yyyy-MM-dd";
@@ -21,11 +26,10 @@ public class DateTimeUtil {
     public static final String DATE_FORMAT_FULL_MSEL = "yyyyMMddHHmmssSSSS";
     public static final String DATE_YEAR_MONTH = "yyyyMM";
     public static final String DATE_FORMAT_FULL_MSE = "yyyyMMddHHmmssSSS";
-    
+
     /**
      * 获取系统当前日期
-     *
-     * @return
+     * @return 系统当前日期
      */
     public static Date getCurrentDate() {
         return new Date();
@@ -34,7 +38,7 @@ public class DateTimeUtil {
     /**
      * 获取系统当前日期
      *
-     * @return
+     * @return 系统当前日期
      */
     public static LocalDateTime getCurrentLocalDateTime() {
         return LocalDateTime.now();
@@ -43,14 +47,13 @@ public class DateTimeUtil {
     /**
      * 根据时间格式返回对应的String类型的时间
      *
-     * @param format
-     * @return
+     * @param format 时间格式
+     * @return String类型的时间
      */
     public static String getCurDateTime(String format) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
-        String dataTime = now.format(dateTimeFormatter);
-        return dataTime;
+        return now.format(dateTimeFormatter);
     }
     
     /**
@@ -76,7 +79,7 @@ public class DateTimeUtil {
      *
      * @return String 当前日期 yyyyMM格式
      */
-    public static String getCurDateYYYYMM() {
+    public static String getCurDateYyyyMm() {
         return getCurDateTime(DATE_YEAR_MONTH);
     }
     
@@ -85,15 +88,15 @@ public class DateTimeUtil {
      *
      * @return String 当前日期 yyyyMMdd格式
      */
-    public static String getCurDateYYYYMMDD() {
+    public static String getCurDateYyyyMmDd() {
         return getCurDateTime(DATE_FORMAT_COMPACT);
     }
     
     /**
      * 判断是否是今天
      *
-     * @param strDate
-     * @return
+     * @param strDate String类型时间
+     * @return 是否是今天
      */
     public static boolean isCurrentDay(String strDate) {
         boolean bRet = false;
@@ -109,32 +112,33 @@ public class DateTimeUtil {
     /**
      * 获取几小时后的时间
      *
-     * @param hour
-     * @param format
-     * @return
+     * @param hour 小时
+     * @param format 时间格式
+     * @return 几小时后的时间
      */
     public static String getAfterDateTime(int hour, String format) {
         LocalTime localTime = LocalTime.now().plusHours(hour);
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
-        String dataTime = localTime.format(dateTimeFormatter);
-        return dataTime;
+        return localTime.format(dateTimeFormatter);
     }
     
     /**
-     * 当前日期时间戳(yyyyMMddHHmmssSSSS)
+     * 获取当前日期时间戳(yyyyMMddHHmmssSSSS)
      *
-     * @return
+     * @return 当前日期时间戳
      */
     public static String getTimeStamp() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT_FULL_MSEL);
         return now.format(dateTimeFormatter);
     }
-    
+
     /**
      * 日期转字符串
      *
-     * @return String
+     * @param thedate Date类型时间
+     * @param format 时间格式
+     * @return String类型时间
      */
     public static String parseDateToString(Date thedate, String format) {
         if (thedate != null) {
@@ -150,17 +154,19 @@ public class DateTimeUtil {
     /**
      * parseDateToString(Date thedate, String format)的重载方法
      *
-     * @param thedate
-     * @return
+     * @param thedate Date类型时间
+     * @return String类型时间
      */
     public static String parseDateToString(Date thedate) {
         return parseDateToString(thedate, DATE_FORMAT_FULL);
     }
-    
+
     /**
      * 字符串转日期
      *
-     * @return Date
+     * @param thedate Date类型时间
+     * @param format 时间格式
+     * @return Date类型时间
      */
     public static Date parseStringToDate(String thedate, String format) {
         DateFormat sdf = new SimpleDateFormat(format);
@@ -172,17 +178,19 @@ public class DateTimeUtil {
         }
         return date;
     }
-    
+
     /**
-     * 由String型日期转成format形式String
+     * String类型日期转成format形式String
      *
-     * @param srcFormat 原先格式
-     * @param tarFormat 转化格式
-     * @return String
+     * @param srcFormat 源时间格式
+     * @param tarFormat 目标时间格式
+     * @param strDate String类型时间
+     * @return String类型时间
      */
     public static String changeFormatDateString(String srcFormat, String tarFormat, String strDate) {
-        if (strDate == null)
+        if (strDate == null) {
             return "";
+        }
         if (strDate.length() >= srcFormat.length() && srcFormat.length() >= tarFormat.length()) {
             return parseDateToString(parseStringToDate(strDate, srcFormat), tarFormat);
         }
@@ -192,11 +200,11 @@ public class DateTimeUtil {
     /**
      * 得到当前日期的前N天时间 yyyymmdd
      *
-     * @param format
-     * @param day
-     * @return
+     * @param format 时间格式
+     * @param day 天数
+     * @return 当前日期的前N天时间 yyyymmdd
      */
-    public static String beforeNDaysDate(String format, int day) {
+    public static String beforeNdaysDate(String format, int day) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         if (day > 0) {
             return LocalDateTime.now().minusDays(day).format(dateTimeFormatter);
@@ -206,42 +214,39 @@ public class DateTimeUtil {
 
     /**
      * 得到时间的N分钟后的时间
-     * @param theDate
-     * @param nMinNum
-     * @param format
-     * @return
+     * @param theDate String类型时间
+     * @param nMinNum 分钟数
+     * @param format 时间格式
+     * @return N分钟后的时间
      */
-    public static String beforeNMinsDate(String theDate, Integer nMinNum, String format) {
+    public static String beforeNminsDate(String theDate, Integer nMinNum, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         return LocalDateTime.parse(theDate,dateTimeFormatter).minusMinutes(nMinNum).format(dateTimeFormatter);
     }
-    
+
     /**
      * 获得N个月后的日期
-     * <p>
-     * theDate 日期
-     * <p>
-     * int month 月数
-     * <p>
-     * format 格式
+     *
+     * @param theDate String类型时间
+     * @param month 月数
+     * @param format 时间格式
+     * @return N个月后的日期
      */
-    public static String afterNMonthDate(String theDate, int month, String format) {
+    public static String afterNmonthDate(String theDate, int month, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         return LocalDateTime.parse(theDate,dateTimeFormatter)
                 .plusMonths(month)
                 .format(dateTimeFormatter);
     }
-    
+
     /**
-     * 得到N天后的日期
      *
-     * @param theDate 某日期
-     *                格式 yyyy-MM-dd
-     * @param nDayNum N天
-     * @return String N天后的日期
-     * @author kevin
+     * @param theDate String类型时间,格式 yyyy-MM-dd
+     * @param nDayNum 天数
+     * @param format 时间格式
+     * @return N天后的日期
      */
-    public static String afterNDaysDate(String theDate, Integer nDayNum, String format) {
+    public static String afterNdaysDate(String theDate, Integer nDayNum, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         return LocalDateTime.parse(theDate,dateTimeFormatter)
                 .plusDays(nDayNum)
@@ -251,12 +256,12 @@ public class DateTimeUtil {
     /**
      * 得到N小时后的日期
      *
-     * @param theDate  时间
-     * @param nHourNum N小时数
-     * @param format   时间格式
-     * @return
+     * @param theDate String类型时间
+     * @param nHourNum 小时数
+     * @param format 时间格式
+     * @return N小时后的日期
      */
-    public static String afterNHoursDate(String theDate, Integer nHourNum, String format) {
+    public static String afterNhoursDate(String theDate, Integer nHourNum, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         return LocalDateTime.parse(theDate,dateTimeFormatter)
                 .plusHours(nHourNum)
@@ -266,12 +271,12 @@ public class DateTimeUtil {
     /**
      * 得到N分钟后的日期
      *
-     * @param theDate
-     * @param nMinNum
-     * @param format
-     * @return
+     * @param theDate String类型时间
+     * @param nMinNum 分钟数
+     * @param format 时间格式
+     * @return N分钟后的日期
      */
-    public static String afterNMinsDate(String theDate, Integer nMinNum, String format) {
+    public static String afterNminsDate(String theDate, Integer nMinNum, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         return LocalDateTime.parse(theDate,dateTimeFormatter)
                 .plusMinutes(nMinNum)
@@ -281,12 +286,12 @@ public class DateTimeUtil {
     /**
      * 得到N秒后的日期
      * 
-     * @param theDate
-     * @param nSecNum
-     * @param format
-     * @return
+     * @param theDate String类型时间
+     * @param nSecNum 秒数
+     * @param format 时间格式
+     * @return N秒后的日期
      */
-    public static String afterNSecondsDate(String theDate, Integer nSecNum, String format) {
+    public static String afterNsecondsDate(String theDate, Integer nSecNum, String format) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
         return LocalDateTime.parse(theDate,dateTimeFormatter)
                 .plusSeconds(nSecNum)
@@ -296,10 +301,10 @@ public class DateTimeUtil {
     /**
      * 比较两个字符串格式日期大小,带格式的日期
      * 
-     * @param srcDate
-     * @param tarDate
-     * @param format
-     * @return
+     * @param srcDate 源时间
+     * @param tarDate 目标时间
+     * @param format 时间格式
+     * @return 两个字符串格式日期大小
      */
     public static boolean isBefore(String srcDate, String tarDate, String format) {
         try {
@@ -313,12 +318,12 @@ public class DateTimeUtil {
     }
     
     /**
-     * 比较两个字符串格式日期大小,带格式的日期,返回int
+     * 比较两个字符串格式日期大小,带格式的日期,返回long
      * 
-     * @param srcDate
-     * @param tarDate
-     * @param format
-     * @return
+     * @param srcDate 源时间
+     * @param tarDate 目标时间
+     * @param format 时间格式
+     * @return 两个字符串格式日期大小
      */
     public static long isBeforeInt(String srcDate, String tarDate, String format) {
         long result = 0;
@@ -335,10 +340,10 @@ public class DateTimeUtil {
     /**
      * 得到上一个月或者下一个月的日期
      * 
-     * @param theDate
-     * @param month
-     * @param formatStr
-     * @return
+     * @param theDate String类型时间
+     * @param month 月份
+     * @param formatStr 时间格式
+     * @return 上一个月或者下一个月的日期
      */
     public static String getDayafterMonth(String theDate, int month, String formatStr) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(formatStr);
@@ -348,17 +353,19 @@ public class DateTimeUtil {
     /**
      * 将秒转换为小时分秒等
      *
-     * @param sec
-     * @return
+     * @param sec 秒数
+     * @return 小时分秒
      */
     public String changeTime(int sec) {
         String temp = "";
-        if (sec < 60) {
+        int second = 60;
+        int hour = 3600;
+        if (sec < second) {
             temp = "" + sec + "秒";
-        } else if (sec < 3600) {
-            temp = "" + sec / 60 + "分" + sec % 60 + "秒";
+        } else if (sec < hour) {
+            temp = "" + sec / second + "分" + sec % second + "秒";
         } else {
-            temp = "" + sec / 3600 + "小时" + (sec % 3600) / 60 + "分" + sec % 60 + "秒";
+            temp = "" + sec / hour + "小时" + (sec % hour) / second + "分" + sec % second + "秒";
         }
         return temp;
     }
@@ -372,11 +379,11 @@ public class DateTimeUtil {
     public static int getSubDays(String end, String start) {
         LocalDate startDate = LocalDate.parse(start);
         LocalDate endDate = LocalDate.parse(end);
-        Long between = ChronoUnit.DAYS.between(startDate, endDate);
-        return between.intValue();
+        long between = ChronoUnit.DAYS.between(startDate, endDate);
+        return (int) between;
     }
     
-    public static String getTimeDiff(Date endTime, Date startTime) throws Exception {
+    public static String getTimeDiff(Date endTime, Date startTime) {
         long l = endTime.getTime() - startTime.getTime();
         String returnStr = "";
         long day = l / (24 * 60 * 60 * 1000);
@@ -397,5 +404,4 @@ public class DateTimeUtil {
         }
         return returnStr;
     }
-
 }

@@ -65,10 +65,10 @@ export default {
                 {prop: 'value', label: '数据值'},
                 {prop: 'type', label: '类型'},
                 {prop: 'remarks', label: '备注'},
-                {prop: 'create_by', label: '创建人'},
-                {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
-                {prop: 'last_update_by', label: '更新人'},
-                {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                {prop: 'createBy', label: '创建人'},
+                {prop: 'createTime', label: '创建时间', formatter: this.dateTimeFormatter},
+                {prop: 'lastUpdateBy', label: '更新人'},
+                {prop: 'lastUpdateTime', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right',width: 143,
                     operation: [

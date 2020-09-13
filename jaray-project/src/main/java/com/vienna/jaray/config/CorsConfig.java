@@ -9,8 +9,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * 跨域配置
- *
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 跨域配置类
  */
 @Configuration
 public class CorsConfig {
@@ -24,12 +25,14 @@ public class CorsConfig {
 
     private CorsConfiguration buildConfig(){
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedHeader("*"); // 允许任何的HEAD头部
-        corsConfiguration.addAllowedOrigin("*"); // 允许任何域名
-        corsConfiguration.addAllowedMethod("*"); // 允许任何方法
+        // 允许任何的HEAD头部
+        corsConfiguration.addAllowedHeader("*");
+        // 允许任何域名
+        corsConfiguration.addAllowedOrigin("*");
+        // 允许任何方法
+        corsConfiguration.addAllowedMethod("*");
         corsConfiguration.setMaxAge(168000L);
         corsConfiguration.setAllowCredentials(true);
-        //corsConfiguration.addExposedHeader("*");
         return corsConfiguration;
     }
 }

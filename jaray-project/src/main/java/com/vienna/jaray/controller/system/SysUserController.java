@@ -1,6 +1,6 @@
 package com.vienna.jaray.controller.system;
 
-import com.vienna.jaray.annotation.ILogAnnotation;
+import com.vienna.jaray.annotation.LogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysUser;
 import com.vienna.jaray.model.system.CommonParamsModel;
@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统用户控制器
+ */
 @Slf4j
 @CrossOrigin
 @RestController
@@ -18,7 +23,7 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
-    @ILogAnnotation(value = "查询用户列表")
+    @LogAnnotation(value = "查询用户列表")
     @PostMapping("/find/all")
     @PreAuthorize("hasAuthority('sys:user:view')")
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
@@ -31,7 +36,7 @@ public class SysUserController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "添加用户")
+    @LogAnnotation(value = "添加用户")
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('sys:user:add')")
     public ResponseResult add(SysUser sysUserEntity) {
@@ -44,7 +49,7 @@ public class SysUserController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "删除用户")
+    @LogAnnotation(value = "删除用户")
     @PostMapping("/deleteByIds")
     @PreAuthorize("hasAuthority('sys:user:delete')")
     public ResponseResult deleteByIds(String ids) {
@@ -57,7 +62,7 @@ public class SysUserController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "更新用户")
+    @LogAnnotation(value = "更新用户")
     @PostMapping("/updateById")
     @PreAuthorize("hasAuthority('sys:user:edit')")
     public ResponseResult updateById(SysUser sysUserEntity) {
@@ -71,7 +76,7 @@ public class SysUserController {
     }
 
 
-    @ILogAnnotation(value = "查询用户")
+    @LogAnnotation(value = "查询用户")
     @PostMapping("/findById")
     @PreAuthorize("hasAuthority('sys:user:view')")
     public ResponseResult findById(String id) {

@@ -13,7 +13,7 @@
                 </el-form-item>
                 <el-form-item label="上级菜单" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="addForm.menu_pids"
+                        v-model="addForm.menuPids"
                         :options="dirTreeData"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"
@@ -30,11 +30,11 @@
                     <el-input v-model="addForm.icon" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.create_time"
+                        v-model="addForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -44,11 +44,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="addForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="addForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="addForm.last_update_time"
+                        v-model="addForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -120,8 +120,8 @@ export default {
         addSysMenu: function(){
             let that = this
             // 目录/菜单父id赋值
-            if(that.addForm.menu_pids){
-                that.addForm.parent_id = that.addForm.menu_pids[that.addForm.menu_pids.length-1]
+            if(that.addForm.menuPids){
+                that.addForm.parentId = that.addForm.menuPids[that.addForm.menuPids.length-1]
             }
             
             // 定义请求参数
@@ -141,7 +141,7 @@ export default {
         },
         handleChange(value) {
             let that = this
-            that.parent_id = value[value.length-1]
+            that.parentId = value[value.length-1]
         },
         getDirTreeData: function(dirTreeData){
             let that = this

@@ -1,6 +1,6 @@
 package com.vienna.jaray.controller.system;
 
-import com.vienna.jaray.annotation.ILogAnnotation;
+import com.vienna.jaray.annotation.LogAnnotation;
 import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysDept;
 import com.vienna.jaray.model.system.CommonParamsModel;
@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统部门制器
+ */
 @Slf4j
 @CrossOrigin
 @RestController
@@ -18,7 +23,7 @@ public class SysDeptController {
     @Autowired
     private SysDeptService sysDeptService;
 
-    @ILogAnnotation(value = "查询部门列表")
+    @LogAnnotation(value = "查询部门列表")
     @PostMapping("/find/all")
     @PreAuthorize("hasAuthority('sys:dept:view')")
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
@@ -31,7 +36,7 @@ public class SysDeptController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "添加部门")
+    @LogAnnotation(value = "添加部门")
     @PostMapping("/add")
     @PreAuthorize("hasAuthority('sys:dept:add')")
     public ResponseResult add(SysDept sysDeptEntity) {
@@ -44,7 +49,7 @@ public class SysDeptController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "删除部门")
+    @LogAnnotation(value = "删除部门")
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('sys:dept:delete')")
     public ResponseResult deleteByIds(String ids) {
@@ -57,7 +62,7 @@ public class SysDeptController {
         return resultMsg;
     }
 
-    @ILogAnnotation(value = "更新部门")
+    @LogAnnotation(value = "更新部门")
     @PostMapping("/update")
     @PreAuthorize("hasAuthority('sys:dept:edit')")
     public ResponseResult updateById(SysDept sysDeptEntity) {
@@ -71,7 +76,7 @@ public class SysDeptController {
     }
 
 
-    @ILogAnnotation(value = "查询部门")
+    @LogAnnotation(value = "查询部门")
     @PostMapping("/find")
     @PreAuthorize("hasAuthority('sys:dept:view')")
     public ResponseResult findById(String id) {

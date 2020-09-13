@@ -5,12 +5,12 @@
 
     <resultMap id="CommonResultMap" type="sysRoleMenu">
         <id property="id" column="id"/>
-        <result property="role_id" column="role_id"/>
-        <result property="menu_id" column="menu_id"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
+        <result property="roleId" column="role_id"/>
+        <result property="menuId" column="menu_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -27,8 +27,8 @@
     <!-- 添加角色权限角色 -->
     <insert id="add">
     	insert into sys_role_menu (`id`, `role_id`, `menu_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
-    	values (findNextFormatSeqVal('R','s_sys_role_perm_id'), #{entity.role_id}, #{entity.menu_id}, #{entity.create_by},
-    	 #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time})
+    	values (findNextFormatSeqVal('R','s_sys_role_perm_id'), #{entity.roleId}, #{entity.menuId}, #{entity.createBy},
+    	 #{entity.createTime}, #{entity.lastUpdateBy}, #{entity.lastUpdateTime})
     </insert>
 
     <!-- 查询角色权限 -->
@@ -43,8 +43,8 @@
         select
         <include refid="Base_Column_List" />
         from sys_role_menu srm where srm.role_id in
-        <foreach item="role_id" collection="role_ids" open="(" separator="," close=")">
-            #{role_id}
+        <foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+            #{roleId}
         </foreach>
     </select>
 
@@ -52,7 +52,7 @@
     <select id="findByRid" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_role_menu srm where srm.role_id = #{role_id}
+        from sys_role_menu srm where srm.role_id = #{roleId}
     </select>
 
     <!-- 删除角色权限 -->
@@ -67,13 +67,13 @@
     <update id="updateByRid">
         update sys_role_menu
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.menu_id != null">`menu_id` = #{entity.menu_id},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.menuId != null">`menu_id` = #{entity.menuId},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
         </trim>
-        where `role_id` = #{entity.role_id} and `role_id` != '1'
+        where `role_id` = #{entity.roleId} and `roleId` != '1'
     </update>
     
 </mapper>

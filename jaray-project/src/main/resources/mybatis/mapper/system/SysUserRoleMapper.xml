@@ -5,12 +5,12 @@
 
     <resultMap id="CommonResultMap" type="sysUserRole">
         <id property="id" column="id"/>
-        <result property="user_id" column="user_id"/>
-        <result property="role_id" column="role_id"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -27,8 +27,8 @@
     <!-- 添加用户角色 -->
     <insert id="add">
     	insert into sys_user_role (`id`, `user_id`, `role_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
-    	values (findNextFormatSeqVal('R','s_sys_user_role_id'), #{entity.user_id}, #{entity.role_id}, #{entity.create_by},
-    	 #{entity.create_time}, #{entity.last_update_by}, #{entity.last_update_time})
+    	values (findNextFormatSeqVal('R','s_sys_user_role_id'), #{entity.userId}, #{entity.roleId}, #{entity.createBy},
+    	 #{entity.createTime}, #{entity.lastUpdateBy}, #{entity.lastUpdateTime})
     </insert>
 
     <!-- 查询用户角色 -->
@@ -50,11 +50,11 @@
     <update id="updateById">
         update sys_user_role
         <trim prefix="set" suffixOverrides=",">
-            <if test="entity.role_id != null">`role_id` = #{entity.role_id},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
+            <if test="entity.roleId != null">`role_id` = #{entity.roleId},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
         </trim>
         where `id` = #{entity.id}
     </update>

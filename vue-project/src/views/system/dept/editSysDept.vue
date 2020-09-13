@@ -7,7 +7,7 @@
                 </el-form-item>
                 <el-form-item label="上级机构" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="editForm.dept_ids"
+                        v-model="editForm.deptIds"
                         :options="deptOptions"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"></el-cascader>
@@ -16,11 +16,11 @@
                     <el-input v-model="editForm.name" autocomplete="off" placeholder="自动生成ID，无需填写"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="editForm.create_time"
+                        v-model="editForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -30,11 +30,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="editForm.last_update_time"
+                        v-model="editForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -109,9 +109,9 @@ export default {
                     that.deptIds = []
                     that.getAllPidById(id, that.tileDeptData)
                     // 删除本机构,用于回显上层机构
-                    let dept_ids = that.deptIds.reverse()
-                    dept_ids.splice(that.deptIds.length-1, 1)
-                    that.editForm.dept_ids = dept_ids
+                    let deptIds = that.deptIds.reverse()
+                    deptIds.splice(that.deptIds.length-1, 1)
+                    that.editForm.deptIds = deptIds
 
                     that.editDialogFormVisible = true
                 }
@@ -129,14 +129,14 @@ export default {
             }
             tileDeptData.forEach(function(item, index){
                 if(item.id == id){
-                    that.getAllPidById(item.parent_id, tileDeptData)
+                    that.getAllPidById(item.parentId, tileDeptData)
                 }
             })
         },
         editSysDept: function(){
             let that = this
-            if(that.editForm.dept_ids && that.editForm.dept_ids.length > 0){
-                that.editForm.parent_id = that.editForm.dept_ids[0]
+            if(that.editForm.deptIds && that.editForm.deptIds.length > 0){
+                that.editForm.parentId = that.editForm.deptIds[0]
             }
             // 删除children属性
             that.$delete(this.editForm, 'children');

@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 定时任务一
+ */
 @Slf4j
 @Component
 public class TimedTaskFirst extends QuartzJobBean {

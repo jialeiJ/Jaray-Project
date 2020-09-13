@@ -7,47 +7,52 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统角色菜单Mapper类
+ */
 @Mapper
 @Repository
 public interface SysRoleMenuMapper {
     /**
      * 查询角色菜单
-     * @return
+     * @return 角色菜单
      */
     public List<SysRoleMenu> findAll();
 
     /**
      * 查询角色菜单
-     * @param role_id
-     * @return
+     * @param roleId 角色id
+     * @return 角色菜单
      */
-    public SysRoleMenu findByRid(@Param("role_id")String role_id);
+    public SysRoleMenu findByRid(@Param("roleId")String roleId);
 
     /**
      * 查询角色菜单
-     * @param role_ids
+     * @param roleIds 角色id数组
      * @return
      */
-    public List<SysRoleMenu> findByRids(@Param("role_ids")String[] role_ids);
+    public List<SysRoleMenu> findByRids(@Param("roleIds")String[] roleIds);
 
     /**
      * 添加角色菜单
-     * @param sysRoleMenuEntity
-     * @return
+     * @param sysRoleMenu 角色菜单对象
+     * @return 添加结果
      */
-    public int add(@Param("entity") SysRoleMenu sysRoleMenuEntity);
+    public int add(@Param("entity") SysRoleMenu sysRoleMenu);
 
     /**
      * 删除角色菜单
-     * @param ids
+     * @param ids 角色id数组
      * @return
      */
     public int deleteByIds(@Param("ids")String[] ids);
 
     /**
      * 更新角色菜单
-     * @param sysRoleMenuEntity
-     * @return
+     * @param sysRoleMenu 角色菜单对象
+     * @return 更新结果
      */
-    public int updateByRid(@Param("entity") SysRoleMenu sysRoleMenuEntity);
+    public int updateByRid(@Param("entity") SysRoleMenu sysRoleMenu);
 }

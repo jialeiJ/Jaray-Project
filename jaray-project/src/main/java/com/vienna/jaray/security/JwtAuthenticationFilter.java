@@ -23,6 +23,11 @@ import com.vienna.jaray.utils.SecurityUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 认证过滤器
+ */
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 	

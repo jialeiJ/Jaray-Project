@@ -15,6 +15,11 @@ import com.vienna.jaray.mapper.complaint.ComplaintMapper;
 import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.complaint.ComplaintService;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 投诉接口实现类
+ */
 @Service
 public class ComplaintServiceImpl implements ComplaintService {
 	
@@ -36,31 +41,31 @@ public class ComplaintServiceImpl implements ComplaintService {
 	}
 
 	@Override
-	@Transactional(timeout = 30)
-	public ResponseResult add(Complaint complaintEntity) {
+	@Transactional(timeout = 30, rollbackFor = Exception.class)
+	public ResponseResult add(Complaint complaint) {
 		ResponseResult responseResult = ResponseResult.fail();
-		Complaint findResult = complaintMapper.findByCid(complaintEntity.getCid());
-		int result = complaintMapper.add(complaintEntity);
+		Complaint findResult = complaintMapper.findByCid(complaint.getCid());
+		int result = complaintMapper.add(complaint);
 		if(result > 0){
-			responseResult = ResponseResult.success().add("complaint", complaintEntity);
+			responseResult = ResponseResult.success().add("complaint", complaint);
 		}
 		return responseResult;
 	}
 
 	@Override
-	@Transactional(timeout = 30)
-	public ResponseResult updateByCid(Complaint complaintEntity) {
+	@Transactional(timeout = 30, rollbackFor=Exception.class)
+	public ResponseResult updateByCid(Complaint complaint) {
 		ResponseResult responseResult = ResponseResult.fail();
-		Complaint findResult = complaintMapper.findByCid(complaintEntity.getCid());
-		int result = complaintMapper.updateByCid(complaintEntity);
+		Complaint findResult = complaintMapper.findByCid(complaint.getCid());
+		int result = complaintMapper.updateByCid(complaint);
 		if(result > 0){
-			responseResult = ResponseResult.success().add("complaint", complaintEntity);
+			responseResult = ResponseResult.success().add("complaint", complaint);
 		}
 		return responseResult;
 	}
 
 	@Override
-	@Transactional(isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(timeout = 30, isolation = Isolation.READ_UNCOMMITTED, rollbackFor=Exception.class)
 	public ResponseResult findByCid(String cid) {
         Complaint complaintEntitiy = complaintMapper.findByCid(cid);
 		return ResponseResult.success().add("complaint", complaintEntitiy);

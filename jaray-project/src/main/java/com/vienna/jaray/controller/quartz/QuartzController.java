@@ -4,10 +4,7 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.quartz.Job;
 import com.vienna.jaray.model.system.CommonParamsModel;
 import com.vienna.jaray.service.scheduled.QuartzServiceImpl;
-import com.vienna.jaray.service.scheduled.TimedTaskFirst;
-import com.vienna.jaray.service.scheduled.TimedTaskSecond;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.ee.jmx.jboss.QuartzService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 定时任务控制器
+ */
 @Slf4j
 @CrossOrigin
 @RestController

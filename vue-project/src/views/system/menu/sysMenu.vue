@@ -69,11 +69,11 @@ export default {
                 {prop: 'type', label: '类型', formatter: this.typeFormatter,renderComponent: 'tag'},
                 {prop: 'url', label: '链接'},
                 {prop: 'icon', label: '图标'},
-                {prop: 'order_num', label: '排序'},
-                {prop: 'create_by', label: '创建人'},
-                {prop: 'create_time', label: '创建时间', formatter: this.dateTimeFormatter},
-                {prop: 'last_update_by', label: '更新人'},
-                {prop: 'last_update_time', label: '更新时间', formatter: this.dateTimeFormatter},
+                {prop: 'orderNum', label: '排序'},
+                {prop: 'createBy', label: '创建人'},
+                {prop: 'createTime', label: '创建时间', formatter: this.dateTimeFormatter},
+                {prop: 'lastUpdateBy', label: '更新人'},
+                {prop: 'lastUpdateTime', label: '更新时间', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
                 {prop: 'operation', label: '操作', fixed: 'right', width: 143,
                     operation: [
@@ -176,7 +176,7 @@ export default {
             }
             tileMenuData.forEach(function(item, index){
                 if(item.id == id){
-                    that.getAllPidById(item.parent_id, tileMenuData)
+                    that.getAllPidById(item.parentId, tileMenuData)
                 }
             })
         },
@@ -207,7 +207,7 @@ export default {
         },
         handleChange(value) {
             let that = this
-            that.parent_id = value[value.length-1]
+            that.parentId = value[value.length-1]
         },
         typeFormatter: function(row, column, cellValue, index){
             if(cellValue == undefined){

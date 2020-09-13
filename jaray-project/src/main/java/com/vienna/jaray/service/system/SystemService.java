@@ -6,6 +6,11 @@ import com.vienna.jaray.entity.system.SysUserToken;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * @author Administrator
+ * @date 2020年09月10日 22:29
+ * @description: 系统通用接口类
+ */
 public interface SystemService {
     /**
      * 登录接口

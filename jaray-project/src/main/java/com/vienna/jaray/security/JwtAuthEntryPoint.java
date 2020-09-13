@@ -16,7 +16,9 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 
 /**
- * 认证失败处理类
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 认证失败处理类
  */
 @Slf4j
 @Component

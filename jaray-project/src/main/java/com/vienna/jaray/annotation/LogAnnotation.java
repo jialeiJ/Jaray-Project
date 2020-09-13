@@ -7,10 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Title: ILog.java
- * @Description: 用户日志记录自定义注解类
- * @author Administrator
- * @date 2019年10月13日下午10:26:04
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 用户日志记录自定义注解类
  */
 /* 注解放置的目标位置，METHOD是可注解在方法级别上 */
 @Target(ElementType.METHOD)
@@ -18,7 +17,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 /* 生成文档 */
 @Documented
-public @interface ILogAnnotation {
+public @interface LogAnnotation {
 	
 	String value() default "";
 

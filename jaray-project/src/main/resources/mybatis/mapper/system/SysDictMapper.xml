@@ -11,11 +11,11 @@
         <result property="description" column="description"/>
         <result property="sort" column="sort"/>
         <result property="remarks" column="remarks"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
-        <result property="del_flag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="delFlag" column="del_flag"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -34,7 +34,7 @@
     <insert id="add">
     	insert into sys_dict (`id`, `value`, `label`, `type`, `description`, `sort`, `remarks`, `create_by`, `create_time`, `del_flag`)
     	values (findNextFormatSeqVal('U','s_sys_dict_id'), #{entity.value}, #{entity.label}, #{entity.type},
-    	 #{entity.description}, #{entity.sort}, #{entity.remarks}, #{entity.create_by}, #{entity.create_time}, 0)
+    	 #{entity.description}, #{entity.sort}, #{entity.remarks}, #{entity.createBy}, #{entity.createTime}, 0)
     </insert>
 
     <!-- 查询字典 -->
@@ -69,11 +69,11 @@
             <if test="entity.description != null">`description` = #{entity.description},</if>
             <if test="entity.sort != null">`sort` = #{entity.sort},</if>
             <if test="entity.remarks != null">`remarks` = #{entity.remarks},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
-            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
+            <if test="entity.delFlag != null">`del_flag` = #{entity.delFlag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>
@@ -84,5 +84,4 @@
         <include refid="Base_Column_List" />
         from sys_dict d where d.description = #{description}
     </select>
-
 </mapper>

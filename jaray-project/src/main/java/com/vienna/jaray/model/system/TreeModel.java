@@ -4,20 +4,25 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 树形数据通用模型
+ */
 @Data
 public class TreeModel {
     private String id;
     private String label;
-    private int parent_id;
+    private int parentId;
     private String url;
     private int type;
     private String icon;
-    private int order_num;
-    private String create_by;
-    private String create_time;
-    private String last_update_by;
-    private String last_update_time;
-    private int del_flag;
+    private int orderNum;
+    private String createBy;
+    private String createTime;
+    private String lastUpdateBy;
+    private String lastUpdateTime;
+    private int delFlag;
 
     private List<TreeModel> children;
 

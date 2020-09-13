@@ -4,46 +4,51 @@ import com.vienna.jaray.common.ResponseResult;
 import com.vienna.jaray.entity.system.SysDept;
 import com.vienna.jaray.model.system.CommonParamsModel;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 系统部门接口类
+ */
 public interface SysDeptService {
-
     /**
      * 查询部门列表
-     * @return
+     * @param commonParams 表格数据通用参数对象
+     * @return 部门列表
      */
-    public ResponseResult findAllTop(CommonParamsModel commonParamsModel);
+    ResponseResult findAllTop(CommonParamsModel commonParams);
 
     /**
      * 查询部门
-     * @param id
-     * @return
+     * @param id id
+     * @return 部门信息
      */
-    public ResponseResult findById(String id);
+    ResponseResult findById(String id);
 
     /**
      * 查询部门
-     * @param name
-     * @return
+     * @param name 名称
+     * @return 部门信息
      */
-    public ResponseResult findByName(String name);
+    ResponseResult findByName(String name);
 
     /**
      * 添加部门
-     * @param sysDeptEntity
-     * @return
+     * @param sysDept 部门对象
+     * @return 添加结果
      */
-    public ResponseResult add(SysDept sysDeptEntity);
+    ResponseResult add(SysDept sysDept);
 
     /**
      * 删除部门
-     * @param ids
-     * @return
+     * @param ids id数组
+     * @return 删除结果
      */
-    public ResponseResult deleteByIds(String[] ids);
+    ResponseResult deleteByIds(String[] ids);
 
     /**
      * 更新部门
-     * @param SysDeptEntity
-     * @return
+     * @param sysDept 部门对象
+     * @return 更新信息
      */
-    public ResponseResult updateById(SysDept SysDeptEntity);
+    ResponseResult updateById(SysDept sysDept);
 }

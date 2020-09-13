@@ -8,13 +8,13 @@
         <result property="value" column="value"/>
         <result property="name" column="name"/>
         <result property="label" column="label"/>
-        <result property="parent_id" column="parent_id"/>
-        <result property="order_num" column="order_num"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
-        <result property="del_flag" column="del_flag"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="delFlag" column="del_flag"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -38,8 +38,8 @@
     <!-- 添加部门 -->
     <insert id="add">
     	insert into sys_dept (`id`, `name`, `parent_id`, `order_num`, `create_by`, `create_time`, `last_update_by`, `last_update_time`, `del_flag`)
-    	values (findNextFormatSeqVal('U','s_sys_dept_id'), #{entity.name}, #{entity.parent_id}, #{entity.order_num}, #{entity.create_by},
-    	#{entity.create_time}, #{entity.create_by}, #{entity.create_time}, 0)
+    	values (findNextFormatSeqVal('U','s_sys_dept_id'), #{entity.name}, #{entity.parentId}, #{entity.orderNum}, #{entity.createBy},
+    	#{entity.createTime}, #{entity.createBy}, #{entity.createTime}, 0)
     </insert>
 
     <!-- 查询部门 -->
@@ -79,15 +79,14 @@
         update sys_dept
         <trim prefix="set" suffixOverrides=",">
             <if test="entity.name != null and entity.name != ''">`name` = #{entity.name},</if>
-            <if test="entity.parent_id != null and entity.parent_id != ''">`parent_id` = #{entity.parent_id},</if>
-            <if test="entity.order_num != null and entity.order_num != ''">`order_num` = #{entity.order_num},</if>
-            <if test="entity.create_by != null and entity.create_by != ''">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null and entity.create_time != ''">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null and entity.last_update_by != ''">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null and entity.last_update_time != ''">`last_update_time` = #{entity.last_update_time},</if>
-            <if test="entity.del_flag != null and entity.del_flag != ''">`del_flag` = #{entity.del_flag},</if>
+            <if test="entity.parentId != null and entity.parentId != ''">`parent_id` = #{entity.parentId},</if>
+            <if test="entity.orderNum != null and entity.orderNum != ''">`order_num` = #{entity.orderNum},</if>
+            <if test="entity.createBy != null and entity.createBy != ''">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null and entity.createTime != ''">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null and entity.lastUpdateBy != ''">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null and entity.lastUpdateTime != ''">`last_update_time` = #{entity.lastUpdateTime},</if>
+            <if test="entity.delFlag != null and entity.delFlag != ''">`del_flag` = #{entity.delFlag},</if>
         </trim>
         where `id` = #{entity.id}
     </update>
-    
 </mapper>

@@ -7,17 +7,17 @@
         <id property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="password" column="password"/>
-        <result property="menu_perm" column="menu_perm"/>
+        <result property="menuPerm" column="menu_perm"/>
         <result property="email" column="email"/>
         <result property="mobile" column="mobile"/>
         <result property="status" column="status"/>
-        <result property="dept_id" column="dept_id"/>
-        <result property="role_id" column="role_id"/>
-        <result property="create_by" column="create_by"/>
-        <result property="create_time" column="create_time"/>
-        <result property="last_update_by" column="last_update_by"/>
-        <result property="last_update_time" column="last_update_time"/>
-        <result property="del_flag" column="del_flag"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+        <result property="delFlag" column="del_flag"/>
     </resultMap>
 	
 	<sql id="Base_Column_List" >
@@ -39,7 +39,7 @@
     <insert id="add">
     	insert into sys_user (`id`, `name`, `password`, `email`, `mobile`, `status`, `dept_id`, `create_by`, `create_time`, `del_flag`)
     	values (findNextFormatSeqVal('U','s_sys_user_id'), #{entity.name}, #{entity.password}, #{entity.email},
-    	 #{entity.mobile}, #{entity.status}, #{entity.dept_id}, #{entity.create_by}, #{entity.create_time}, 0)
+    	 #{entity.mobile}, #{entity.status}, #{entity.deptId}, #{entity.createBy}, #{entity.createTime}, 0)
     </insert>
 
     <!-- 查询用户 -->
@@ -70,17 +70,17 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="entity.name != null">`name` = #{entity.name},</if>
             <if test="entity.password != null">`password` = #{entity.password},</if>
-            <if test="entity.menu_perm != null">`menu_perm` = #{entity.menu_perm},</if>
+            <if test="entity.menuPerm != null">`menu_perm` = #{entity.menuPerm},</if>
             <if test="entity.email != null">`email` = #{entity.email},</if>
             <if test="entity.mobile != null">`mobile` = #{entity.mobile},</if>
             <if test="entity.status != null">`status` = #{entity.status},</if>
-            <if test="entity.dept_id != null">`dept_id` = #{entity.dept_id},</if>
-            <if test="entity.role_id != null">`role_id` = #{entity.role_id},</if>
-            <if test="entity.create_by != null">`create_by` = #{entity.create_by},</if>
-            <if test="entity.create_time != null">`create_time` = #{entity.create_time},</if>
-            <if test="entity.last_update_by != null">`last_update_by` = #{entity.last_update_by},</if>
-            <if test="entity.last_update_time != null">`last_update_time` = #{entity.last_update_time},</if>
-            <if test="entity.del_flag != null">`del_flag` = #{entity.del_flag},</if>
+            <if test="entity.deptId != null">`dept_id` = #{entity.deptId},</if>
+            <if test="entity.roleId != null">`role_id` = #{entity.roleId},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
+            <if test="entity.delFlag != null">`del_flag` = #{entity.delFlag},</if>
         </trim>
         where `id` = #{entity.id} and `name` != 'admin'
     </update>

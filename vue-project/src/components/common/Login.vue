@@ -11,10 +11,10 @@
             <el-form-item label="" prop="captcha">
                 <el-row :gutter="20">
                     <el-col :span="14">
-                        <el-input id="captcha" type="text" size="arge" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
+                        <el-input type="text" size="arge" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
                     </el-col>
                     <el-col :span="10">
-                        <el-image id="imagecode" :src="checkCodeSrc" @click="reloadCode()"></el-image>
+                        <el-image id="imagecode" :src="checkCodeSrc" @click="reloadCode"></el-image>
                     </el-col>
                 </el-row>
             </el-form-item>
@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import Env from '../../api/env'
-import API from '../../api/api_system'
+import Env from '@api/env'
+import API from '@api/api_system'
 import MenuTree from '@/components/nav/MenuTree'
 import HeadNav from '@/components/nav/HeadNav'
 import iTabs from '@/components/common/iTabs'

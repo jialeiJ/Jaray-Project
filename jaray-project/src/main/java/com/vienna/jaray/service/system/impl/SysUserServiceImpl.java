@@ -18,6 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统用户服务实现类
+ */
 @Service
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
@@ -36,10 +41,10 @@ public class SysUserServiceImpl implements SysUserService {
         List<SysUser> sysUserEntityList = sysUserMapper.findAll(commonParamsModel);
 
         //
-        List<String> deptIdList = sysUserEntityList.stream().map(SysUser::getDept_id).collect(Collectors.toList());
+        List<String> deptIdList = sysUserEntityList.stream().map(SysUser::getDeptId).collect(Collectors.toList());
         List<SysDept> sysDeptList = sysDeptMapper.findByIds(deptIdList);
 
-        List<String> roleIdList = sysUserEntityList.stream().map(SysUser::getRole_id).collect(Collectors.toList());
+        List<String> roleIdList = sysUserEntityList.stream().map(SysUser::getRoleId).collect(Collectors.toList());
         List<SysRole> sysRoleList = sysRoleMapper.findByIds(roleIdList);
 
         //取记录总条数

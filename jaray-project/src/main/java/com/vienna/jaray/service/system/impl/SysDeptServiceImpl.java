@@ -14,6 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统部门服务实现类
+ */
 @Service
 public class SysDeptServiceImpl implements SysDeptService {
     @Autowired
@@ -29,7 +34,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         List<SysDept> topSysDeptList = sysDeptMapper.findAllTop();
         List<SysDept> subSysDeptList = sysDeptMapper.findAllSub();
         topSysDeptList.forEach(sysDept -> {
-            List<SysDept> nextSysDepts = subSysDeptList.stream().filter(subSysDept -> subSysDept.getParent_id().equals(sysDept.getId())).collect(Collectors.toList());
+            List<SysDept> nextSysDepts = subSysDeptList.stream().filter(subSysDept -> subSysDept.getParentId().equals(sysDept.getId())).collect(Collectors.toList());
             sysDept.setChildren(nextSysDepts);
 
 
@@ -84,13 +89,13 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     /**
      * 递归取出所有关系树
-     * @param nextSysDepts
-     * @param subSysDeptList
-     * @return
+     * @param nextSysDepts  下一层部门列表
+     * @param subSysDeptList 子部门列表
+     * @return 所有关系树
      */
     private List<SysDept> getDeptChildren(List<SysDept> nextSysDepts, List<SysDept> subSysDeptList) {
         nextSysDepts.forEach(nextSysDept -> {
-            List<SysDept> subSysDepts = subSysDeptList.stream().filter(subSysDept -> subSysDept.getParent_id().equals(nextSysDept.getId())).collect(Collectors.toList());
+            List<SysDept> subSysDepts = subSysDeptList.stream().filter(subSysDept -> subSysDept.getParentId().equals(nextSysDept.getId())).collect(Collectors.toList());
             if(CollectionUtils.isNotEmpty(subSysDepts)){
                 nextSysDept.setChildren(subSysDepts);
             }

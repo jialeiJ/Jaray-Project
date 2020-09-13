@@ -19,6 +19,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: jwtToken工具类
+ */
 public class JwtTokenUtil implements Serializable {
 	/**
 	 * 
@@ -44,7 +49,7 @@ public class JwtTokenUtil implements Serializable {
     /**
      * 有效期12小时
      */
-    private static final long EXPIRE_TIME = 12 * 60 * 60 * 1000;//12 * 60 * 60 * 1000;
+    private static final long EXPIRE_TIME = 12 * 60 * 60 * 1000;
 
     /**
 	 * 生成令牌
@@ -224,7 +229,7 @@ public class JwtTokenUtil implements Serializable {
 				return null;
 			}
 			Date expiration = claims.getExpiration();
-			Date beforeDate = DateTimeUtil.parseStringToDate(DateTimeUtil.beforeNMinsDate(DateTimeUtil.parseDateToString(expiration), 3, DateTimeUtil.DATE_FORMAT_FULL),DateTimeUtil.DATE_FORMAT_FULL);
+			Date beforeDate = DateTimeUtil.parseStringToDate(DateTimeUtil.beforeNminsDate(DateTimeUtil.parseDateToString(expiration), 3, DateTimeUtil.DATE_FORMAT_FULL),DateTimeUtil.DATE_FORMAT_FULL);
 			Date curDate = DateTimeUtil.parseStringToDate(DateTimeUtil.getCurDateTime(DateTimeUtil.DATE_FORMAT_FULL), DateTimeUtil.DATE_FORMAT_FULL);
 			boolean isAfter = curDate.after(beforeDate);
 			boolean isBefore = curDate.before(expiration);

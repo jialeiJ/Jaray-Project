@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 验证码服务实现类
+ */
 @Service
 public class KaptchaServiceImpl implements KaptchaService {
     @Autowired

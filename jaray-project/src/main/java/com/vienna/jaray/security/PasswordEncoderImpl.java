@@ -5,9 +5,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * Spring Security报错，报There is no PasswordEncoder mapped for the id "null"
- * Spring Security 升级到5版本后密码支持多种加密格式
- *
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 密码加密实现类
+ *     Spring Security报错，报There is no PasswordEncoder mapped for the id "null"
+ *     Spring Security 升级到5版本后密码支持多种加密格式
  */
 public class PasswordEncoderImpl implements PasswordEncoder {
 

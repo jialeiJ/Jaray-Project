@@ -13,7 +13,7 @@
                 </el-form-item>
                 <el-form-item label="上级菜单" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="editForm.menu_pids"
+                        v-model="editForm.menuPids"
                         :options="dirTreeData"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"
@@ -33,14 +33,14 @@
                     <el-input v-model="editForm.icon" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="排序" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.order_num" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.orderNum" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.create_by" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.createBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="editForm.create_time"
+                        v-model="editForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -50,11 +50,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.last_update_by" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.lastUpdateBy" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="editForm.last_update_time"
+                        v-model="editForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -127,13 +127,13 @@ export default {
                     that.editForm = result.map.sysMenu
 
                      // 获取部门id的父id
-                    let id = result.map.sysMenu.parent_id
+                    let id = result.map.sysMenu.parentId
                     that.menuIds = []
                     that.getAllPidById(id, that.tileMenuData)
                     
                     // 回显上层机构
-                    let menu_ids = that.menuIds.reverse()
-                    that.editForm.menu_pids = menu_ids
+                    let menuIds = that.menuIds.reverse()
+                    that.editForm.menuPids = menuIds
 
                     that.editDialogFormVisible = true
                 }
@@ -146,7 +146,7 @@ export default {
             }
             tileMenuData.forEach(function(item, index){
                 if(item.id == id){
-                    that.getAllPidById(item.parent_id, tileMenuData)
+                    that.getAllPidById(item.parentId, tileMenuData)
                 }
             })
         },
@@ -157,7 +157,7 @@ export default {
             delete that.editForm.perms
 
             // 目录/菜单父id赋值
-            that.editForm.parent_id = that.editForm.menu_pids[that.editForm.menu_pids.length-1]
+            that.editForm.parentId = that.editForm.menuPids[that.editForm.menuPids.length-1]
             // 定义请求参数
             let params = that.editForm
             // 调用接口
@@ -174,7 +174,7 @@ export default {
         },
         handleChange(value) {
             let that = this
-            that.parent_id = value[value.length-1]
+            that.parentId = value[value.length-1]
         },
     },
     mounted: function(){

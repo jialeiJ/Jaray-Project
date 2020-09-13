@@ -13,7 +13,7 @@
                 </el-form-item>
                 <el-form-item label="上级菜单" :label-width="formLabelWidth">
                     <el-cascader
-                        v-model="viewForm.menu_pids"
+                        v-model="viewForm.menuPids"
                         :options="dirTreeData"
                         :props="{ expandTrigger: 'hover', checkStrictly: true }"
                         @change="handleChange"
@@ -30,14 +30,14 @@
                     <el-input v-model="viewForm.icon" readonly="readonly"></el-input>
                 </el-form-item>
                 <el-form-item label="排序" :label-width="formLabelWidth">
-                    <el-input v-model="viewForm.order_num" readonly="readonly"></el-input>
+                    <el-input v-model="viewForm.orderNum" readonly="readonly"></el-input>
                 </el-form-item>
                 <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="viewForm.create_by" readonly="readonly"></el-input>
+                    <el-input v-model="viewForm.createBy" readonly="readonly"></el-input>
                 </el-form-item>
                 <el-form-item label="创建时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="viewForm.create_time"
+                        v-model="viewForm.createTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -47,11 +47,11 @@
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="viewForm.last_update_by" readonly="readonly"></el-input>
+                    <el-input v-model="viewForm.lastUpdateBy" readonly="readonly"></el-input>
                 </el-form-item>
                 <el-form-item label="更新时间" :label-width="formLabelWidth">
                     <el-date-picker
-                        v-model="viewForm.last_update_time"
+                        v-model="viewForm.lastUpdateTime"
                         type="datetime"
                         placeholder="选择日期时间"
                         align="right"
@@ -123,13 +123,13 @@ export default {
                     that.viewForm = result.map.sysMenu
 
                     // 获取部门id的父id
-                    let id = result.map.sysMenu.parent_id
+                    let id = result.map.sysMenu.parentId
                     that.menuIds = []
                     that.getAllPidById(id, that.tileMenuData)
                     
                     // 回显上层机构
-                    let menu_ids = that.menuIds.reverse()
-                    that.viewForm.menu_pids = menu_ids
+                    let menuIds = that.menuIds.reverse()
+                    that.viewForm.menuPids = menuIds
 
                     that.viewDialogFormVisible = true
                 }
@@ -142,13 +142,13 @@ export default {
             }
             tileMenuData.forEach(function(item, index){
                 if(item.id == id){
-                    that.getAllPidById(item.parent_id, tileMenuData)
+                    that.getAllPidById(item.parentId, tileMenuData)
                 }
             })
         },
         handleChange(value) {
             let that = this
-            that.parent_id = value[value.length-1]
+            that.parentId = value[value.length-1]
         },
     },
     mounted: function(){

@@ -9,6 +9,11 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: WebMvc配置类
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
@@ -16,19 +21,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 添加拦截器，配置拦截器地址
+        /** 添加拦截器，配置拦截器地址 */
         registry.addInterceptor(tokenInterceptor)
-            //.addPathPatterns("/system/findLeftNav") // 配置拦截
-            .excludePathPatterns("/") // 配置不拦截
-            .excludePathPatterns("/dist/**") // 配置不拦截
-            .excludePathPatterns("/main") // 配置不拦截
-            .excludePathPatterns("/system/login") // 配置不拦截
-            .excludePathPatterns("/druid/**") // 配置不拦截
-            .excludePathPatterns("/**/*.html") // 配置不拦截
-            .excludePathPatterns("/**/*.js") // 配置不拦截
-            .excludePathPatterns("/**/*.css") // 配置不拦截
-            .excludePathPatterns("/**/*.woff") // 配置不拦截
-            .excludePathPatterns("/**/*.ttf"); // 配置不拦截
+            /** 配置拦截 */
+            //.addPathPatterns("/system/findLeftNav")
+            /** 配置不拦截 */
+            .excludePathPatterns("/")
+            .excludePathPatterns("/dist/**")
+            .excludePathPatterns("/main")
+            .excludePathPatterns("/system/login")
+            .excludePathPatterns("/druid/**")
+            .excludePathPatterns("/**/*.html")
+            .excludePathPatterns("/**/*.js")
+            .excludePathPatterns("/**/*.css")
+            .excludePathPatterns("/**/*.woff")
+            .excludePathPatterns("/**/*.ttf");
     }
 
     @Override

@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统日志服务实现类
+ */
 @Service
 public class SysLogServiceImpl implements SysLogService {
     @Autowired
@@ -21,30 +26,30 @@ public class SysLogServiceImpl implements SysLogService {
     public ResponseResult findAll(CommonParamsModel commonParamsModel) {
         //设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-        List<SysLog> sysLogEntityList = sysLogMapper.findAll(commonParamsModel);
+        List<SysLog> sysLogList = sysLogMapper.findAll(commonParamsModel);
         //取记录总条数
-        PageInfo<?> pageInfo = new PageInfo<>(sysLogEntityList);
+        PageInfo<?> pageInfo = new PageInfo<>(sysLogList);
         return ResponseResult.success().add("sysLogs", pageInfo);
     }
 
     @Override
     public ResponseResult findById(String id) {
-        SysLog sysLogEntity = sysLogMapper.findById(id);
-        return ResponseResult.success().add("sysLog", sysLogEntity);
+        SysLog sysLog = sysLogMapper.findById(id);
+        return ResponseResult.success().add("sysLog", sysLog);
     }
 
     @Override
-    public ResponseResult findByName(String user_name) {
-        SysLog sysLogEntity = sysLogMapper.findByName(user_name);
-        return ResponseResult.success().add("sysLog", sysLogEntity);
+    public ResponseResult findByName(String userName) {
+        SysLog sysLog = sysLogMapper.findByName(userName);
+        return ResponseResult.success().add("sysLog", sysLog);
     }
 
     @Override
-    public ResponseResult add(SysLog sysLogEntity) {
+    public ResponseResult add(SysLog sysLog) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysLogMapper.add(sysLogEntity);
+        int result = sysLogMapper.add(sysLog);
         if(result > 0){
-            responseResult = ResponseResult.success().add("sysLog", sysLogEntity);
+            responseResult = ResponseResult.success().add("sysLog", sysLog);
         }
         return responseResult;
     }
@@ -60,9 +65,9 @@ public class SysLogServiceImpl implements SysLogService {
     }
 
     @Override
-    public ResponseResult updateById(SysLog sysLogEntity) {
+    public ResponseResult updateById(SysLog sysLog) {
         ResponseResult responseResult = ResponseResult.fail();
-        int result = sysLogMapper.updateById(sysLogEntity);
+        int result = sysLogMapper.updateById(sysLog);
         if(result > 0){
             responseResult = ResponseResult.success().add("result", result);
         }

@@ -23,8 +23,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 
+/**
+ * @author Jaray
+ * @date 2020年09月10日 22:29
+ * @description: 用户详情服务实现类
+ */
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
+	private static final String USERNAME_ADMIN = "admin";
 	@Autowired
 	private SysUserMapper sysUserMapper;
 	@Autowired
@@ -40,7 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			return null;
 		}
 		SysUser sysUser = sysUserMapper.findByName(username);
-		if("admin".equalsIgnoreCase(username)){
+		if(USERNAME_ADMIN.equalsIgnoreCase(username)){
 			// 1、管理员查询所有权限菜单对象
 			List<SysMenu> sysMenuList = sysMenuMapper.findBtnAll();
 
@@ -48,23 +54,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			Set<String> permissions = sysMenuList.stream().map(SysMenu::getPerm).collect(Collectors.toSet());
 
 			//这里使用自定义权限列表的方式初始化权限
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority> ();
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<> ();
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 			grantedAuthorities.add(new SimpleGrantedAuthority("delete"));
 			// 3、生成权限对象集合
 			grantedAuthorities = permissions.stream().map(GrantedAuthorityImpl::new).collect(Collectors.toList());
 
-			// 4、赋予用户权限
-			UserDetails user = new User(sysUser.getName(), sysUser.getPassword(), grantedAuthorities);//注意：大写P，Passw0rd
-			return user;
+			// 4、赋予用户权限,注意：大写P，Passw0rd
+			return new User(sysUser.getName(), sysUser.getPassword(), grantedAuthorities);
 		}else{
 			// 1、获取角色
-			List<SysRolePerm> sysRolePermList = sysRolePermMapper.findByRids(sysUser.getRole_id().split(Separator.COMMA_SEPARATOR_EN.getSeparator()));
+			List<SysRolePerm> sysRolePermList = sysRolePermMapper.findByRids(sysUser.getRoleId().split(Separator.COMMA_SEPARATOR_EN.getSeparator()));
 
 			// 2、获取用户所有角色的权限id
 			String[] pids = {};
-			for(int i=0;i<sysRolePermList.size();i++){
-				pids = ArrayUtils.addAll(pids, sysRolePermList.get(i).getPerm_id().split(Separator.COMMA_SEPARATOR_EN.getSeparator()));
+			for (SysRolePerm sysRolePerm : sysRolePermList) {
+				pids = ArrayUtils.addAll(pids, sysRolePerm.getPermId().split(Separator.COMMA_SEPARATOR_EN.getSeparator()));
 			}
 
 			// 3、获取用户所有角色的所有权限菜单对象
@@ -74,16 +79,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			Set<String> permissions = sysMenuList.stream().map(SysMenu::getPerm).collect(Collectors.toSet());
 
 			//这里使用自定义权限列表的方式初始化权限
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority> ();
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<> ();
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_NORMAL"));
 
 			// 5、生成权限对象集合
 			grantedAuthorities = permissions.stream().map(GrantedAuthorityImpl::new).collect(Collectors.toList());
 
 			// 6、赋予用户权限
-			UserDetails user = new User(sysUser.getName(), sysUser.getPassword(), grantedAuthorities);
-	        return user;
+			return new User(sysUser.getName(), sysUser.getPassword(), grantedAuthorities);
 		}
 	}
-
 }
