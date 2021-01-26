@@ -4,7 +4,6 @@
             border
             size="mini"
             :data="tableData"
-            :key="iKey"
             :height="tableHeight"
             :highlight-current-row="true"
             @selection-change="handleSelectionChange"
@@ -30,30 +29,30 @@
                     :show-overflow-tooltip="true">
                     <!-- 加入template主要是有操作一栏， 操作一栏的内容是相同的， 数据不是动态获取的，这里操作一栏的名字定死（operation表示是操作这一列，否则就不是） -->
                     <template slot-scope="scope">
-                        <span v-if="item.operation">
+                        <template v-if="item.operation">
                             <template v-for="(it, index) in item.operation">
-                            <el-button 
+                                <el-button 
                                     v-if="it.disabled"
                                     size="mini"
-                                    :key="index" 
+                                    :key="index+key" 
                                     @click.stop="it.clickFun(scope.row)"
                                     :type="it.style"
                                     :width="it.width"
                                     :icon="it.icon"
                                     plain>{{it.name}}
-                            </el-button>
+                                </el-button>
                             </template>
-                        </span>
+                        </template>
                         <!-- formatter：自定义过滤器 -->
-                        <span v-else-if="item.formatter">
+                        <template v-else-if="item.formatter">
                             <span v-if="item.renderComponent == 'tag'">
                                 <!-- ** start ** 这一块做el-tag标签样式判断。不需要可以去除判断 -->
                                 <el-tag size="mini">{{ item.formatter(null, null, scope.row[item.prop], null) }}</el-tag>
                                 <!-- ** end ** -->
                             </span>
                             <span v-else>{{ item.formatter(null, null, scope.row[item.prop], null) }}</span>
-                        </span>
-                        <span v-else>{{ scope.row[item.prop] }}</span>
+                        </template>
+                        <template v-else>{{ scope.row[item.prop] }}</template>
                     </template>
                 </el-table-column>
             </template>
@@ -85,7 +84,7 @@ export default {
             multipleSelection: [],
             currentPage: 1,
             // 表格高度自适应
-            iKey: 1
+            iKey: 0
         }
     },
     mounted: function(){
@@ -127,14 +126,14 @@ export default {
         }
     },
     watch: {
-        tableLoading: function() {
-            ++this.iKey
-        }
+        
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
+<style lang="scss" scoped>
+ /deep/ .el-table:not(.el-table--scrollable-x) .el-table__fixed-right{
+  height: 100% !important;
+}
 </style>

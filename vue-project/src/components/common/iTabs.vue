@@ -11,6 +11,9 @@
                     :label="item.title" 
                     :name="item.name">
                     <span slot="label"><i class="el-icon-date"></i> {{item.title}}</span>
+                    <!-- <template>
+                        <tab-component :is="item.content" :index="index" :name="index" class="tabComponent"></tab-component>
+                    </template> -->
                     <!-- 若是Iframe，则不重复渲染，否则渲染 -->
                     <template v-if="item.path.indexOf('http') > -1">
                         <tab-component :is="item.content" :index="index" :name="index" class="tabComponent"></tab-component>

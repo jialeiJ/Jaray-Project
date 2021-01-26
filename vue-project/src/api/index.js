@@ -77,6 +77,12 @@ axios.interceptors.response.use(function (response) {
                 type: 'error'
             });
             console.error("请求失败", response.data.msg);
+        } else if (parseInt(response.data.code) !== 200) {
+            Message({
+                message: response.data.msg,
+                type: 'error'
+            });
+            console.error("请求失败", response.data.msg);
         }
     }
     return response;

@@ -18,7 +18,10 @@
     <select id="findAll" resultMap="CommonResultMap">
        select 
        	   <include refid="Base_Column_List" />
-       from complaint c 
+       from complaint c
+       <where>
+           <if test="common.search != null and common.search != ''"> c.title = #{common.search}</if>
+       </where>
     </select>
 
     <!-- 查询投诉 -->

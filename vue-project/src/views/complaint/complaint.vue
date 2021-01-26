@@ -87,7 +87,8 @@ export default {
             let that = this
             // 定义请求参数
             let params = { 
-                pageNum: that.pageNum,
+                search: that.search,
+                pageNum: that.search == ""?1:that.pageNum,
                 pageSize: that.pageSize
             }
             // 调用接口

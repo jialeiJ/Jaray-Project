@@ -1,5 +1,6 @@
 package com.vienna.jaray.common;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,8 @@ import java.util.Map;
  * @date 2020年09月10日 22:29
  * @description: 通用的返回json格式数据包装类
  */
-public class ResponseResult {
+public class ResponseResult implements Serializable {
+	private static final long serialVersionUID = -1358179221615132114L;
 	public static final int SUCCESS_CODE = 200;
     public static final int FAIL_CODE = 100;
 

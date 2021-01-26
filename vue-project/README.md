@@ -45,10 +45,10 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
         })
 
     6、使用lang="scss"
-        npm install node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+        npm install node-sass@4.14.1 --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
         npm install sass-loader --g
         npm install sass-loader@7.3.1 --g -dev
-        npm install node-sass --g
+        npm install node-sass@4.14.1 --g
 
 
 
@@ -118,3 +118,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 八、打包集成SpringBoot
     1、npm run build
     2、将生成的dist文件夹全部放在resources目录下
+
+解决报错问题：
+    error request to https://registry.cnpmjs.org/node-sass failed, reason: Hostname/IP does not match certificate's altnames: Host: registry.cnpmjs.org. is not in the cert's altnames: DNS:r.cnpmjs.org
+
+    执行 npm config set strict-ssl false
+
+
+问题   条件查询和页面数据初始化分开，否则在第二页查询时，只能在第二页数据中查询，会导致查询不到

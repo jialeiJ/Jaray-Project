@@ -3,6 +3,10 @@ package com.vienna.jaray.service.complaint.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +25,8 @@ import com.vienna.jaray.service.complaint.ComplaintService;
  * @description: 投诉接口实现类
  */
 @Service
+@CacheConfig(cacheNames = "complaint", cacheManager = "cacheManager")
 public class ComplaintServiceImpl implements ComplaintService {
-	
 	@Autowired
 	private ComplaintMapper complaintMapper;
 
@@ -30,17 +34,18 @@ public class ComplaintServiceImpl implements ComplaintService {
 	 *	查询投诉信息列表
 	 */
 	@Override
+	//@Cacheable
 	public ResponseResult findAll(CommonParamsModel commonParamsModel) {
-		
 		//设置分页信息(第几页，每页数量)
         PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
-		List<Complaint> complaintEntities = complaintMapper.findAll();
+		List<Complaint> complaintEntities = complaintMapper.findAll(commonParamsModel);
 		//取记录总条数
         PageInfo<?> pageInfo = new PageInfo<>(complaintEntities);
 		return ResponseResult.success().add("complaints", pageInfo);
 	}
 
 	@Override
+	@CachePut(key = "#cid")
 	@Transactional(timeout = 30, rollbackFor = Exception.class)
 	public ResponseResult add(Complaint complaint) {
 		ResponseResult responseResult = ResponseResult.fail();
@@ -53,6 +58,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	}
 
 	@Override
+	@CachePut(key = "#cid")
 	@Transactional(timeout = 30, rollbackFor=Exception.class)
 	public ResponseResult updateByCid(Complaint complaint) {
 		ResponseResult responseResult = ResponseResult.fail();
@@ -65,6 +71,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	}
 
 	@Override
+	@Cacheable
 	@Transactional(timeout = 30, isolation = Isolation.READ_UNCOMMITTED, rollbackFor=Exception.class)
 	public ResponseResult findByCid(String cid) {
         Complaint complaintEntitiy = complaintMapper.findByCid(cid);
@@ -72,6 +79,7 @@ public class ComplaintServiceImpl implements ComplaintService {
 	}
 
 	@Override
+	@CacheEvict(key = "#result.cid")
 	public ResponseResult deleteByCids(String[] cids) {
 		int result = complaintMapper.deleteByCids(cids);
 		return ResponseResult.success().add("result", result);

@@ -11,6 +11,10 @@ public enum HttpStatus {
      */
     CAPTCHA_ERROR(999, "验证码错误"),
     /**
+     * 验证码错误
+     */
+    CAPTCHA_INVALID(998, "验证码失效"),
+    /**
      * 用户名或密码错误
      */
     NAME_OR_PASSWORD_ERROR(401, "用户名或密码错误"),

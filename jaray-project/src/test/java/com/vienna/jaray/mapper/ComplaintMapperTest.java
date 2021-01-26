@@ -1,6 +1,7 @@
 package com.vienna.jaray.mapper;
 
 import com.vienna.jaray.mapper.complaint.ComplaintMapper;
+import com.vienna.jaray.model.system.CommonParamsModel;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ public class ComplaintMapperTest {
 	
 	@Test
 	public void testFindComplaintList() throws Exception {
-        log.info("{}",complaintMapper.findAll().size());
+		CommonParamsModel commonParamsModel = new CommonParamsModel();
+        log.info("{}",complaintMapper.findAll(commonParamsModel).size());
     }
 
 }

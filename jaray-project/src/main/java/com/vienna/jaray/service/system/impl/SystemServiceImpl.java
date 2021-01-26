@@ -41,7 +41,14 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public ResponseResult login(HttpServletRequest request, String username, String password, String captcha, HttpSession session) {
         ResponseResult result = ResponseResult.fail();
-        String sessionCaptcha = session.getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
+        Object captchaObject = session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
+        String sessionCaptcha = "";
+        if(captchaObject == null) {
+            result.setMsg(HttpStatus.CAPTCHA_INVALID.getStatusDesc()).setCode(HttpStatus.CAPTCHA_INVALID.getStatusCode());
+            return result;
+        } else {
+            sessionCaptcha = session.getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
+        }
         log.info("用户名[{}], session验证码[{}], 输入验证码[{}]",username, captcha, sessionCaptcha);
 
         if(!sessionCaptcha.equalsIgnoreCase(captcha)){
@@ -65,7 +72,6 @@ public class SystemServiceImpl implements SystemService {
         }else{
             result.setMsg(HttpStatus.NAME_OR_PASSWORD_ERROR.getStatusDesc()).setCode(HttpStatus.NAME_OR_PASSWORD_ERROR.getStatusCode());
         }
-
         return result;
     }
 

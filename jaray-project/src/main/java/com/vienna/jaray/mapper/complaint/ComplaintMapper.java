@@ -2,6 +2,7 @@ package com.vienna.jaray.mapper.complaint;
 
 import java.util.List;
 
+import com.vienna.jaray.model.system.CommonParamsModel;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,7 +21,7 @@ public interface ComplaintMapper {
 	 * 查询投诉列表信息
 	 * @return 投诉列表信息
 	 */
-	List<Complaint> findAll();
+	List<Complaint> findAll(@Param("common")CommonParamsModel commonParamsModel);
 
 	/**
 	 * 添加投诉信息

@@ -65,7 +65,7 @@ export default {
             tableTitle: [
                 {prop: 'id', label: 'ID', fixed: true, sort: true},
                 {prop: 'name', label: '姓名', sort: true, filters: []},
-                {prop: 'email', label: '邮箱'},
+                {prop: 'email', label: '邮箱', width: 40},
                 {prop: 'mobile', label: '手机号'},
                 {prop: 'status', label: '状态', formatter: this.statusFormatter},
                 {prop: 'deptId', label: '部门', formatter: this.deptFormatter},
