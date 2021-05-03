@@ -73,7 +73,7 @@
             <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
             <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
         </trim>
-        where `role_id` = #{entity.roleId} and `roleId` != '1'
+        where `role_id` = #{entity.roleId} and `role_id` != '1'
     </update>
     
 </mapper>

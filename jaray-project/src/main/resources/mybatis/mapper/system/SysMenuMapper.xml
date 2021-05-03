@@ -5,11 +5,14 @@
 
     <resultMap id="CommonResultMap" type="sysMenu">
         <id property="id" column="id"/>
+        <result property="key" column="key"/>
         <result property="value" column="value"/>
         <result property="name" column="name"/>
         <result property="label" column="label"/>
+        <result property="title" column="title"/>
         <result property="parentId" column="parent_id"/>
         <result property="url" column="url"/>
+        <result property="path" column="path"/>
         <result property="perm" column="perm"/>
         <result property="type" column="type"/>
         <result property="icon" column="icon"/>
@@ -22,7 +25,7 @@
     </resultMap>
 	
 	<sql id="Base_Column_List" >
-        m.id,m.id as value,m.name,m.name as label,m.parent_id,m.url,m.perm,m.type,m.icon,m.order_num,m.create_by,
+        m.id,m.id as value,m.name,m.name as label,m.name as title,m.parent_id,m.url,m.url as path,m.perm,m.type,m.icon,m.order_num,m.create_by,
 		m.create_time,m.last_update_by,m.last_update_time,m.del_flag
     </sql>
 

@@ -5,7 +5,7 @@ server:
 spring:
   datasource:
     master:
-      url: jdbc:mysql://192.168.1.104:3306/jaray-database?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
+      url: jdbc:mysql://192.168.91.101:3306/jaray-database?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
       username: root
       password: root
       name: master
@@ -53,7 +53,7 @@ spring:
 #          session-stat-enable: true
 #          profile-enable: true
     slave:
-      url: jdbc:mysql://192.168.1.104:3306/jaray-schedule-quartz?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
+      url: jdbc:mysql://192.168.91.101:3306/jaray-schedule-quartz?useUnicode=true&serverTimezone=GMT%2B8&characterEncoding=utf-8
       username: root
       password: root
       name: slave

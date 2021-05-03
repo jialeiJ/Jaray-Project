@@ -25,14 +25,20 @@
     <select id="findAllTop" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_dept d where d.parent_id is null
+        from sys_dept d 
+        <where>
+        	d.parent_id is null 
+        </where>
     </select>
 
     <!-- 查询子部门列表 -->
     <select id="findAllSub" resultMap="CommonResultMap">
         select
         <include refid="Base_Column_List" />
-        from sys_dept d where d.parent_id is not null
+        from sys_dept d 
+        <where>
+        	d.parent_id is not null 
+        </where>
     </select>
 
     <!-- 添加部门 -->

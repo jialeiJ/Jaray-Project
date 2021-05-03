@@ -1,0 +1,13 @@
+[ {
+  "name" : "BaseRequest",
+  "valid" : true,
+  "incomplete" : false,
+  "importName" : "com.dcits.comet.rpc.api.model.BaseRequest",
+  "inParam" : true
+}, {
+  "name" : "BaseResponse",
+  "valid" : true,
+  "incomplete" : false,
+  "importName" : "com.dcits.comet.rpc.api.model.BaseResponse",
+  "inParam" : false
+} ]
